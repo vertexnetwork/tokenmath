@@ -1,5 +1,6 @@
 import { Calculator } from '@/components/Calculator';
 import { latestDataAsOf } from '@/lib/pricing';
+import { renderJsonLd, webApplicationJsonLd } from '@/lib/seo';
 
 export default function HomePage() {
   return (
@@ -20,6 +21,11 @@ export default function HomePage() {
         Token counts are approximate (±2%) for Claude/Gemini current-gen models. Pricing reflects
         published rates as of {latestDataAsOf()}.
       </p>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={renderJsonLd(webApplicationJsonLd())}
+      />
     </main>
   );
 }

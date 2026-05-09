@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Geist_Mono } from 'next/font/google';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { buildMetadata, organizationJsonLd, renderJsonLd, SITE_URL } from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({
@@ -17,12 +18,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokencount.ai'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'tokencount — LLM Token & Cost Calculator',
     template: '%s | tokencount',
   },
-  description: 'Accurate token math for Claude and Gemini. 100% client-side.',
+  ...buildMetadata(),
+  // Search-engine verification placeholders — fill in after first deploy.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ?? '',
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -45,6 +53,10 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={renderJsonLd(organizationJsonLd())}
+        />
       </body>
     </html>
   );
