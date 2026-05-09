@@ -1,26 +1,54 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Per §3.2 — design tokens. Tailwind v4 reads these via @theme. */
+@theme {
+  /* Brand palette */
+  --color-bg: #0a0a0b;
+  --color-surface: #15161a;
+  --color-border: #26272b;
+  --color-text: #e7e7ea;
+  --color-text-muted: #9c9ca3;
+  --color-accent: #a78bfa;
+  --color-accent-2: #34d399;
+
+  /* Type — UI: Inter, Mono: Geist Mono (loaded via next/font in app/layout.tsx) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Container max width */
+  --container-app: 1100px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark by default per §3.2; the .light class on <html> opts into the light palette. */
+:root,
+html.dark {
+  color-scheme: dark;
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --border: var(--color-border);
+  --text: var(--color-text);
+  --text-muted: var(--color-text-muted);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html.light {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #f6f6f7;
+  --border: #e4e4e7;
+  --text: #15161a;
+  --text-muted: #5b5d66;
 }
 
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Mono input + numeric outputs — used by Calculator + ResultCard. */
+.font-mono,
+textarea.input-prompt,
+.result-num {
+  font-family: var(--font-mono);
 }
