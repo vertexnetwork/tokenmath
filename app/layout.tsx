@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Geist_Mono } from 'next/font/google';
 import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import './globals.css';
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
