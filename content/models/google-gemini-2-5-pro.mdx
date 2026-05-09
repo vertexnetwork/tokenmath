@@ -1,0 +1,58 @@
+---
+title: 'Gemini 2.5 Pro token & cost calculator'
+description: 'Estimate token counts and API cost for Google Gemini 2.5 Pro. Tiered pricing aware. Runs entirely in your browser.'
+modelId: 'gemini-2-5-pro'
+faqs:
+  - q: 'How does the tiered pricing work?'
+    a: 'Gemini 2.5 Pro charges one rate up to 200,000 input tokens and a higher rate above that. Both input and output rates roughly double in the upper tier. The calculator above selects the right tier automatically based on your input size, so the cost number reflects what you would actually be billed.'
+  - q: 'Is the 1M context window really usable?'
+    a: 'Yes, but cost scales sharply. A single request at the upper end of the context window — say 800,000 input tokens with a 2,000-token response — costs ~$2 just for the input at the high tier. The window is genuinely useful for jobs that need it (whole-codebase Q&A, transcript analysis), but it is not the right tool for routine chat.'
+  - q: 'How is the token count approximated?'
+    a: 'Google does not publish a JavaScript tokenizer for Gemini, so we approximate using o200k_base (via js-tiktoken) — the closest publicly available encoding for the modern frontier-model token family. The drift is typically within ~3% on natural language, slightly more on code-heavy inputs. Treat the result as a budgeting estimate.'
+  - q: 'When should I prefer Gemini 2.5 Pro over Claude 4.5 Sonnet?'
+    a: 'When your prompts routinely exceed 200,000 tokens, when you need multimodal input handling that Gemini does well, or when your eval set shows Gemini outperforming on your specific task. At typical chat-sized prompts, Sonnet is meaningfully cheaper; the Gemini Pro story is "I have a lot of context and I want it cheap on the input side."'
+  - q: 'Does my prompt leave the browser?'
+    a: 'No. Tokenization runs entirely client-side. There is no server endpoint that ever sees prompt content. The only serverless function on this site is /api/og, used for social preview images, and it only accepts title and subtitle query strings.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# Gemini 2.5 Pro token & cost calculator
+
+**Google Gemini 2.5 Pro** is the long-context flagship of the Gemini 2.5 family. The pricing structure is the most interesting thing about it from a budgeting perspective: a tiered model where input and output rates roughly double once your input exceeds 200,000 tokens. For workloads that fit under that threshold, Pro is competitive with Claude Sonnet on price. Above that threshold, the math shifts — you're paying for a capability (large context) that other vendors price differently or don't offer at all at this rate.
+
+The right way to use this calculator is to plug in a realistic prompt size and watch which tier the cost lands in. The result card automatically applies the correct rate, so the dollar figure reflects what Google would actually bill — not a flat per-million approximation that would be misleading at the upper tier.
+
+<Calculator defaultModelId="gemini-2-5-pro" lockModel />
+
+## Pricing
+
+The tier boundary at 200,000 input tokens is the structural fact to internalize. Both input and output rates are higher above that line, which means the marginal cost of every token past 200k is roughly 2× the cost of every token before.
+
+<ModelPricingTable modelId="gemini-2-5-pro" />
+
+## Worked examples
+
+The scenarios below stay inside the lower tier, where Pro is most price-competitive. For a long-context workload that crosses 200k tokens — say a full transcript or a codebase scan — paste your real input above and the calculator will apply the upper-tier rate automatically.
+
+<WorkedExamples modelId="gemini-2-5-pro" />
+
+A useful instinct: **decide the tier before you decide the model**. If your average request is 5,000 tokens, Pro is the wrong frame — comparing it head-to-head against Claude Sonnet at chat-sized prompts misses what makes Pro distinctive. If your average request is 350,000 tokens, the comparison set is "Pro vs. retrieval-augmented Sonnet vs. Opus with chunking," and the right answer depends on whether your task tolerates retrieval losses.
+
+## How is this counted?
+
+We approximate Gemini's tokenizer with `o200k_base` from `js-tiktoken` (MIT). The o200k family is the closest public encoding to the modern frontier-model tokenizer style; drift on Gemini specifically is typically in the ~3% range on English. For code-heavy inputs (especially languages with unusual whitespace conventions) the approximation can be looser — pad your budget by 5% if the workload is code-dominated. Inputs over 50,000 characters tokenize in a Web Worker so the page stays responsive.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The two most useful comparisons: Gemini 2.5 Flash (the budget tier within the same family) and Claude 4.5 Sonnet (the cross-vendor mid-range that Pro is most often compared to at chat-sized prompts).
+
+<SiblingLinks modelId="gemini-2-5-pro" />

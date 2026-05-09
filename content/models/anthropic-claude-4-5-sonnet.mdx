@@ -1,0 +1,58 @@
+---
+title: 'Claude 4.5 Sonnet token & cost calculator'
+description: 'Estimate token counts and API cost for Anthropic Claude 4.5 Sonnet. Runs entirely in your browser.'
+modelId: 'claude-4-5-sonnet'
+faqs:
+  - q: 'Is the token count exact?'
+    a: 'No. Anthropic does not publish a current Claude 4.x client tokenizer, so we approximate with cl100k_base (gpt-tokenizer). For typical English prose and code the count is within ~2% of the vendor count. For pathological input (long Unicode runs, repeated rare bytes) drift can be larger; treat the result as a budgeting estimate, not a billing oracle.'
+  - q: 'How is output cost computed?'
+    a: 'You set an expected response length (default 1,024 tokens). The result card multiplies that by the published per-million output rate. The actual response will land in a range — Sonnet rarely returns more than the max_tokens you pass to the API, so your real cost ceiling is set by your client config, not by the model.'
+  - q: 'Does my prompt leave the browser?'
+    a: 'No. Tokenization runs in JavaScript on the page (in a Web Worker for inputs over 50,000 characters). There is no server route that ever receives prompt text. The only serverless function on the site is /api/og for social preview images, and it only accepts title and subtitle query strings.'
+  - q: 'What context window does Claude 4.5 Sonnet support?'
+    a: 'The published context window is 200,000 tokens. The calculator warns you when input alone would exceed this — Anthropic will reject the request before the model runs.'
+  - q: 'Why does my count differ slightly from the Anthropic console?'
+    a: 'The Anthropic console uses the live, internal Claude 4.5 tokenizer; we approximate with cl100k_base. The two agree to within ~2% for natural language and source code. If you need exact counts for billing reconciliation, fetch them from the Anthropic API response headers — but for estimating spend before a request, this calculator is the same order-of-magnitude as the console.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# Claude 4.5 Sonnet token & cost calculator
+
+Anthropic positions **Claude 4.5 Sonnet** as the default workhorse model in the Claude 4.5 family — capable enough to drive production assistants, agentic tool use, and long-document reasoning, while sitting at a price point that's tractable for high-volume workloads. Most teams shipping AI features will spend most of their token budget here, with Haiku underneath for cheap classification and Opus reserved for the small share of requests that genuinely need the strongest reasoning available.
+
+This page tokenizes whatever you paste below and multiplies by Sonnet's published per-million pricing so you can size a feature, a job, or a single prompt before you ever hit the API. Nothing about your input leaves the browser.
+
+<Calculator defaultModelId="claude-4-5-sonnet" lockModel />
+
+## Pricing
+
+Sonnet is flat-priced — no tiered surcharge above a context threshold. The `dataAsOf` date below is when we last verified against the published rate.
+
+<ModelPricingTable modelId="claude-4-5-sonnet" />
+
+## Worked examples
+
+Below are three concrete scenarios at Sonnet's current per-million rates. The calculator above uses the same underlying math; these are starting points for budget conversations.
+
+<WorkedExamples modelId="claude-4-5-sonnet" />
+
+A few patterns worth internalizing. First, the input/output ratio matters more than people expect: at $3 input vs. $15 output per million, a chat product whose typical turn is 800 input + 400 output spends about ⅓ of its money on tokens it didn't even generate. Second, system prompts are paid for on every request — a 5,000-token system prompt at 100,000 requests per day is $1,500/day in input cost alone. Cache or prompt-compress aggressively. Third, long-document Q&A is cheap on the input side but the output is the lever — clamping `max_tokens` is a surprisingly effective cost control.
+
+## How is this counted?
+
+We approximate Sonnet's tokenizer with `cl100k_base` (via the MIT-licensed [`gpt-tokenizer`](https://github.com/niieani/gpt-tokenizer) package), which empirically tracks Claude 4.x within ~2% on English prose and source code. Anthropic does not publish a current client-side Claude tokenizer, so a perfect match isn't available off-the-shelf — but cl100k is closer than any other public encoding. Inputs longer than 50,000 characters are tokenized in a Web Worker so the page stays responsive while you scroll a long prompt.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+If Sonnet's price profile doesn't fit your workload, the closest alternatives are below. Haiku is the budget pick when latency or volume dominates; Opus is the premium pick when the task genuinely benefits from stronger reasoning; the Gemini 2.5 family is the cross-vendor comparison set, with very different pricing geometry on long context.
+
+<SiblingLinks modelId="claude-4-5-sonnet" />

@@ -1,0 +1,58 @@
+---
+title: 'Gemini 2.5 Flash token & cost calculator'
+description: 'Estimate token counts and API cost for Google Gemini 2.5 Flash. Runs entirely in your browser.'
+modelId: 'gemini-2-5-flash'
+faqs:
+  - q: 'When does Flash beat Claude Haiku?'
+    a: "Flash is cheaper per million tokens — roughly $0.30 input vs Haiku's $1 — so on pure cost it wins when both meet your quality bar. The right tiebreaker is your eval set: run your real workload on both and pick the one that hits 95%+ of Sonnet/Opus quality at the lowest spend. Flash tends to be very good at extraction, classification, and structured rewriting; Haiku tends to be more reliable on instruction-following."
+  - q: 'Can I use the full 1M context window with Flash?'
+    a: "Yes. Flash supports the same 1M-token context as Pro, which is unusual at this price point. There is no published tier surcharge for Flash above 200k tokens — it stays at the published flat rate — making it a credible choice for long-context jobs that don't need Pro's reasoning capability."
+  - q: 'Is the token count exact?'
+    a: 'No. Google does not publish a client-side Gemini tokenizer, so we use o200k_base (via js-tiktoken) as the closest available encoding. Drift is typically ~3% on natural language. For Flash specifically, where per-request cost is fractions of a cent, that drift rarely changes which decision you would make on the basis of the estimate.'
+  - q: "What's the right way to pick a max_tokens cap for Flash?"
+    a: 'Lower than you would for Sonnet or Pro. Flash is fast and cheap, but it can produce verbose output if uncapped — and at 8× the per-token cost of input, output is what dominates your bill. For structured-output workloads, set max_tokens to roughly 1.5× your expected schema size and validate the response.'
+  - q: 'Does my prompt leave the browser?'
+    a: 'No. Tokenization runs entirely client-side, in a Web Worker for inputs over 50,000 characters. There is no server route that ever receives prompt content.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# Gemini 2.5 Flash token & cost calculator
+
+**Gemini 2.5 Flash** is Google's high-throughput, low-cost frontier model — the tier you reach for when you want a capable model at vending-machine prices. At $0.30 input / $2.50 output per million tokens, it's one of the cheapest entries in any current frontier-model family, and unlike Pro it ships at this flat rate even at the very long end of its 1M-token context window.
+
+The price profile makes Flash an unusually good default for **the boring 80% of an AI feature**: classification turns, extraction, summarization, structured rewrites, batch processing, agent loops where most of the work is plumbing rather than reasoning. It is not the model you want generating customer-facing prose at the high quality bar — that's Pro or Sonnet territory — but as the workhorse underneath, Flash compresses what you spend on tokens by an order of magnitude versus the premium tiers.
+
+<Calculator defaultModelId="gemini-2-5-flash" lockModel />
+
+## Pricing
+
+Flash is flat-priced — no tier surcharge above 200k tokens, unlike Pro. That makes it qualitatively different from its sibling for large-input workloads: the rate you see is what you pay regardless of context size.
+
+<ModelPricingTable modelId="gemini-2-5-flash" />
+
+## Worked examples
+
+The scenarios below illustrate the price floor. All three round to fractions of a cent, which is the point — Flash unlocks workloads where the model bill stops being the budget conversation entirely.
+
+<WorkedExamples modelId="gemini-2-5-flash" />
+
+The honest framing for Flash: **at these prices your engineering time is the cost center, not the model.** A poorly-written prompt that produces 2,000 tokens instead of 200 still costs you about half a cent — which means the lever to optimize is correctness and reliability, not cost-per-token. Spend your time on evals and routing logic; the per-million numbers will take care of themselves.
+
+## How is this counted?
+
+We approximate Flash's tokenizer with `o200k_base` from `js-tiktoken` (MIT). Drift on Gemini 2.5 is typically ~3% on natural language. At Flash's price level the dollar impact of a 3% miss is negligible per request — it matters mostly for batch-job sizing where small percentages compound across millions of requests. Inputs over 50,000 characters tokenize in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The two most relevant comparisons: Gemini 2.5 Pro (when Flash isn't quite good enough) and Claude 4.5 Haiku (the cross-vendor budget tier that competes head-to-head on price and capability).
+
+<SiblingLinks modelId="gemini-2-5-flash" />

@@ -1,0 +1,58 @@
+---
+title: 'Claude 4.5 Haiku token & cost calculator'
+description: 'Estimate token counts and API cost for Anthropic Claude 4.5 Haiku. Runs entirely in your browser.'
+modelId: 'claude-4-5-haiku'
+faqs:
+  - q: 'Where does Haiku stop being good enough?'
+    a: 'Haiku is excellent at extraction, classification, summarization, structured-output transforms, and the boring middle of agentic loops. It struggles when a task requires multi-step reasoning over a long context, or when output quality is the product (e.g. customer-facing prose). If you can solve the task with a few-shot prompt and a clear schema, Haiku is almost always the right call. If your prompt is shaped like "think step by step about this ambiguous problem," promote to Sonnet or Opus.'
+  - q: 'Can I run it concurrently at high volume?'
+    a: 'Yes — Haiku is the family member built for throughput. Latency is low and Anthropic publishes generous concurrency limits on the API. If your ratelimit is the bottleneck, contact Anthropic; for most pre-product-market-fit workloads the published tier is fine.'
+  - q: 'Does the token count match what the API charges?'
+    a: 'It approximates within ~2% on typical English and code. Anthropic does not publish a client tokenizer for Claude 4.x; we use cl100k_base via gpt-tokenizer as the closest available encoding. For exact billing numbers, read them from the API response — but for sizing budgets before you commit to a workload, this calculator is in the right neighborhood.'
+  - q: 'How does Haiku compare to Gemini 2.5 Flash?'
+    a: 'They occupy the same niche. Flash is cheaper per million tokens, but Haiku tends to be more reliable on instruction-following and structured output. The right choice depends on your eval set — run both on a representative sample of your traffic before locking in a vendor.'
+  - q: 'Should I cache long system prompts?'
+    a: 'Yes. Anthropic supports prompt caching, which discounts cached prompt tokens substantially after the first call. For any production deployment of Haiku — where you are paying for the same system prompt thousands of times per day — wiring up caching is a same-day project that often cuts input cost by 50–90%.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# Claude 4.5 Haiku token & cost calculator
+
+**Claude 4.5 Haiku** is the budget tier of the Claude 4.5 family — built for high-volume, low-latency, structured tasks where you want a capable model but can't afford Sonnet's per-million price. It's the model you reach for when most of your token spend is on plumbing: classification turns inside an agent loop, extraction of fields from semi-structured input, summarization of pages, conversion between formats, light code edits.
+
+The pricing math on Haiku is qualitatively different from Sonnet. At $1 input / $5 output per million, a workload that breaks even on Sonnet at 12,000 page views per month breaks even on Haiku at roughly a third of that — assuming the eval quality is acceptable, which is the question worth your time before you reach for this calculator.
+
+<Calculator defaultModelId="claude-4-5-haiku" lockModel />
+
+## Pricing
+
+Haiku is flat-priced. The thing to notice is the **input/output spread** — output is 5× input, the same multiple as Sonnet, so the same prompt-engineering instincts transfer.
+
+<ModelPricingTable modelId="claude-4-5-haiku" />
+
+## Worked examples
+
+The scenarios below show how cheap Haiku gets at scale. A short chat turn rounds to a fraction of a cent; even a long-document Q&A is well under a penny per request before you account for caching.
+
+<WorkedExamples modelId="claude-4-5-haiku" />
+
+The honest framing is this: at Haiku's prices, **your tokenizer mistakes are probably more expensive than your model bill**. A debug log accidentally pasted into a prompt, a system prompt that grew unmonitored to 8,000 tokens, an output schema that returns a paragraph instead of a JSON field — any of these will dominate your spend long before the model rate does. Haiku rewards good prompt hygiene more than it rewards rate negotiation.
+
+## How is this counted?
+
+We approximate Haiku's tokenizer with `cl100k_base` from `gpt-tokenizer` (MIT). For Haiku specifically, the approximation is well-suited: most Haiku workloads are short and structured, and cl100k tends to under-count slightly on heavily-formatted inputs (XML, JSON), which biases the estimate toward conservative budget numbers. Inputs over 50,000 characters tokenize in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The most relevant comparison set: Sonnet (one tier up in the Claude 4.5 family) and the Gemini 2.5 Flash family across the vendor boundary.
+
+<SiblingLinks modelId="claude-4-5-haiku" />

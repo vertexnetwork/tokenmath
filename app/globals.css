@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 /* Per §3.2 — design tokens. Tailwind v4 reads these via @theme. */
 @theme {

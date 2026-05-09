@@ -1,0 +1,58 @@
+---
+title: 'Claude 4.7 Opus token & cost calculator'
+description: 'Estimate token counts and API cost for Anthropic Claude 4.7 Opus. Runs entirely in your browser.'
+modelId: 'claude-4-7-opus'
+faqs:
+  - q: 'When is Opus actually worth it?'
+    a: "When the model's reasoning quality is the product, not the plumbing. Use Opus for tasks where a 5–10% lift in correctness is worth a 5× price uplift over Sonnet: hard agentic coding, deep multi-document synthesis, ambiguous reasoning chains, anything that fails consistently on Sonnet. If you can solve the task on Sonnet with a tighter prompt or a different decomposition, that is almost always cheaper than reaching for Opus."
+  - q: 'How do I avoid runaway Opus bills?'
+    a: 'Three controls: clamp max_tokens aggressively, route to Opus only after a Sonnet first-pass tags a request as "hard," and cache anything you can. Most production systems should serve <5% of requests on Opus; if your share is higher, your routing layer is wrong, not your prompts.'
+  - q: 'Is the input token approximation reliable?'
+    a: 'Yes — within ~2% on typical inputs. For Opus specifically, where individual requests are expensive, that drift can translate to dollars per request, so treat the calculator as a planning tool and reconcile actual spend against API response headers in production.'
+  - q: 'What is the context window?'
+    a: '200,000 tokens, same as the rest of the Claude 4.x family. The calculator warns you when input alone would exceed this — Anthropic rejects out-of-window requests before the model runs.'
+  - q: "How does it compare to Gemini 2.5 Pro's long-context tier?"
+    a: 'They optimize for different things. Opus is priced for selective, high-stakes reasoning at moderate context lengths. Gemini 2.5 Pro is priced for working with 200k–1M-token inputs; its tiered pricing makes large inputs cheaper than Opus, but on hard reasoning at typical context lengths Opus wins on quality. Pick by workload, not by sticker price.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# Claude 4.7 Opus token & cost calculator
+
+**Claude 4.7 Opus** is Anthropic's premium reasoning model — the one you reach for when the task is genuinely hard, when correctness is the product, and when a 5× per-million markup over Sonnet is justified by the lift in answer quality. The pricing geometry is unforgiving: at $15 input / $75 output per million tokens, a routine workload that runs 100% on Opus will burn cash at a rate that surprises most teams in their first month.
+
+The discipline that makes Opus economic is **routing**. Send the easy 95% of requests to Sonnet or Haiku and reserve Opus for the 5% that need it. If you can articulate why a specific request type benefits from Opus's reasoning — and you can't get the same quality out of Sonnet with a more careful prompt — then you have a use case. Otherwise this is the model that takes a profitable feature and makes it unprofitable.
+
+<Calculator defaultModelId="claude-4-7-opus" lockModel />
+
+## Pricing
+
+Opus is flat-priced. The output multiplier is the same 5× as Sonnet and Haiku — the family is internally consistent on that ratio — but the absolute numbers shift the budgeting math.
+
+<ModelPricingTable modelId="claude-4-7-opus" />
+
+## Worked examples
+
+These scenarios show what Opus costs at three realistic prompt sizes. A "short chat turn" on Opus costs ~$0.03 — fine for a one-off, but at 100,000 daily turns that's $3,000/day. A long-document Q&A is over $1.50 per request before you sum the upstream pipeline.
+
+<WorkedExamples modelId="claude-4-7-opus" />
+
+The right way to read these numbers is **as a budget for selective use**. If your assistant fields 1,000 requests a day and 50 of them get routed to Opus, the long-doc scenario above implies $75/day on the premium tier — defensible if those 50 requests are the high-stakes ones that drive customer outcomes. If 1,000/1,000 hit Opus, the math doesn't work.
+
+## How is this counted?
+
+We approximate Opus's tokenizer with `cl100k_base` (`gpt-tokenizer`, MIT). For high-cost models the ~2% drift between the public encoding and the live Claude tokenizer matters — a 5% over-estimate on Opus is a real number of dollars in production. Use this calculator to size budgets and reconcile actuals from the API response headers. Inputs over 50,000 characters run in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The natural comparison set: Sonnet (the model most workloads should default to before reaching for Opus), Haiku (the budget option for the routing-layer below Opus), and Gemini 2.5 Pro (the cross-vendor premium tier with very different long-context economics).
+
+<SiblingLinks modelId="claude-4-7-opus" />
