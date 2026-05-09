@@ -1,0 +1,54 @@
+# tokencount.ai — full reference
+
+Client-side LLM token counter and API cost calculator for Anthropic Claude and Google Gemini.
+Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded or
+logged. Pricing data is current as of 2026-05-09.
+
+## Pricing table
+
+Model              Input $/M  Output $/M  Context        Tiers                              As of       Source                           
+-----------------  ---------  ----------  -------------  ---------------------------------  ----------  ---------------------------------
+Claude 4.5 Sonnet  $3         $15         200,000 tok    —                                  2026-05-09  https://www.anthropic.com/pricing
+Claude 4.5 Haiku   $1         $5          200,000 tok    —                                  2026-05-09  https://www.anthropic.com/pricing
+Claude 4.7 Opus    $15        $75         200,000 tok    —                                  2026-05-09  https://www.anthropic.com/pricing
+Gemini 2.5 Pro     $1.25      $10         1,000,000 tok  ≤200000: $1.25/$10 | ≤∞: $2.5/$15  2026-05-09  https://ai.google.dev/pricing    
+Gemini 2.5 Flash   $0.3       $2.5        1,000,000 tok  —                                  2026-05-09  https://ai.google.dev/pricing    
+
+Notes
+- Prices are USD per 1,000,000 tokens.
+- Tiered models charge a different rate above a token threshold (e.g. Gemini 2.5 Pro doubles
+  both input and output prices above 200,000 input tokens).
+- "As of" reflects the date pricing was last verified against the vendor's public pricing page.
+
+## Tokenizer notes
+
+- Claude 4.x: approximated via gpt-tokenizer's cl100k_base encoding. Anthropic does not publish
+  a current client tokenizer; @anthropic-ai/tokenizer is available for older Claude vocab
+  (Claude 1/2/3) but is not used here. Calibration factor is 1.0 by default.
+- Gemini 2.5: approximated via js-tiktoken's o200k_base. Google does not publish a client
+  tokenizer. Calibration factor is 1.0 by default.
+- Approximation accuracy is empirically within ±2% across typical prompts. Treat all counts as
+  estimates suitable for cost-budgeting, not for billing reconciliation.
+
+## Privacy contract
+
+- No prompt content is ever transmitted off the user's browser. The only server-rendered
+  endpoint is /api/og, which only accepts title + subtitle query strings used to render social
+  preview images and never receives prompt input.
+- Microsoft Clarity (when enabled) masks all prompt input and cost totals.
+- Vercel Web Analytics receives only aggregate event names with bucketed token-count strings;
+  never input content.
+
+## Calculator URLs
+
+- Claude 4.5 Sonnet: https://tokencount.ai/token-calculator/anthropic-claude-4-5-sonnet
+- Claude 4.5 Haiku: https://tokencount.ai/token-calculator/anthropic-claude-4-5-haiku
+- Claude 4.7 Opus: https://tokencount.ai/token-calculator/anthropic-claude-4-7-opus
+- Gemini 2.5 Pro: https://tokencount.ai/token-calculator/google-gemini-2-5-pro
+- Gemini 2.5 Flash: https://tokencount.ai/token-calculator/google-gemini-2-5-flash
+
+## Reference
+
+- Pricing data sources: https://tokencount.ai/pricing-data
+- Privacy policy: https://tokencount.ai/privacy
+- About: https://tokencount.ai/about

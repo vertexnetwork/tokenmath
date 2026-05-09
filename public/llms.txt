@@ -1,0 +1,18 @@
+# tokencount.ai
+
+> Client-side LLM token counter and API cost calculator for Anthropic Claude and Google Gemini. Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded or logged.
+
+## Calculators
+
+- [Claude 4.5 Sonnet](https://tokencount.ai/token-calculator/anthropic-claude-4-5-sonnet): tokens + USD cost
+- [Claude 4.5 Haiku](https://tokencount.ai/token-calculator/anthropic-claude-4-5-haiku): tokens + USD cost
+- [Claude 4.7 Opus](https://tokencount.ai/token-calculator/anthropic-claude-4-7-opus): tokens + USD cost
+- [Gemini 2.5 Pro](https://tokencount.ai/token-calculator/google-gemini-2-5-pro): tokens + USD cost
+- [Gemini 2.5 Flash](https://tokencount.ai/token-calculator/google-gemini-2-5-flash): tokens + USD cost
+
+## Reference
+
+- [Pricing data sources](https://tokencount.ai/pricing-data)
+- [Privacy policy](https://tokencount.ai/privacy)
+- [About](https://tokencount.ai/about)
+- [Full reference (machine-readable)](https://tokencount.ai/llms-full.txt)
