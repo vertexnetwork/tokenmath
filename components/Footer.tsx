@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
+import { events } from '@/lib/analytics';
 
 type SisterSite = {
   name: string;
@@ -99,7 +100,10 @@ function VertexLink() {
         type="button"
         aria-haspopup="dialog"
         aria-controls={dialogId}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          events.vertexFooterOpened();
+          setOpen(true);
+        }}
         className="text-xs text-(--text-muted)/60 underline-offset-4 hover:text-(--text-muted) hover:underline"
       >
         Part of the Vertex Network

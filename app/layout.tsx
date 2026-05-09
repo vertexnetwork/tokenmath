@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from 'next/font/google';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AdsProviderScript } from '@/components/AdsProviderScript';
+import { Analytics } from '@/components/Analytics';
 import { buildMetadata, organizationJsonLd, renderJsonLd, SITE_URL } from '@/lib/seo';
 import './globals.css';
 
@@ -55,6 +56,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <AdsProviderScript />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={renderJsonLd(organizationJsonLd())}

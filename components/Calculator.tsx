@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { DEFAULT_MODEL_ID, getModelById, type ModelId } from '@/lib/pricing';
 import { countTokens } from '@/lib/tokenizers';
+import { bucketFor, events } from '@/lib/analytics';
 import { ModelPicker } from './ModelPicker';
 import { ResultCard } from './ResultCard';
 
@@ -48,6 +49,7 @@ export function Calculator({
       if (ticket !== requestRef.current) return;
       setTokens(result.tokens);
       setApprox(result.approx);
+      events.calcRun(model, bucketFor(result.tokens));
     }, DEBOUNCE_MS);
 
     return () => window.clearTimeout(timer);
@@ -62,7 +64,14 @@ export function Calculator({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_auto_auto] md:items-end">
         {!lockModel && (
           <div id="models">
-            <ModelPicker id={modelId} value={model} onChange={setModel} />
+            <ModelPicker
+              id={modelId}
+              value={model}
+              onChange={(next) => {
+                events.modelChanged(model, next);
+                setModel(next);
+              }}
+            />
           </div>
         )}
         <div className="flex flex-col gap-2">
