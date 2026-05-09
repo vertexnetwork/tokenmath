@@ -1,4 +1,5 @@
 import { Calculator } from '@/components/Calculator';
+import { AdSlot } from '@/components/AdSlot';
 import { latestDataAsOf } from '@/lib/pricing';
 import { renderJsonLd, webApplicationJsonLd } from '@/lib/seo';
 
@@ -16,6 +17,8 @@ export default function HomePage() {
       </header>
 
       <Calculator />
+
+      <AdSlot placement="home-below-result" />
 
       <p className="text-xs text-(--text-muted)">
         Token counts are approximate (±2%) for Claude/Gemini current-gen models. Pricing reflects

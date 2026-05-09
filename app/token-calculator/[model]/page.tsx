@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { AdSlot } from '@/components/AdSlot';
 import { getModelBySlug, listModelSlugs, type ModelSlug } from '@/lib/pricing';
 import {
   breadcrumbListJsonLd,
@@ -91,6 +92,8 @@ export default async function ModelPage(props: { params: Promise<{ model: string
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h1:font-semibold prose-h2:mt-12 prose-h2:text-2xl prose-h2:font-semibold prose-a:text-(--accent) prose-a:no-underline prose-strong:text-(--text)">
         <Body />
       </article>
+
+      <AdSlot placement="pseo-after-faq" />
 
       <script
         type="application/ld+json"
