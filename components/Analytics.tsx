@@ -1,19 +1,19 @@
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { ClarityScript } from '@/lib/clarity';
 
-const ENABLED = process.env.NEXT_PUBLIC_VERCEL_ANALYTICS !== '0';
+const VERCEL_ENABLED = process.env.NEXT_PUBLIC_VERCEL_ANALYTICS !== '0';
 
 /**
- * Vercel Analytics + Speed Insights, gated by NEXT_PUBLIC_VERCEL_ANALYTICS (default 1).
- * Microsoft Clarity is mounted in the same component slot but lives in lib/clarity.tsx (PR #18)
- * to keep the gating logic per-vendor.
+ * Per-vendor gating: Vercel Analytics defaults on; Clarity loads only when
+ * NEXT_PUBLIC_CLARITY_PROJECT_ID is set. Mounted once in app/layout.tsx.
  */
 export function Analytics() {
-  if (!ENABLED) return null;
   return (
     <>
-      <VercelAnalytics />
-      <SpeedInsights />
+      {VERCEL_ENABLED && <VercelAnalytics />}
+      {VERCEL_ENABLED && <SpeedInsights />}
+      <ClarityScript />
     </>
   );
 }
