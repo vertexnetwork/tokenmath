@@ -1,7 +1,25 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getModelBySlug, listModelSlugs, type ModelSlug } from '@/lib/pricing';
-import { buildMetadata } from '@/lib/seo';
+import {
+  breadcrumbListJsonLd,
+  buildMetadata,
+  faqPageJsonLd,
+  renderJsonLd,
+  softwareApplicationJsonLd,
+} from '@/lib/seo';
+import type { Faq } from '@/components/FaqList';
+
+interface ModelMdxModule {
+  default: React.ComponentType;
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    modelId?: string;
+    faqs?: Faq[];
+  };
+}
 
 export function generateStaticParams() {
   return listModelSlugs().map((model) => ({ model }));
@@ -24,7 +42,7 @@ export async function generateMetadata(props: {
   });
 }
 
-async function loadContent(slug: ModelSlug) {
+async function loadContent(slug: ModelSlug): Promise<ModelMdxModule> {
   switch (slug) {
     case 'anthropic-claude-4-5-sonnet':
       return import('@/content/models/anthropic-claude-4-5-sonnet.mdx');
@@ -46,12 +64,54 @@ export default async function ModelPage(props: { params: Promise<{ model: string
 
   const Mod = await loadContent(model.slug);
   const Body = Mod.default;
+  const faqs = Mod.frontmatter?.faqs ?? [];
 
   return (
     <main className="mx-auto flex w-full max-w-(--container-app) flex-1 flex-col gap-6 px-6 py-10 sm:py-16">
+      <nav aria-label="Breadcrumb" className="text-xs text-(--text-muted)">
+        <ol className="flex flex-wrap items-center gap-2">
+          <li>
+            <Link href="/" className="hover:text-(--text)">
+              Home
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li>
+            <Link href="/#models" className="hover:text-(--text)">
+              Models
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li className="text-(--text)" aria-current="page">
+            {model.label}
+          </li>
+        </ol>
+      </nav>
+
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h1:font-semibold prose-h2:mt-12 prose-h2:text-2xl prose-h2:font-semibold prose-a:text-(--accent) prose-a:no-underline prose-strong:text-(--text)">
         <Body />
       </article>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={renderJsonLd(softwareApplicationJsonLd(model))}
+      />
+      {faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={renderJsonLd(faqPageJsonLd(faqs))}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={renderJsonLd(
+          breadcrumbListJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Models', path: '/#models' },
+            { name: model.label, path: `/token-calculator/${model.slug}` },
+          ]),
+        )}
+      />
     </main>
   );
 }
