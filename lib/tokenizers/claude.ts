@@ -16,7 +16,7 @@ let countPromise: Promise<(text: string) => number> | null = null;
 async function load(): Promise<(text: string) => number> {
   if (countPromise) return countPromise;
   countPromise = (async () => {
-    const mod = await import('gpt-tokenizer/encoding/cl100k_base');
+    const mod = await import("gpt-tokenizer/encoding/cl100k_base");
     return (text: string) => mod.countTokens(text);
   })();
   return countPromise;

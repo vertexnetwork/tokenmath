@@ -1,14 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { getModelById, type ModelId } from '@/lib/pricing';
-import {
-  deleteScenario,
-  listScenarios,
-  saveScenario,
-  type SavedScenario,
-} from '@/lib/scenarios';
-import { BookmarkIcon, TrashIcon } from './icons';
+import { useEffect, useState } from "react";
+import { getModelById, type ModelId } from "@/lib/pricing";
+import { deleteScenario, listScenarios, saveScenario, type SavedScenario } from "@/lib/scenarios";
+import { BookmarkIcon, TrashIcon } from "./icons";
 
 /**
  * Saved scenarios — localStorage-only. The privacy contract is unchanged: scenarios are
@@ -30,7 +25,7 @@ export function SavedScenarios({
 }: SavedScenariosProps) {
   const [scenarios, setScenarios] = useState<SavedScenario[]>([]);
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   useEffect(() => {
     // localStorage isn't available during SSR — read after mount, scheduled out of the
@@ -49,7 +44,7 @@ export function SavedScenarios({
       text: currentText,
       outputTokens: currentOutputTokens,
     });
-    setName('');
+    setName("");
     refresh();
   };
 
@@ -72,11 +67,11 @@ export function SavedScenarios({
           <BookmarkIcon className="text-(--accent)" />
           <span className="font-medium">Saved scenarios</span>
           <span className="text-xs text-(--text-faint)">
-            {empty ? 'none yet' : `${scenarios.length} on this browser`}
+            {empty ? "none yet" : `${scenarios.length} on this browser`}
           </span>
         </span>
         <span aria-hidden className="text-(--text-faint)">
-          {open ? '−' : '+'}
+          {open ? "−" : "+"}
         </span>
       </summary>
 
@@ -106,8 +101,8 @@ export function SavedScenarios({
 
         {empty ? (
           <p className="text-xs text-(--text-faint)">
-            Tip: save a scenario when you have a prompt + model + response length you might
-            revisit. Useful for sizing features before committing to a vendor.
+            Tip: save a scenario when you have a prompt + model + response length you might revisit.
+            Useful for sizing features before committing to a vendor.
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
@@ -125,8 +120,8 @@ export function SavedScenarios({
                   >
                     <span className="text-sm font-medium text-(--text)">{s.name}</span>
                     <span className="text-xs text-(--text-faint)">
-                      {model?.label ?? s.modelId} · {s.text.length.toLocaleString('en-US')} chars ·{' '}
-                      {s.outputTokens.toLocaleString('en-US')} output tokens
+                      {model?.label ?? s.modelId} · {s.text.length.toLocaleString("en-US")} chars ·{" "}
+                      {s.outputTokens.toLocaleString("en-US")} output tokens
                     </span>
                   </button>
                   <button

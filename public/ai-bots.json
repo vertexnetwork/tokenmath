@@ -1,0 +1,14 @@
+{
+  "version": "2026.05.10",
+  "comment": "AI crawler allowlist consumed by app/robots.ts. Synced from vertex-network-hub/config/ai-bots.json — do not edit by hand.",
+  "allow": [
+    "GPTBot",
+    "ClaudeBot",
+    "Google-Extended",
+    "PerplexityBot",
+    "CCBot",
+    "Bingbot",
+    "Applebot-Extended"
+  ],
+  "disallow": []
+}

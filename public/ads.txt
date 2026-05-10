@@ -1,4 +1,9 @@
-# tokenmath.dev ads.txt
-# Update on approval: replace this comment with the publisher line.
-# AdSense format: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
-# MediaVine: pull lines from the MediaVine dashboard each deploy.
+# ads.txt — Vertex Network
+# Synced from vertex-network-hub/crawler/ads.txt
+# IAB ads.txt v1.1: https://iabtechlab.com/ads-txt
+#
+# Add network-wide ad partner declarations below.
+# Format: <domain>, <publisher_id>, <DIRECT|RESELLER>, <certification_id>
+#
+# Example (uncomment + fill in once AdSense or Mediavine is approved):
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

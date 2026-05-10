@@ -6,12 +6,12 @@
  *   new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
  */
 
-import type { ModelId } from '@/lib/pricing';
-import { countClaudeTokens } from './claude';
-import { countGeminiTokens } from './gemini';
-import { countOpenAITokens } from './openai';
+import type { ModelId } from "@/lib/pricing";
+import { countClaudeTokens } from "./claude";
+import { countGeminiTokens } from "./gemini";
+import { countOpenAITokens } from "./openai";
 
-export type TokenizerSource = 'gpt-tokenizer-cl100k' | 'gpt-tokenizer-o200k' | 'gemini-approx';
+export type TokenizerSource = "gpt-tokenizer-cl100k" | "gpt-tokenizer-o200k" | "gemini-approx";
 
 interface WorkerRequest {
   id: number;
@@ -37,21 +37,21 @@ export type WorkerResponse = WorkerSuccess | WorkerFailure;
 
 const ctx = self as unknown as DedicatedWorkerGlobalScope;
 
-ctx.addEventListener('message', async (event: MessageEvent<WorkerRequest>) => {
+ctx.addEventListener("message", async (event: MessageEvent<WorkerRequest>) => {
   const { id, model, text } = event.data;
   const started = performance.now();
   try {
     let tokens: number;
     let source: TokenizerSource;
-    if (model.startsWith('claude-')) {
+    if (model.startsWith("claude-")) {
       tokens = await countClaudeTokens(text);
-      source = 'gpt-tokenizer-cl100k';
-    } else if (model.startsWith('gemini-')) {
+      source = "gpt-tokenizer-cl100k";
+    } else if (model.startsWith("gemini-")) {
       tokens = await countGeminiTokens(text);
-      source = 'gemini-approx';
+      source = "gemini-approx";
     } else {
       tokens = await countOpenAITokens(text);
-      source = 'gpt-tokenizer-o200k';
+      source = "gpt-tokenizer-o200k";
     }
     const response: WorkerSuccess = {
       id,

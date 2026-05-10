@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { buildMetadata } from '@/lib/seo';
-import { APPROX_RANGE } from '@/lib/pricing';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
+import { APPROX_RANGE } from "@/lib/pricing";
 
 export const metadata: Metadata = buildMetadata({
-  title: 'About tokenmath',
-  description: 'Why tokenmath exists, how it works, and what we promise about your data.',
-  path: '/about',
+  title: "About tokenmath",
+  description: "Why tokenmath exists, how it works, and what we promise about your data.",
+  path: "/about",
 });
 
 export default function AboutPage() {
@@ -43,7 +43,7 @@ export default function AboutPage() {
         <p>
           OpenAI ships a canonical client-side tokenizer (<code>o200k_base</code>), so GPT-5 and
           GPT-4.1 counts are exact. Anthropic and Google don&apos;t publish current client
-          tokenizers, so we approximate Claude with <code>cl100k_base</code> and Gemini with{' '}
+          tokenizers, so we approximate Claude with <code>cl100k_base</code> and Gemini with{" "}
           <code>o200k_base</code>, applying per-model calibration to nudge the result toward the
           vendor counts. In practice the drift is {APPROX_RANGE} on typical English and code; treat
           those numbers as budgeting estimates, not billing reconciliations.
@@ -54,7 +54,7 @@ export default function AboutPage() {
         <ul>
           <li>
             <strong>Your prompt never leaves your browser.</strong> There is no server endpoint that
-            ever receives prompt text. The only serverless function on this site is{' '}
+            ever receives prompt text. The only serverless function on this site is{" "}
             <code>/api/og</code> — used to render social preview images — and it only accepts two
             short query strings used in the OG card itself.
           </li>
@@ -66,7 +66,7 @@ export default function AboutPage() {
             calculator for a live tally.
           </li>
           <li>
-            <strong>Pricing data is dated.</strong> Every model carries a <code>dataAsOf</code>{' '}
+            <strong>Pricing data is dated.</strong> Every model carries a <code>dataAsOf</code>{" "}
             stamp showing when we last verified its rate against the vendor&apos;s public pricing
             page. See <Link href="/pricing-data">pricing data</Link> for the current table.
           </li>
@@ -75,12 +75,9 @@ export default function AboutPage() {
         <h2>Built by</h2>
 
         <p>
-          tokenmath is part of the{' '}
-          <a href="https://shopifont.app" target="_blank" rel="noopener noreferrer">
-            Vertex Network
-          </a>{' '}
-          — a small set of developer + creator tools sharing a common stack and design language.
-          For a running list of what&apos;s shipped, see the <Link href="/changelog">changelog</Link>.
+          tokenmath is part of the <Link href="/network">Vertex Network</Link> — a small set of
+          developer + creator tools sharing a common stack and design language. For a running list
+          of what&apos;s shipped, see the <Link href="/changelog">changelog</Link>.
         </p>
       </article>
     </main>

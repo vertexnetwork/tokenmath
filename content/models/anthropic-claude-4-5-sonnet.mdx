@@ -1,25 +1,25 @@
 ---
-title: 'Claude 4.5 Sonnet token & cost calculator'
-description: 'Estimate token counts and API cost for Anthropic Claude 4.5 Sonnet. Runs entirely in your browser.'
-modelId: 'claude-4-5-sonnet'
+title: "Claude 4.5 Sonnet token & cost calculator"
+description: "Estimate token counts and API cost for Anthropic Claude 4.5 Sonnet. Runs entirely in your browser."
+modelId: "claude-4-5-sonnet"
 faqs:
-  - q: 'Is the token count exact?'
-    a: 'No. Anthropic does not publish a current Claude 4.x client tokenizer, so we approximate with cl100k_base (gpt-tokenizer). For typical English prose and code the count is within ~2% of the vendor count. For pathological input (long Unicode runs, repeated rare bytes) drift can be larger; treat the result as a budgeting estimate, not a billing oracle.'
-  - q: 'How is output cost computed?'
-    a: 'You set an expected response length (default 1,024 tokens). The result card multiplies that by the published per-million output rate. The actual response will land in a range — Sonnet rarely returns more than the max_tokens you pass to the API, so your real cost ceiling is set by your client config, not by the model.'
-  - q: 'Does my prompt leave the browser?'
-    a: 'No. Tokenization runs in JavaScript on the page (in a Web Worker for inputs over 50,000 characters). There is no server route that ever receives prompt text. The only serverless function on the site is /api/og for social preview images, and it only accepts title and subtitle query strings.'
-  - q: 'What context window does Claude 4.5 Sonnet support?'
-    a: 'The published context window is 200,000 tokens. The calculator warns you when input alone would exceed this — Anthropic will reject the request before the model runs.'
-  - q: 'Why does my count differ slightly from the Anthropic console?'
-    a: 'The Anthropic console uses the live, internal Claude 4.5 tokenizer; we approximate with cl100k_base. The two agree to within ~2% for natural language and source code. If you need exact counts for billing reconciliation, fetch them from the Anthropic API response headers — but for estimating spend before a request, this calculator is the same order-of-magnitude as the console.'
+  - q: "Is the token count exact?"
+    a: "No. Anthropic does not publish a current Claude 4.x client tokenizer, so we approximate with cl100k_base (gpt-tokenizer). For typical English prose and code the count is within ~2% of the vendor count. For pathological input (long Unicode runs, repeated rare bytes) drift can be larger; treat the result as a budgeting estimate, not a billing oracle."
+  - q: "How is output cost computed?"
+    a: "You set an expected response length (default 1,024 tokens). The result card multiplies that by the published per-million output rate. The actual response will land in a range — Sonnet rarely returns more than the max_tokens you pass to the API, so your real cost ceiling is set by your client config, not by the model."
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs in JavaScript on the page (in a Web Worker for inputs over 50,000 characters). There is no server route that ever receives prompt text. The only serverless function on the site is /api/og for social preview images, and it only accepts title and subtitle query strings."
+  - q: "What context window does Claude 4.5 Sonnet support?"
+    a: "The published context window is 200,000 tokens. The calculator warns you when input alone would exceed this — Anthropic will reject the request before the model runs."
+  - q: "Why does my count differ slightly from the Anthropic console?"
+    a: "The Anthropic console uses the live, internal Claude 4.5 tokenizer; we approximate with cl100k_base. The two agree to within ~2% for natural language and source code. If you need exact counts for billing reconciliation, fetch them from the Anthropic API response headers — but for estimating spend before a request, this calculator is the same order-of-magnitude as the console."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # Claude 4.5 Sonnet token & cost calculator
 

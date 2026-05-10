@@ -10,6 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# When the hub repo publishes vertex-network/.github/workflows/ci.yml@v1 we can swap
+# the inline job below for:
+#   jobs:
+#     ci:
+#       uses: vertex-network/.github/workflows/ci.yml@v1
+#       with:
+#         node-version: "22"
+# Until then this matches what the hub workflow will run.
 jobs:
   verify:
     name: Lint · Typecheck · Test · Build
@@ -19,16 +27,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so scripts/build-changelog.ts can read the git log.
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 11
 
-      - name: Setup Node 20
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -49,4 +60,4 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          NEXT_TELEMETRY_DISABLED: '1'
+          NEXT_TELEMETRY_DISABLED: "1"

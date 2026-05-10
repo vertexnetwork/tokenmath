@@ -1,0 +1,10 @@
+/* TEAM */
+Maintainer: ThatMovieGuy
+Network: Vertex Network — https://github.com/ThatMovieGuyOriginal/vertex-network-hub
+
+/* SITE */
+Site: tokenmath.dev
+Standards: HTML5, CSS3
+Components: Next.js, React, Tailwind v4
+Hosting: Vercel
+Source: GitHub

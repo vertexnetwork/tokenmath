@@ -1,47 +1,43 @@
-import type { MetadataRoute } from 'next';
-import { listModelSlugs } from '@/lib/pricing';
-import { SITE_URL } from '@/lib/seo';
+import type { MetadataRoute } from "next";
+import { listModelSlugs } from "@/lib/pricing";
+import { siteConfig } from "@/lib/site-config";
+
+// Use the latest commit author date so unchanged routes don't cache-bust on every build.
+// Vercel sets VERCEL_GIT_COMMIT_AUTHOR_DATE; locally fall back to "now".
+function lastmod(): Date {
+  const commitDate = process.env.VERCEL_GIT_COMMIT_AUTHOR_DATE;
+  if (commitDate) {
+    const parsed = new Date(commitDate);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+  return new Date();
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const today = new Date();
+  const today = lastmod();
+  const abs = (path: string) => new URL(path, siteConfig.url).toString();
+
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: SITE_URL, lastModified: today, changeFrequency: 'weekly', priority: 1 },
+    { url: siteConfig.url, lastModified: today, changeFrequency: "weekly", priority: 1 },
+    { url: abs("/models"), lastModified: today, changeFrequency: "weekly", priority: 0.7 },
+    { url: abs("/about"), lastModified: today, changeFrequency: "monthly", priority: 0.5 },
+    { url: abs("/contact"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
+    { url: abs("/privacy"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
+    { url: abs("/terms"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
+    { url: abs("/network"), lastModified: today, changeFrequency: "monthly", priority: 0.5 },
     {
-      url: new URL('/models', SITE_URL).toString(),
+      url: abs("/pricing-data"),
       lastModified: today,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: new URL('/about', SITE_URL).toString(),
-      lastModified: today,
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: new URL('/privacy', SITE_URL).toString(),
-      lastModified: today,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: new URL('/pricing-data', SITE_URL).toString(),
-      lastModified: today,
-      changeFrequency: 'monthly',
+      changeFrequency: "monthly",
       priority: 0.6,
     },
-    {
-      url: new URL('/changelog', SITE_URL).toString(),
-      lastModified: today,
-      changeFrequency: 'weekly',
-      priority: 0.5,
-    },
+    { url: abs("/changelog"), lastModified: today, changeFrequency: "weekly", priority: 0.5 },
   ];
 
   const modelRoutes: MetadataRoute.Sitemap = listModelSlugs().map((slug) => ({
-    url: new URL(`/token-calculator/${slug}`, SITE_URL).toString(),
+    url: abs(`/token-calculator/${slug}`),
     lastModified: today,
-    changeFrequency: 'weekly',
+    changeFrequency: "weekly",
     priority: 0.8,
   }));
 

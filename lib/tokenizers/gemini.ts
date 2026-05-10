@@ -6,7 +6,7 @@
  * calibration in lib/tokenizers/index.ts.
  */
 
-import type { Tiktoken } from 'js-tiktoken/lite';
+import type { Tiktoken } from "js-tiktoken/lite";
 
 let encPromise: Promise<Tiktoken> | null = null;
 
@@ -14,8 +14,8 @@ async function loadEncoder(): Promise<Tiktoken> {
   if (encPromise) return encPromise;
   encPromise = (async () => {
     const [{ Tiktoken }, { default: o200k }] = await Promise.all([
-      import('js-tiktoken/lite'),
-      import('js-tiktoken/ranks/o200k_base'),
+      import("js-tiktoken/lite"),
+      import("js-tiktoken/ranks/o200k_base"),
     ]);
     return new Tiktoken(o200k);
   })();

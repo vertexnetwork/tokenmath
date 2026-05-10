@@ -1,7 +1,9 @@
-import type { NextConfig } from 'next';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-import createMDX from '@next/mdx';
+import type { NextConfig } from "next";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+import createMDX from "@next/mdx";
+import { buildCSP } from "./lib/csp";
+import { siteConfig } from "./lib/site-config";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -10,93 +12,50 @@ const here = dirname(fileURLToPath(import.meta.url));
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: ['remark-frontmatter', ['remark-mdx-frontmatter', { name: 'frontmatter' }]],
+    remarkPlugins: [
+      "remark-frontmatter",
+      ["remark-mdx-frontmatter", { name: "frontmatter" }],
+      "remark-gfm",
+    ],
+    rehypePlugins: ["rehype-slug", ["rehype-autolink-headings", { behavior: "wrap" }]],
   },
 });
 
-// §7.8 — Content Security Policy. The script + connect allowlist is provider-aware.
-// 'unsafe-inline' is regrettable but currently required for Next 16 static-page hydration
-// (no nonce path exists for SSG). Reassess when Next ships a static-friendly nonce.
-const SCRIPT_SOURCES = [
-  "'self'",
-  "'unsafe-inline'",
-  "'unsafe-eval'",
-  'https://*.vercel-insights.com',
-  'https://*.vercel-scripts.com',
-  'https://*.googlesyndication.com',
-  'https://*.google.com',
-  'https://*.googleadservices.com',
-  'https://*.doubleclick.net',
-  'https://scripts.mediavine.com',
-  'https://cdn.carbonads.com',
-  'https://srv.carbonads.net',
-  'https://*.clarity.ms',
-];
-
-const CONNECT_SOURCES = [
-  "'self'",
-  'https://*.vercel-insights.com',
-  'https://*.vercel-scripts.com',
-  'https://*.clarity.ms',
-  'https://*.google.com',
-  'https://*.doubleclick.net',
-  'https://*.googlesyndication.com',
-  'https://srv.carbonads.net',
-];
-
-const IMG_SOURCES = [
-  "'self'",
-  'data:',
-  'blob:',
-  'https://*.googlesyndication.com',
-  'https://*.google.com',
-  'https://*.doubleclick.net',
-  'https://*.clarity.ms',
-  'https://cdn.carbonads.com',
-  'https://srv.carbonads.net',
-];
-
-const STYLE_SOURCES = ["'self'", "'unsafe-inline'"];
-
-const FRAME_SOURCES = ["'self'", 'https://*.googlesyndication.com', 'https://*.doubleclick.net'];
-
-const CSP = [
-  `default-src 'self'`,
-  `script-src ${SCRIPT_SOURCES.join(' ')}`,
-  `connect-src ${CONNECT_SOURCES.join(' ')}`,
-  `img-src ${IMG_SOURCES.join(' ')}`,
-  `style-src ${STYLE_SOURCES.join(' ')}`,
-  `font-src 'self' data:`,
-  `frame-src ${FRAME_SOURCES.join(' ')}`,
-  `object-src 'none'`,
-  `base-uri 'self'`,
-  `form-action 'self'`,
-  `frame-ancestors 'none'`,
-].join('; ');
+// Provider-aware CSP (lib/csp.ts) so spokes don't ship the union allowlist when not needed.
+const ads = siteConfig.features.ads.provider;
+const CSP = buildCSP({
+  vercelAnalytics: true,
+  clarity: !!process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+  plausible: !!process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
+  adsense: ads === "adsense",
+  mediavine: ads === "mediavine",
+  carbon: ads === "carbon",
+  embed: false,
+});
 
 const SECURITY_HEADERS = [
   {
-    key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload',
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
   },
-  { key: 'X-Content-Type-Options', value: 'nosniff' },
-  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
-    key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=()',
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=()",
   },
-  { key: 'Content-Security-Policy', value: CSP },
+  { key: "Content-Security-Policy", value: CSP },
 ];
 
 const nextConfig: NextConfig = {
-  pageExtensions: ['ts', 'tsx', 'mdx'],
+  pageExtensions: ["ts", "tsx", "mdx"],
   turbopack: {
     root: here,
   },
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: SECURITY_HEADERS,
       },
     ];

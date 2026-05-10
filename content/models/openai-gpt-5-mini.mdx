@@ -1,25 +1,25 @@
 ---
-title: 'GPT-5 Mini token & cost calculator'
-description: 'Estimate token counts and API cost for OpenAI GPT-5 Mini. Exact tokenization in your browser.'
-modelId: 'gpt-5-mini'
+title: "GPT-5 Mini token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-5 Mini. Exact tokenization in your browser."
+modelId: "gpt-5-mini"
 faqs:
-  - q: 'When is Mini good enough?'
-    a: 'For extraction, classification, summarization, structured rewriting, schema-validated output, and most agent-loop plumbing. Mini handles the majority of production traffic in well-engineered systems. The places where it strains: multi-step ambiguous reasoning, long-document synthesis without retrieval, and tasks where output prose quality is the product. Promote those to GPT-5 (or to GPT-4.1 if context length is the binding constraint).'
-  - q: 'How accurate is the token count?'
+  - q: "When is Mini good enough?"
+    a: "For extraction, classification, summarization, structured rewriting, schema-validated output, and most agent-loop plumbing. Mini handles the majority of production traffic in well-engineered systems. The places where it strains: multi-step ambiguous reasoning, long-document synthesis without retrieval, and tasks where output prose quality is the product. Promote those to GPT-5 (or to GPT-4.1 if context length is the binding constraint)."
+  - q: "How accurate is the token count?"
     a: "Exact. gpt-tokenizer ships OpenAI's canonical o200k_base vocab, so the number you see matches what OpenAI bills. No approximation, no calibration factor."
   - q: "What's the right max_tokens for Mini-driven workloads?"
     a: "Lower than you'd set for GPT-5. Mini's output rate is $2/M — 5× cheaper than GPT-5 — but at high volume even small savings compound. For structured-output workloads, set max_tokens to roughly 1.5× your expected schema size and validate the response."
-  - q: 'Does Mini support the same context as GPT-5?'
+  - q: "Does Mini support the same context as GPT-5?"
     a: "Yes — 400,000 tokens. The full GPT-5 family shares the same context window, so you don't lose long-context capability when routing to Mini."
-  - q: 'How does GPT-5 Mini compare to Claude 4.5 Haiku?'
+  - q: "How does GPT-5 Mini compare to Claude 4.5 Haiku?"
     a: "They occupy the same niche — frontier-quality cheap models for production plumbing. Haiku is slightly more expensive on output ($5/M vs Mini's $2/M); Mini's price advantage is real. The decision should come from your eval set — instruction-following, structured-output reliability, and your specific task mix matter more than the price gap."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # GPT-5 Mini token & cost calculator
 

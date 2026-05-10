@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { MODELS, type ModelId } from '@/lib/pricing';
+import Link from "next/link";
+import { MODELS, type ModelId } from "@/lib/pricing";
 
 export function SiblingLinks({ modelId }: { modelId: ModelId }) {
   const current = MODELS.find((m) => m.id === modelId);

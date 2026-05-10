@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useId, useRef, useState } from 'react';
-import { events } from '@/lib/analytics';
-import { KeyboardIcon, XIcon } from './icons';
+import { useRouter } from "next/navigation";
+import { useEffect, useId, useRef, useState } from "react";
+import { events } from "@/lib/analytics";
+import { KeyboardIcon, XIcon } from "./icons";
 
 /**
  * Global keyboard shortcuts. Lives in the root layout. The intent is "Linear-style
@@ -34,14 +34,14 @@ export function KeyboardHelp() {
   }, [open]);
 
   useEffect(() => {
-    let leader: 'g' | null = null;
+    let leader: "g" | null = null;
     let leaderTimer: number | null = null;
 
     const isTyping = () => {
       const el = document.activeElement as HTMLElement | null;
       if (!el) return false;
       const tag = el.tagName;
-      return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+      return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
     };
 
     const onKey = (e: KeyboardEvent) => {
@@ -49,13 +49,13 @@ export function KeyboardHelp() {
       if (isTyping()) return;
 
       // Leader-key chord: `g` followed by a destination letter within 1.2s.
-      if (leader === 'g') {
+      if (leader === "g") {
         const dest: Record<string, string> = {
-          h: '/',
-          m: '/models',
-          p: '/pricing-data',
-          c: '/changelog',
-          a: '/about',
+          h: "/",
+          m: "/models",
+          p: "/pricing-data",
+          c: "/changelog",
+          a: "/about",
         };
         const target = dest[e.key.toLowerCase()];
         if (target) {
@@ -68,36 +68,36 @@ export function KeyboardHelp() {
       }
 
       switch (e.key) {
-        case '?':
+        case "?":
           e.preventDefault();
           setOpen(true);
           return;
-        case 't':
-        case 'T': {
+        case "t":
+        case "T": {
           e.preventDefault();
           const cls = document.documentElement.classList;
-          const toLight = cls.contains('dark');
-          cls.toggle('dark', !toLight);
-          cls.toggle('light', toLight);
+          const toLight = cls.contains("dark");
+          cls.toggle("dark", !toLight);
+          cls.toggle("light", toLight);
           try {
-            window.localStorage.setItem('theme', toLight ? 'light' : 'dark');
+            window.localStorage.setItem("theme", toLight ? "light" : "dark");
           } catch {
             /* storage disabled — silent */
           }
-          events.themeToggled(toLight ? 'light' : 'dark');
+          events.themeToggled(toLight ? "light" : "dark");
           return;
         }
-        case '/': {
-          const textarea = document.getElementById('main')?.querySelector('textarea');
+        case "/": {
+          const textarea = document.getElementById("main")?.querySelector("textarea");
           if (textarea instanceof HTMLTextAreaElement) {
             e.preventDefault();
             textarea.focus();
           }
           return;
         }
-        case 'g':
-        case 'G':
-          leader = 'g';
+        case "g":
+        case "G":
+          leader = "g";
           if (leaderTimer) window.clearTimeout(leaderTimer);
           leaderTimer = window.setTimeout(() => {
             leader = null;
@@ -106,9 +106,9 @@ export function KeyboardHelp() {
       }
     };
 
-    window.addEventListener('keydown', onKey);
+    window.addEventListener("keydown", onKey);
     return () => {
-      window.removeEventListener('keydown', onKey);
+      window.removeEventListener("keydown", onKey);
       if (leaderTimer) window.clearTimeout(leaderTimer);
     };
   }, [router]);
@@ -154,15 +154,15 @@ export function KeyboardHelp() {
           </button>
         </div>
         <dl className="divide-y divide-(--border)/60">
-          <Row keys={['?']} label="Show this overlay" />
-          <Row keys={['t']} label="Toggle theme" />
-          <Row keys={['/']} label="Focus the prompt textarea" />
-          <Row keys={['g', 'h']} label="Go to home" />
-          <Row keys={['g', 'm']} label="Go to models" />
-          <Row keys={['g', 'p']} label="Go to pricing data" />
-          <Row keys={['g', 'c']} label="Go to changelog" />
-          <Row keys={['g', 'a']} label="Go to about" />
-          <Row keys={['Esc']} label="Close overlays / dialogs" />
+          <Row keys={["?"]} label="Show this overlay" />
+          <Row keys={["t"]} label="Toggle theme" />
+          <Row keys={["/"]} label="Focus the prompt textarea" />
+          <Row keys={["g", "h"]} label="Go to home" />
+          <Row keys={["g", "m"]} label="Go to models" />
+          <Row keys={["g", "p"]} label="Go to pricing data" />
+          <Row keys={["g", "c"]} label="Go to changelog" />
+          <Row keys={["g", "a"]} label="Go to about" />
+          <Row keys={["Esc"]} label="Close overlays / dialogs" />
         </dl>
       </dialog>
     </>

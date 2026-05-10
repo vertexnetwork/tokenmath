@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { APPROX_DRIFT, costUsd, MODELS, type ModelPricing } from '@/lib/pricing';
-import { CheckIcon, CopyIcon } from './icons';
-import { CostSplitBar } from './CostSplitBar';
-import { ContextMeter } from './ContextMeter';
+import Link from "next/link";
+import { useState } from "react";
+import { APPROX_DRIFT, costUsd, MODELS, type ModelPricing } from "@/lib/pricing";
+import { CheckIcon, CopyIcon } from "./icons";
+import { CostSplitBar } from "./CostSplitBar";
+import { ContextMeter } from "./ContextMeter";
 
 interface ResultCardProps {
   model: ModelPricing;
@@ -32,7 +32,7 @@ export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultC
         <span className="text-eyebrow text-(--text-faint)">Total estimated cost</span>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span
-            className={`result-hero text-display-xl ${hasInput ? '' : 'opacity-30'}`}
+            className={`result-hero text-display-xl ${hasInput ? "" : "opacity-30"}`}
             data-clarity-mask="true"
           >
             {formatUsd(totalUsd)}
@@ -91,13 +91,7 @@ export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultC
   );
 }
 
-function OverContextWarning({
-  model,
-  inputTokens,
-}: {
-  model: ModelPricing;
-  inputTokens: number;
-}) {
+function OverContextWarning({ model, inputTokens }: { model: ModelPricing; inputTokens: number }) {
   const alternatives = MODELS.filter((m) => m.id !== model.id && m.contextWindow >= inputTokens)
     .sort((a, b) => a.contextWindow - b.contextWindow)
     .slice(0, 3);
@@ -111,13 +105,13 @@ function OverContextWarning({
       className="mt-6 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-200"
     >
       <p>
-        <strong>Over context window.</strong> Input is {formatNumber(inputTokens)} tokens — exceeds{' '}
-        {model.label}&apos;s {formatNumber(model.contextWindow)}-token limit by{' '}
+        <strong>Over context window.</strong> Input is {formatNumber(inputTokens)} tokens — exceeds{" "}
+        {model.label}&apos;s {formatNumber(model.contextWindow)}-token limit by{" "}
         {formatNumber(overage)}. The API will refuse the request.
       </p>
       {alternatives.length > 0 && (
         <p className="mt-2 text-amber-100/90">
-          Fits in:{' '}
+          Fits in:{" "}
           {alternatives.map((m, i) => (
             <span key={m.id}>
               <Link
@@ -126,7 +120,7 @@ function OverContextWarning({
               >
                 {m.label} ({formatNumber(m.contextWindow)})
               </Link>
-              {i < alternatives.length - 1 ? ', ' : '.'}
+              {i < alternatives.length - 1 ? ", " : "."}
             </span>
           ))}
         </p>
@@ -161,7 +155,7 @@ function CopyButton({
       `Output: ${formatNumber(outputTokens)} tokens (${formatUsd(outputUsd)}, est.)`,
       `Total:  ${formatUsd(totalUsd)}`,
       `— tokenmath.dev`,
-    ].join('\n');
+    ].join("\n");
     try {
       await navigator.clipboard.writeText(summary);
       setCopied(true);
@@ -180,7 +174,7 @@ function CopyButton({
       className="inline-flex items-center gap-2 rounded-md border border-(--border) bg-(--bg) px-3 py-1.5 text-xs text-(--text-muted) hover:border-(--accent) hover:text-(--text) disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-(--border) disabled:hover:text-(--text-muted)"
     >
       {copied ? <CheckIcon /> : <CopyIcon />}
-      {copied ? 'Copied' : 'Copy summary'}
+      {copied ? "Copied" : "Copy summary"}
     </button>
   );
 }
@@ -214,16 +208,16 @@ function Stat({
 }
 
 function formatNumber(n: number) {
-  return new Intl.NumberFormat('en-US').format(n);
+  return new Intl.NumberFormat("en-US").format(n);
 }
 
 function formatUsd(n: number) {
-  if (n === 0) return '$0.00';
-  if (n < 0.01) return '<$0.01';
+  if (n === 0) return "$0.00";
+  if (n < 0.01) return "<$0.01";
   if (n < 1) return `$${n.toFixed(3)}`;
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     maximumFractionDigits: 2,
   }).format(n);
 }

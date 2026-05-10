@@ -1,7 +1,7 @@
-import { AdSenseSlot } from '@/lib/ads/adsense';
-import { CarbonSlot } from '@/lib/ads/carbon';
-import { MediaVineSlot } from '@/lib/ads/mediavine';
-import { adProvider, type AdSlotPlacement } from '@/lib/ads/provider';
+import { AdSenseSlot } from "@/lib/ads/adsense";
+import { CarbonSlot } from "@/lib/ads/carbon";
+import { MediaVineSlot } from "@/lib/ads/mediavine";
+import { adProvider, type AdSlotPlacement } from "@/lib/ads/provider";
 
 interface AdSlotProps {
   placement: AdSlotPlacement;
@@ -9,34 +9,41 @@ interface AdSlotProps {
 }
 
 /**
- * Single placement primitive. Per §7.1 the provider switch is runtime via NEXT_PUBLIC_AD_PROVIDER:
- * - 'none'      → renders nothing (validation phase, no ads)
- * - 'adsense'   → renders the AdSense <ins> for the configured slot
- * - 'mediavine' → renders a MediaVine slot container; their wrapper script auto-injects
- * - 'carbon'    → renders a Carbon Ads <script> that fills the slot inline
+ * CLS-safe height reserve mapping (spec §10). The CSS custom properties are declared in
+ * app/globals.css under @theme — keeping the reserve in CSS means the layout never shifts
+ * even before the provider script fills the slot.
  */
-export function AdSlot({ placement, className }: AdSlotProps) {
-  if (adProvider === 'none') return null;
+const PLACEMENT_HEIGHT_VAR: Record<AdSlotPlacement, string> = {
+  "home-below-result": "var(--ad-slot-leaderboard-h)",
+  "pseo-sidebar": "var(--ad-slot-rect-h)",
+  "pseo-after-faq": "var(--ad-slot-leaderboard-h)",
+};
 
-  if (adProvider === 'adsense') {
+export function AdSlot({ placement, className }: AdSlotProps) {
+  if (adProvider === "none") return null;
+
+  const reservedStyle: React.CSSProperties = { minHeight: PLACEMENT_HEIGHT_VAR[placement] };
+  const wrapperClass = className;
+
+  if (adProvider === "adsense") {
     return (
-      <div className={className} data-ad-placement={placement}>
+      <div className={wrapperClass} data-ad-placement={placement} style={reservedStyle}>
         <AdSenseSlot placement={placement} />
       </div>
     );
   }
 
-  if (adProvider === 'mediavine') {
+  if (adProvider === "mediavine") {
     return (
-      <div className={className} data-ad-placement={placement}>
+      <div className={wrapperClass} data-ad-placement={placement} style={reservedStyle}>
         <MediaVineSlot placement={placement} />
       </div>
     );
   }
 
-  if (adProvider === 'carbon') {
+  if (adProvider === "carbon") {
     return (
-      <div className={className} data-ad-placement={placement}>
+      <div className={wrapperClass} data-ad-placement={placement} style={reservedStyle}>
         <CarbonSlot placement={placement} />
       </div>
     );

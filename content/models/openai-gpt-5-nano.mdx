@@ -1,25 +1,25 @@
 ---
-title: 'GPT-5 Nano token & cost calculator'
-description: 'Estimate token counts and API cost for OpenAI GPT-5 Nano. Exact tokenization in your browser.'
-modelId: 'gpt-5-nano'
+title: "GPT-5 Nano token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-5 Nano. Exact tokenization in your browser."
+modelId: "gpt-5-nano"
 faqs:
-  - q: 'What is Nano good for?'
+  - q: "What is Nano good for?"
     a: "Volume tasks where you'd historically have used a small fine-tuned model: bulk classification, sentiment scoring, intent detection, lightweight extraction, schema validation, A/B-test variant generation, batch rewrites. Nano is fast and cheap enough that the model bill becomes a rounding error in your infrastructure spend."
-  - q: 'When does Nano stop being good enough?'
-    a: 'Anything that requires reliable multi-step reasoning, long-document synthesis, or generating customer-facing prose at high quality. Nano is not the right model for code generation in production, complex summarization, or any task where a confident-but-wrong answer is worse than no answer. Promote those workloads to Mini or full GPT-5.'
-  - q: 'How accurate is the token count?'
+  - q: "When does Nano stop being good enough?"
+    a: "Anything that requires reliable multi-step reasoning, long-document synthesis, or generating customer-facing prose at high quality. Nano is not the right model for code generation in production, complex summarization, or any task where a confident-but-wrong answer is worse than no answer. Promote those workloads to Mini or full GPT-5."
+  - q: "How accurate is the token count?"
     a: "Exact. The calculator uses OpenAI's canonical o200k_base tokenizer (via gpt-tokenizer). No approximation, no calibration."
-  - q: 'Is Nano really 25× cheaper than GPT-5?'
-    a: 'On input, yes — $0.05/M for Nano vs $1.25/M for GPT-5. On output, the gap is similar: $0.40/M vs $10/M. At Nano prices a million-token request costs less than a single GPT-5 short chat turn. The tradeoff is in capability, not in the math.'
-  - q: 'Can I batch Nano calls?'
+  - q: "Is Nano really 25× cheaper than GPT-5?"
+    a: "On input, yes — $0.05/M for Nano vs $1.25/M for GPT-5. On output, the gap is similar: $0.40/M vs $10/M. At Nano prices a million-token request costs less than a single GPT-5 short chat turn. The tradeoff is in capability, not in the math."
+  - q: "Can I batch Nano calls?"
     a: "Yes, and you should. OpenAI's Batch API discounts most models 50% for jobs that can wait up to 24 hours; on Nano, that pushes cost into territory where the model bill genuinely disappears from your P&L. The calculator above shows synchronous-API pricing — divide by two for batch."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # GPT-5 Nano token & cost calculator
 

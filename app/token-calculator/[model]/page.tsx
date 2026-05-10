@@ -1,16 +1,17 @@
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import { AdSlot } from '@/components/AdSlot';
-import { getModelBySlug, listModelSlugs, type ModelSlug } from '@/lib/pricing';
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { AdSlot } from "@/components/AdSlot";
+import { getModelBySlug, listModelSlugs, type ModelSlug } from "@/lib/pricing";
+import { siteConfig } from "@/lib/site-config";
 import {
   breadcrumbListJsonLd,
   buildMetadata,
   faqPageJsonLd,
   renderJsonLd,
   softwareApplicationJsonLd,
-} from '@/lib/seo';
-import type { Faq } from '@/components/FaqList';
+} from "@/lib/seo";
+import type { Faq } from "@/components/FaqList";
 
 interface ModelMdxModule {
   default: React.ComponentType;
@@ -37,34 +38,34 @@ export async function generateMetadata(props: {
     description: `Tokenize prompts and estimate API cost for ${model.label}. Runs entirely in your browser. Pricing as of ${model.dataAsOf}.`,
     path: `/token-calculator/${model.slug}`,
     image: new URL(
-      `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent('Token + cost calculator. Privately, in your browser.')}`,
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokenmath.dev',
+      `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent("Token + cost calculator. Privately, in your browser.")}`,
+      siteConfig.url,
     ).toString(),
   });
 }
 
 async function loadContent(slug: ModelSlug): Promise<ModelMdxModule> {
   switch (slug) {
-    case 'anthropic-claude-4-5-sonnet':
-      return import('@/content/models/anthropic-claude-4-5-sonnet.mdx');
-    case 'anthropic-claude-4-5-haiku':
-      return import('@/content/models/anthropic-claude-4-5-haiku.mdx');
-    case 'anthropic-claude-4-7-opus':
-      return import('@/content/models/anthropic-claude-4-7-opus.mdx');
-    case 'google-gemini-2-5-pro':
-      return import('@/content/models/google-gemini-2-5-pro.mdx');
-    case 'google-gemini-2-5-flash':
-      return import('@/content/models/google-gemini-2-5-flash.mdx');
-    case 'openai-gpt-5':
-      return import('@/content/models/openai-gpt-5.mdx');
-    case 'openai-gpt-5-mini':
-      return import('@/content/models/openai-gpt-5-mini.mdx');
-    case 'openai-gpt-5-nano':
-      return import('@/content/models/openai-gpt-5-nano.mdx');
-    case 'openai-gpt-4-1':
-      return import('@/content/models/openai-gpt-4-1.mdx');
-    case 'openai-gpt-4-1-mini':
-      return import('@/content/models/openai-gpt-4-1-mini.mdx');
+    case "anthropic-claude-4-5-sonnet":
+      return import("@/content/models/anthropic-claude-4-5-sonnet.mdx");
+    case "anthropic-claude-4-5-haiku":
+      return import("@/content/models/anthropic-claude-4-5-haiku.mdx");
+    case "anthropic-claude-4-7-opus":
+      return import("@/content/models/anthropic-claude-4-7-opus.mdx");
+    case "google-gemini-2-5-pro":
+      return import("@/content/models/google-gemini-2-5-pro.mdx");
+    case "google-gemini-2-5-flash":
+      return import("@/content/models/google-gemini-2-5-flash.mdx");
+    case "openai-gpt-5":
+      return import("@/content/models/openai-gpt-5.mdx");
+    case "openai-gpt-5-mini":
+      return import("@/content/models/openai-gpt-5-mini.mdx");
+    case "openai-gpt-5-nano":
+      return import("@/content/models/openai-gpt-5-nano.mdx");
+    case "openai-gpt-4-1":
+      return import("@/content/models/openai-gpt-4-1.mdx");
+    case "openai-gpt-4-1-mini":
+      return import("@/content/models/openai-gpt-4-1-mini.mdx");
   }
 }
 
@@ -123,8 +124,8 @@ export default async function ModelPage(props: { params: Promise<{ model: string
         type="application/ld+json"
         dangerouslySetInnerHTML={renderJsonLd(
           breadcrumbListJsonLd([
-            { name: 'Home', path: '/' },
-            { name: 'Models', path: '/models' },
+            { name: "Home", path: "/" },
+            { name: "Models", path: "/models" },
             { name: model.label, path: `/token-calculator/${model.slug}` },
           ]),
         )}

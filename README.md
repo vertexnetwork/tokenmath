@@ -80,12 +80,12 @@ Project settings:
 Set these in **Project Settings → Environment Variables** for both Production + Preview.
 The full list is in [`.env.example`](.env.example); minimum viable set:
 
-| Var                            | Value                            | Notes                                                      |
-| ------------------------------ | -------------------------------- | ---------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`         | `https://tokenmath.dev`          | Required.                                                  |
-| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1`                              | Optional. Default on.                                      |
-| `NEXT_PUBLIC_AD_PROVIDER`      | `adsense`                        | Switch to `carbon` or `mediavine` once those approve.      |
-| `NEXT_PUBLIC_RUNPOD_REF_URL`   | `https://runpod.io?ref=…`        | Affiliate link for the contextual cost-cut callout.        |
+| Var                            | Value                     | Notes                                                 |
+| ------------------------------ | ------------------------- | ----------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`         | `https://tokenmath.dev`   | Required.                                             |
+| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1`                       | Optional. Default on.                                 |
+| `NEXT_PUBLIC_AD_PROVIDER`      | `adsense`                 | Switch to `carbon` or `mediavine` once those approve. |
+| `NEXT_PUBLIC_RUNPOD_REF_URL`   | `https://runpod.io?ref=…` | Affiliate link for the contextual cost-cut callout.   |
 
 ### 3. Domains
 

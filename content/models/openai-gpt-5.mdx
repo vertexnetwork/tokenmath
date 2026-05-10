@@ -1,25 +1,25 @@
 ---
-title: 'GPT-5 token & cost calculator'
-description: 'Estimate token counts and API cost for OpenAI GPT-5. Exact tokenization in your browser.'
-modelId: 'gpt-5'
+title: "GPT-5 token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-5. Exact tokenization in your browser."
+modelId: "gpt-5"
 faqs:
-  - q: 'Is the token count exact?'
-    a: 'Yes. Unlike Claude and Gemini, OpenAI publishes the canonical tokenizer (tiktoken). The MIT package gpt-tokenizer ships the same vocab, so the number you see here matches what OpenAI will bill you for that input — no approximation, no calibration.'
-  - q: 'How does GPT-5 compare to GPT-5 Mini?'
-    a: 'GPT-5 sits at the top of the GPT-5 family for hardest-task quality; Mini is roughly 5× cheaper on input and Nano is roughly 25× cheaper. The right call depends on your eval set — most production workloads should run cheaper requests on Mini and route only the genuinely-hard ones to GPT-5.'
-  - q: 'What is the context window?'
-    a: 'GPT-5 supports a 400,000-token context window — larger than the Claude 4.x family (200k) but smaller than Gemini 2.5 (1M) or GPT-4.1 (1M). For long-document workloads where context length is the binding constraint, GPT-4.1 or Gemini 2.5 Pro may be a better fit even if quality on shorter prompts favors GPT-5.'
-  - q: 'Does my prompt leave the browser?'
-    a: 'No. Tokenization runs in JavaScript on the page (or in a Web Worker for inputs over 50,000 characters). There is no server endpoint that ever receives prompt text. The only serverless function on the site is /api/og for social preview images.'
-  - q: 'How does the cached-input rate work?'
-    a: 'OpenAI charges a discounted rate for input tokens that match a cached prefix from a recent request. The calculator above does not currently model this — for production deployments where the same system prompt is reused thousands of times, your effective cost will be lower than the headline number, often by 50%+.'
+  - q: "Is the token count exact?"
+    a: "Yes. Unlike Claude and Gemini, OpenAI publishes the canonical tokenizer (tiktoken). The MIT package gpt-tokenizer ships the same vocab, so the number you see here matches what OpenAI will bill you for that input — no approximation, no calibration."
+  - q: "How does GPT-5 compare to GPT-5 Mini?"
+    a: "GPT-5 sits at the top of the GPT-5 family for hardest-task quality; Mini is roughly 5× cheaper on input and Nano is roughly 25× cheaper. The right call depends on your eval set — most production workloads should run cheaper requests on Mini and route only the genuinely-hard ones to GPT-5."
+  - q: "What is the context window?"
+    a: "GPT-5 supports a 400,000-token context window — larger than the Claude 4.x family (200k) but smaller than Gemini 2.5 (1M) or GPT-4.1 (1M). For long-document workloads where context length is the binding constraint, GPT-4.1 or Gemini 2.5 Pro may be a better fit even if quality on shorter prompts favors GPT-5."
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs in JavaScript on the page (or in a Web Worker for inputs over 50,000 characters). There is no server endpoint that ever receives prompt text. The only serverless function on the site is /api/og for social preview images."
+  - q: "How does the cached-input rate work?"
+    a: "OpenAI charges a discounted rate for input tokens that match a cached prefix from a recent request. The calculator above does not currently model this — for production deployments where the same system prompt is reused thousands of times, your effective cost will be lower than the headline number, often by 50%+."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # GPT-5 token & cost calculator
 

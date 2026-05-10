@@ -1,25 +1,25 @@
 ---
-title: 'GPT-4.1 token & cost calculator'
-description: 'Estimate token counts and API cost for OpenAI GPT-4.1. Exact tokenization in your browser.'
-modelId: 'gpt-4-1'
+title: "GPT-4.1 token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-4.1. Exact tokenization in your browser."
+modelId: "gpt-4-1"
 faqs:
-  - q: 'When should I pick GPT-4.1 over GPT-5?'
+  - q: "When should I pick GPT-4.1 over GPT-5?"
     a: "When context length is the binding constraint. GPT-4.1 supports 1,047,576-token context — over 2× larger than GPT-5's 400k. For workflows that involve whole codebases, long transcripts, or document collections that don't fit in GPT-5's window, GPT-4.1 is the OpenAI answer. On shorter prompts where context isn't the issue, GPT-5 is meaningfully cheaper and often higher quality."
-  - q: 'Is the token count exact?'
+  - q: "Is the token count exact?"
     a: "Yes. GPT-4.1 uses OpenAI's canonical o200k_base tokenizer, which gpt-tokenizer ships verbatim. The count is exact — no approximation, no calibration factor."
   - q: "How does GPT-4.1 compare to Gemini 2.5 Pro's long context?"
-    a: 'Both support million-token windows, but the pricing geometry is different. Gemini 2.5 Pro charges a tier surcharge above 200k tokens (roughly doubles input + output rates); GPT-4.1 stays flat-priced regardless of input size. For sustained large-input workloads, GPT-4.1 is often cheaper despite a higher baseline rate.'
+    a: "Both support million-token windows, but the pricing geometry is different. Gemini 2.5 Pro charges a tier surcharge above 200k tokens (roughly doubles input + output rates); GPT-4.1 stays flat-priced regardless of input size. For sustained large-input workloads, GPT-4.1 is often cheaper despite a higher baseline rate."
   - q: "What's the right way to think about input cost at this scale?"
     a: "A single 800,000-token request on GPT-4.1 costs $1.60 just for input — meaningful at low traffic, fast to compound at scale. If your workload involves repeated full-context calls (e.g. agent re-reading the same large doc), prompt caching is essential. OpenAI's cached-input rate is roughly half the standard input rate."
-  - q: 'Does my prompt leave the browser?'
-    a: 'No. Tokenization runs entirely client-side, in a Web Worker for inputs over 50,000 characters. There is no server endpoint that ever receives prompt content.'
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs entirely client-side, in a Web Worker for inputs over 50,000 characters. There is no server endpoint that ever receives prompt content."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # GPT-4.1 token & cost calculator
 

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useSyncExternalStore } from 'react';
-import { events } from '@/lib/analytics';
-import { MoonIcon, SunIcon } from './icons';
+import { useSyncExternalStore } from "react";
+import { events } from "@/lib/analytics";
+import { MoonIcon, SunIcon } from "./icons";
 
-type Theme = 'dark' | 'light';
+type Theme = "dark" | "light";
 
 // Tiny external store so useSyncExternalStore can subscribe + we avoid setState-in-effect.
 // The DOM (html.dark / html.light, set by the inline boot script in app/layout.tsx) is the
@@ -20,24 +20,24 @@ function subscribe(cb: () => void) {
   };
 }
 function getClientSnapshot(): Theme {
-  return document.documentElement.classList.contains('light') ? 'light' : 'dark';
+  return document.documentElement.classList.contains("light") ? "light" : "dark";
 }
 function getServerSnapshot(): Theme {
   // Matches the dark default class set on <html> in app/layout.tsx so SSR + first hydration
   // agree. The inline boot script in <head> may then flip the class to 'light' before paint;
   // useSyncExternalStore re-reads via getClientSnapshot on the client.
-  return 'dark';
+  return "dark";
 }
 
 export function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
 
   const toggle = () => {
-    const next: Theme = theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.classList.toggle('dark', next === 'dark');
-    document.documentElement.classList.toggle('light', next === 'light');
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", next === "dark");
+    document.documentElement.classList.toggle("light", next === "light");
     try {
-      localStorage.setItem('theme', next);
+      localStorage.setItem("theme", next);
     } catch {
       // Private-browsing or storage-disabled — toggle still works for the session.
     }
@@ -48,11 +48,11 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       onClick={toggle}
       className="inline-flex h-9 w-9 items-center justify-center rounded-md text-(--text-muted) hover:bg-(--surface) hover:text-(--text)"
     >
-      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }

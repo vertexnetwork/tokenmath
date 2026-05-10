@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
-import { useEffect, useRef } from 'react';
-import { adsenseClientId, adsenseSlots, type AdSlotPlacement } from './provider';
+import Script from "next/script";
+import { useEffect, useRef } from "react";
+import { adsenseClientId, adsenseSlots, type AdSlotPlacement } from "./provider";
 
 interface AdSenseSlotProps {
   placement: AdSlotPlacement;
@@ -46,7 +46,7 @@ export function AdSenseSlot({ placement }: AdSenseSlotProps) {
     <ins
       ref={insRef}
       className="adsbygoogle block"
-      style={{ display: 'block' }}
+      style={{ display: "block" }}
       data-ad-client={adsenseClientId}
       data-ad-slot={slot}
       data-ad-format="auto"

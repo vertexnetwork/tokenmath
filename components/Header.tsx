@@ -1,19 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useId, useRef, useState } from 'react';
-import { ThemeToggle } from './ThemeToggle';
-import { Wordmark } from './Wordmark';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useId, useRef, useState } from "react";
+import { siteConfig } from "@/lib/site-config";
+import { ThemeToggle } from "./ThemeToggle";
+import { Wordmark } from "./Wordmark";
 
 type NavItem = { href: string; label: string; external?: boolean };
 
-const NAV: NavItem[] = [
-  { href: '/#calculator', label: 'Calculator' },
-  { href: '/models', label: 'Models' },
-  { href: '/pricing-data', label: 'Pricing' },
-  { href: '/about', label: 'About' },
-];
+const NAV: NavItem[] = siteConfig.nav.primary.map((item) => ({ ...item }));
 
 export function Header() {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -49,7 +45,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-(--border) bg-(--bg)/80 backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-(--container-app) items-center justify-between px-6">
-        <Link href="/" aria-label="tokenmath home" className="rounded-md">
+        <Link href="/" aria-label={`${siteConfig.name} home`} className="rounded-md">
           <Wordmark size="md" />
         </Link>
 
@@ -68,7 +64,7 @@ export function Header() {
           <ThemeToggle />
           <button
             type="button"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls={dialogId}
             onClick={() => setOpen((prev) => !prev)}
@@ -114,14 +110,14 @@ export function Header() {
 
 function NavLink({ item, mobile = false }: { item: NavItem; mobile?: boolean }) {
   const pathname = usePathname();
-  const itemPath = item.href.split('#')[0] || '/';
+  const itemPath = item.href.split("#")[0] || "/";
   const isActive = pathname === itemPath;
   const base = mobile
-    ? 'block rounded-md px-3 py-3 text-base hover:bg-(--bg)'
-    : 'transition-colors';
-  const stateClass = isActive ? 'text-(--text)' : 'text-(--text-muted) hover:text-(--text)';
+    ? "block rounded-md px-3 py-3 text-base hover:bg-(--bg)"
+    : "transition-colors";
+  const stateClass = isActive ? "text-(--text)" : "text-(--text-muted) hover:text-(--text)";
   const className = `${base} ${stateClass}`;
-  const ariaCurrent = isActive ? ('page' as const) : undefined;
+  const ariaCurrent = isActive ? ("page" as const) : undefined;
   if (item.external) {
     return (
       <a
@@ -144,20 +140,20 @@ function NavLink({ item, mobile = false }: { item: NavItem; mobile?: boolean }) 
 
 // 3-lines → X using only CSS transforms; no external icon library per §4.2.
 function HamburgerIcon({ open }: { open: boolean }) {
-  const common = 'absolute left-2 right-2 h-0.5 rounded-full bg-current transition-transform';
+  const common = "absolute left-2 right-2 h-0.5 rounded-full bg-current transition-transform";
   return (
     <span aria-hidden className="relative block h-5 w-5">
       <span
-        className={`${common} top-1.5 ${open ? 'translate-y-1.5 rotate-45' : ''}`}
-        style={{ transitionDuration: '160ms' }}
+        className={`${common} top-1.5 ${open ? "translate-y-1.5 rotate-45" : ""}`}
+        style={{ transitionDuration: "160ms" }}
       />
       <span
-        className={`${common} top-2.5 transition-opacity ${open ? 'opacity-0' : 'opacity-100'}`}
-        style={{ transitionDuration: '120ms' }}
+        className={`${common} top-2.5 transition-opacity ${open ? "opacity-0" : "opacity-100"}`}
+        style={{ transitionDuration: "120ms" }}
       />
       <span
-        className={`${common} top-3.5 ${open ? '-translate-y-1.5 -rotate-45' : ''}`}
-        style={{ transitionDuration: '160ms' }}
+        className={`${common} top-3.5 ${open ? "-translate-y-1.5 -rotate-45" : ""}`}
+        style={{ transitionDuration: "160ms" }}
       />
     </span>
   );

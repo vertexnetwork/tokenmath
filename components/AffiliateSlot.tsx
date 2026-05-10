@@ -1,18 +1,11 @@
-'use client';
+"use client";
 
-import { events, type AffiliatePlacement } from '@/lib/analytics';
+import { events, type AffiliatePlacement } from "@/lib/analytics";
+import { siteConfig } from "@/lib/site-config";
 
-const RUNPOD_REF_URL = process.env.NEXT_PUBLIC_RUNPOD_REF_URL ?? '';
-
-const COPY: Record<AffiliatePlacement, { line: string; cta: string }> = {
-  'result-below-total': {
-    line: 'Cost adding up? Self-host an OSS model on rented GPU.',
-    cta: 'Compare on RunPod →',
-  },
-  'pricing-data-footer': {
-    line: 'Need cheaper inference? Rent a GPU and run an OSS model instead of the per-token API.',
-    cta: 'See RunPod pricing →',
-  },
+const PLACEMENT_COPY: Record<AffiliatePlacement, string> = {
+  "result-below-total": "Cost adding up? There may be a cheaper way.",
+  "pricing-data-footer": "Need cheaper inference? See the alternative.",
 };
 
 interface AffiliateSlotProps {
@@ -21,31 +14,32 @@ interface AffiliateSlotProps {
 }
 
 /**
- * Single-affiliate, contextual nudge. Currently RunPod-only (per the Muse-grade discipline
- * of not running 80 affiliate dashboards). When the env var is unset the component renders
- * nothing — keeps the dev/preview deploys clean before the URL is set in Vercel.
+ * Single-affiliate, contextual nudge. Driven by siteConfig.features.affiliate (which reads
+ * NEXT_PUBLIC_AFFILIATE_URL/_LABEL/_PROVIDER). Renders nothing when not configured.
  */
 export function AffiliateSlot({ placement, className }: AffiliateSlotProps) {
-  if (!RUNPOD_REF_URL) return null;
-  const { line, cta } = COPY[placement];
+  const { enabled, url, label, provider } = siteConfig.features.affiliate;
+  if (!enabled || !url) return null;
+  const line = PLACEMENT_COPY[placement];
+  const cta = label || "Learn more →";
 
   return (
     <aside
       className={[
-        'rounded-md border border-(--border) bg-(--surface)/60 px-4 py-3 text-sm',
-        className ?? '',
+        "rounded-md border border-(--border) bg-(--surface)/60 px-4 py-3 text-sm",
+        className ?? "",
       ]
         .filter(Boolean)
-        .join(' ')}
+        .join(" ")}
       data-affiliate-placement={placement}
     >
       <p className="text-(--text-muted)">
-        {line}{' '}
+        {line}{" "}
         <a
-          href={RUNPOD_REF_URL}
+          href={url}
           target="_blank"
           rel="noopener sponsored"
-          onClick={() => events.affiliateClick('runpod', placement)}
+          onClick={() => events.affiliateClick(provider || "affiliate", placement)}
           className="text-(--accent) underline-offset-4 hover:underline"
         >
           {cta}

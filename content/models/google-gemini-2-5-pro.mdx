@@ -1,25 +1,25 @@
 ---
-title: 'Gemini 2.5 Pro token & cost calculator'
-description: 'Estimate token counts and API cost for Google Gemini 2.5 Pro. Tiered pricing aware. Runs entirely in your browser.'
-modelId: 'gemini-2-5-pro'
+title: "Gemini 2.5 Pro token & cost calculator"
+description: "Estimate token counts and API cost for Google Gemini 2.5 Pro. Tiered pricing aware. Runs entirely in your browser."
+modelId: "gemini-2-5-pro"
 faqs:
-  - q: 'How does the tiered pricing work?'
-    a: 'Gemini 2.5 Pro charges one rate up to 200,000 input tokens and a higher rate above that. Both input and output rates roughly double in the upper tier. The calculator above selects the right tier automatically based on your input size, so the cost number reflects what you would actually be billed.'
-  - q: 'Is the 1M context window really usable?'
-    a: 'Yes, but cost scales sharply. A single request at the upper end of the context window — say 800,000 input tokens with a 2,000-token response — costs ~$2 just for the input at the high tier. The window is genuinely useful for jobs that need it (whole-codebase Q&A, transcript analysis), but it is not the right tool for routine chat.'
-  - q: 'How is the token count approximated?'
-    a: 'Google does not publish a JavaScript tokenizer for Gemini, so we approximate using o200k_base (via js-tiktoken) — the closest publicly available encoding for the modern frontier-model token family. The drift is typically within ~3% on natural language, slightly more on code-heavy inputs. Treat the result as a budgeting estimate.'
-  - q: 'When should I prefer Gemini 2.5 Pro over Claude 4.5 Sonnet?'
+  - q: "How does the tiered pricing work?"
+    a: "Gemini 2.5 Pro charges one rate up to 200,000 input tokens and a higher rate above that. Both input and output rates roughly double in the upper tier. The calculator above selects the right tier automatically based on your input size, so the cost number reflects what you would actually be billed."
+  - q: "Is the 1M context window really usable?"
+    a: "Yes, but cost scales sharply. A single request at the upper end of the context window — say 800,000 input tokens with a 2,000-token response — costs ~$2 just for the input at the high tier. The window is genuinely useful for jobs that need it (whole-codebase Q&A, transcript analysis), but it is not the right tool for routine chat."
+  - q: "How is the token count approximated?"
+    a: "Google does not publish a JavaScript tokenizer for Gemini, so we approximate using o200k_base (via js-tiktoken) — the closest publicly available encoding for the modern frontier-model token family. The drift is typically within ~3% on natural language, slightly more on code-heavy inputs. Treat the result as a budgeting estimate."
+  - q: "When should I prefer Gemini 2.5 Pro over Claude 4.5 Sonnet?"
     a: 'When your prompts routinely exceed 200,000 tokens, when you need multimodal input handling that Gemini does well, or when your eval set shows Gemini outperforming on your specific task. At typical chat-sized prompts, Sonnet is meaningfully cheaper; the Gemini Pro story is "I have a lot of context and I want it cheap on the input side."'
-  - q: 'Does my prompt leave the browser?'
-    a: 'No. Tokenization runs entirely client-side. There is no server endpoint that ever sees prompt content. The only serverless function on this site is /api/og, used for social preview images, and it only accepts title and subtitle query strings.'
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs entirely client-side. There is no server endpoint that ever sees prompt content. The only serverless function on this site is /api/og, used for social preview images, and it only accepts title and subtitle query strings."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # Gemini 2.5 Pro token & cost calculator
 

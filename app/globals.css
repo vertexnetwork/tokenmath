@@ -1,32 +1,66 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin '@tailwindcss/typography';
 
 /*
- * Editorial Quiet design tokens.
+ * Editorial Quiet design tokens — Vertex Network spec §5.
+ *
+ * Token names follow the network-wide M3-style convention (--color-on-bg, --color-muted,
+ * --color-on-accent, etc.) so a future audit-time tooling pass can verify token coverage
+ * without per-spoke aliases. Token values remain per-site.
  *
  * The dark palette is warm-dark (not pure black/white) with three surface tiers so the
  * calculator visibly rises off the page. Light is a designed cream/paper palette, not a
  * naive #FFF inversion. `--gold` is reserved for one role only: the answer (total cost).
  */
 @theme {
+  /* color (spec-canonical names) */
   --color-bg: #0a0a0b;
   --color-surface: #131418;
   --color-surface-2: #1b1c21;
+  --color-on-bg: #e7e7ea;
+  --color-on-accent: #0a0a0b;
+  --color-muted: #9c9ca3;
   --color-border: #22232a;
   --color-border-strong: #2e2f37;
-  --color-text: #e7e7ea;
-  --color-text-muted: #9c9ca3;
-  --color-text-faint: #6b6c74;
   --color-accent: #b4a0f5;
-  --color-accent-2: #34d399;
+  --color-success: #34d399;
+  --color-danger: #f87171;
   --color-gold: #e5c07b;
+  --color-text-faint: #6b6c74;
 
+  /* typography */
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-serif: var(--font-source-serif), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, "Times New Roman", serif;
+  --text-display: 3.5rem;
+  --text-h1: 2.25rem;
+  --text-h2: 1.75rem;
+  --text-h3: 1.375rem;
 
+  /* spacing — 44px touch target floor */
+  --spacing-touch: 2.75rem;
+
+  /* radius */
+  --radius-card: 0.75rem;
+  --radius-pill: 9999px;
+
+  /* shadow */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.18), 0 6px 18px rgb(0 0 0 / 0.22);
+  --shadow-cta: 0 1px 2px rgb(0 0 0 / 0.2), 0 6px 16px rgb(180 160 245 / 0.18);
+
+  /* CLS-safe ad slot reserves (zero layout shift even pre-fill) */
+  --ad-slot-banner-h: 90px;
+  --ad-slot-rect-h: 250px;
+  --ad-slot-leaderboard-h: 90px;
+
+  /* layout containers */
   --container-app: 1100px;
   --container-prose: 720px;
+
+  /* focus ring */
+  --focus-ring: 2px solid var(--color-accent);
 }
 
 :root,
@@ -37,8 +71,10 @@ html.dark {
   --surface-2: var(--color-surface-2);
   --border: var(--color-border);
   --border-strong: var(--color-border-strong);
-  --text: var(--color-text);
-  --text-muted: var(--color-text-muted);
+  /* Aliases kept for components written before the M3 rename — both names resolve to
+   * the same token so we don't have to chase down every text-(--text) usage in one go. */
+  --text: var(--color-on-bg);
+  --text-muted: var(--color-muted);
   --text-faint: var(--color-text-faint);
   --accent: var(--color-accent);
   --gold: var(--color-gold);
@@ -51,12 +87,7 @@ html.dark {
  * (`.prose { --tw-prose-headings: #111827; ... }`), so binding the same vars at `:root`
  * doesn't win — the plugin's rule lives on a more specific element. We have to bind on
  * `.prose` too. Using `html .prose` lifts our specificity to (0,1,1) so we beat the
- * plugin's (0,1,0) regardless of source order or layer arrangement; the previous
- * `:where(.prose)` pattern was zero-specificity and lost the cascade outright (which
- * showed up as nearly-invisible section headings on /about and /privacy).
- *
- * We bind both the regular and the invert palettes to the same theme tokens so `prose`
- * works whether or not `prose-invert` is applied.
+ * plugin's (0,1,0) regardless of source order or layer arrangement.
  */
 html .prose {
   --tw-prose-body: var(--text-muted);
@@ -117,7 +148,7 @@ html,
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
 }
 
 /* Mono input + numeric outputs — used by Calculator + ResultCard. */
@@ -160,7 +191,7 @@ textarea.input-prompt,
 .result-hero {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums slashed-zero;
-  font-feature-settings: 'zero' 1;
+  font-feature-settings: "zero" 1;
   color: var(--gold);
   letter-spacing: -0.01em;
 }
@@ -173,7 +204,7 @@ textarea.input-prompt,
 
 /* Focus rings — quieter than browser default but still meeting WCAG 2.1 1.4.11. */
 :where(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--accent);
+  outline: var(--focus-ring);
   outline-offset: 2px;
   border-radius: 6px;
 }

@@ -3,13 +3,7 @@
  * tooltip — the labels and percentages are always visible. When both costs are zero we
  * render a single muted track so the layout doesn't jump.
  */
-export function CostSplitBar({
-  inputUsd,
-  outputUsd,
-}: {
-  inputUsd: number;
-  outputUsd: number;
-}) {
+export function CostSplitBar({ inputUsd, outputUsd }: { inputUsd: number; outputUsd: number }) {
   const total = inputUsd + outputUsd;
   const inputPct = total > 0 ? (inputUsd / total) * 100 : 0;
   const outputPct = total > 0 ? (outputUsd / total) * 100 : 0;
@@ -19,7 +13,7 @@ export function CostSplitBar({
       <div className="flex items-center justify-between text-eyebrow text-(--text-muted)">
         <span>Cost split</span>
         <span className="text-(--text-faint) normal-case tracking-normal">
-          {total > 0 ? `${Math.round(inputPct)}% in / ${Math.round(outputPct)}% out` : '—'}
+          {total > 0 ? `${Math.round(inputPct)}% in / ${Math.round(outputPct)}% out` : "—"}
         </span>
       </div>
       <div
@@ -28,21 +22,13 @@ export function CostSplitBar({
         aria-label={
           total > 0
             ? `Input cost ${Math.round(inputPct)} percent, output cost ${Math.round(outputPct)} percent`
-            : 'No cost yet'
+            : "No cost yet"
         }
       >
         {total > 0 && (
           <>
-            <div
-              className="bg-(--accent)/70"
-              style={{ width: `${inputPct}%` }}
-              aria-hidden
-            />
-            <div
-              className="bg-(--gold)"
-              style={{ width: `${outputPct}%` }}
-              aria-hidden
-            />
+            <div className="bg-(--accent)/70" style={{ width: `${inputPct}%` }} aria-hidden />
+            <div className="bg-(--gold)" style={{ width: `${outputPct}%` }} aria-hidden />
           </>
         )}
       </div>

@@ -1,10 +1,10 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
-const PORT = process.env.PORT ?? '3000';
+const PORT = process.env.PORT ?? "3000";
 const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}`;
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   testMatch: /.*\.spec\.ts$/,
   // Vitest unit tests use *.test.ts and live in the same tests/ folder.
   testIgnore: /.*\.test\.tsx?$/,
@@ -12,19 +12,19 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? [['github'], ['list']] : 'list',
+  reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: {
     baseURL: BASE_URL,
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
     {
-      name: 'mobile',
-      use: { ...devices['iPhone 14'] },
+      name: "mobile",
+      use: { ...devices["iPhone 14"] },
     },
   ],
   // Don't auto-spawn a server when BASE_URL is already set externally — lets us point at
@@ -32,11 +32,11 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'pnpm build && pnpm start',
+        command: "pnpm build && pnpm start",
         url: BASE_URL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
-        stdout: 'pipe',
-        stderr: 'pipe',
+        stdout: "pipe",
+        stderr: "pipe",
       },
 });

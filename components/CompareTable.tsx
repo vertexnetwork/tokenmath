@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { costUsd, MODELS, type ModelId, type ModelPricing } from '@/lib/pricing';
-import { countAllModels } from '@/lib/tokenizers';
+import { useEffect, useState } from "react";
+import { costUsd, MODELS, type ModelId, type ModelPricing } from "@/lib/pricing";
+import { countAllModels } from "@/lib/tokenizers";
 
 /**
  * Compare-mode table: the same prompt scored against every supported model, sorted by
@@ -24,12 +24,7 @@ interface Row {
   totalUsd: number;
 }
 
-export function CompareTable({
-  text,
-  outputTokens,
-  selectedModelId,
-  onSelect,
-}: CompareTableProps) {
+export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: CompareTableProps) {
   const [rows, setRows] = useState<Row[]>([]);
   const [pending, setPending] = useState(false);
 
@@ -92,7 +87,7 @@ export function CompareTable({
                 key={r.model.id}
                 onClick={() => onSelect(r.model.id)}
                 className={`cursor-pointer border-t border-(--border) transition-colors hover:bg-(--bg)/50 ${
-                  selected ? 'bg-(--accent)/8' : ''
+                  selected ? "bg-(--accent)/8" : ""
                 }`}
               >
                 <td className="px-4 py-3">
@@ -131,7 +126,7 @@ export function CompareTable({
                 </td>
                 <td className="px-4 py-3 text-right" data-clarity-mask="true">
                   <span
-                    className={`font-mono tabular-nums ${selected || r.model.id === rows[0].model.id ? 'text-(--gold)' : 'text-(--text)'}`}
+                    className={`font-mono tabular-nums ${selected || r.model.id === rows[0].model.id ? "text-(--gold)" : "text-(--text)"}`}
                   >
                     {formatUsd(r.totalUsd)}
                   </span>
@@ -154,16 +149,16 @@ export function CompareTable({
 }
 
 function formatNumber(n: number) {
-  return new Intl.NumberFormat('en-US').format(n);
+  return new Intl.NumberFormat("en-US").format(n);
 }
 
 function formatUsd(n: number) {
-  if (n === 0) return '$0.00';
-  if (n < 0.01) return '<$0.01';
+  if (n === 0) return "$0.00";
+  if (n < 0.01) return "<$0.01";
   if (n < 1) return `$${n.toFixed(3)}`;
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     maximumFractionDigits: 2,
   }).format(n);
 }

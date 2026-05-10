@@ -1,25 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import {
-  costUsd,
-  DEFAULT_MODEL_ID,
-  getModelById,
-  type ModelId,
-} from '@/lib/pricing';
-import { countTokens } from '@/lib/tokenizers';
-import { bucketFor, events } from '@/lib/analytics';
-import type { ExamplePreset } from '@/lib/examples';
-import type { SavedScenario } from '@/lib/scenarios';
-import { AffiliateSlot } from './AffiliateSlot';
-import { ModelPicker } from './ModelPicker';
-import { ResultCard } from './ResultCard';
-import { ExampleChips } from './ExampleChips';
-import { CompareTable } from './CompareTable';
-import { SavedScenarios } from './SavedScenarios';
-import { PrivacyReceipts } from './PrivacyReceipts';
-import { MobileTotalBar } from './MobileTotalBar';
-import { CompareIcon, LockIcon } from './icons';
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { costUsd, DEFAULT_MODEL_ID, getModelById, type ModelId } from "@/lib/pricing";
+import { countTokens } from "@/lib/tokenizers";
+import { bucketFor, events } from "@/lib/analytics";
+import type { ExamplePreset } from "@/lib/examples";
+import type { SavedScenario } from "@/lib/scenarios";
+import { AffiliateSlot } from "./AffiliateSlot";
+import { ModelPicker } from "./ModelPicker";
+import { ResultCard } from "./ResultCard";
+import { ExampleChips } from "./ExampleChips";
+import { CompareTable } from "./CompareTable";
+import { SavedScenarios } from "./SavedScenarios";
+import { PrivacyReceipts } from "./PrivacyReceipts";
+import { MobileTotalBar } from "./MobileTotalBar";
+import { CompareIcon, LockIcon } from "./icons";
 
 interface CalculatorProps {
   defaultModelId?: ModelId;
@@ -48,7 +43,7 @@ export function Calculator({
   const outputId = useId();
   const resultId = useId();
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [model, setModel] = useState<ModelId>(defaultModelId);
   const [expectedOutputTokens, setExpectedOutputTokens] = useState<number>(DEFAULT_OUTPUT_TOKENS);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -87,7 +82,7 @@ export function Calculator({
         if (ticket !== requestRef.current) return;
         // Surface tokenizer failures (worker boot errors, dynamic-import 404s) instead of
         // leaving the user staring at a stale number. Privacy contract is unchanged.
-        setError('Couldn’t tokenize this input. Refresh the page or try a smaller prompt.');
+        setError("Couldn’t tokenize this input. Refresh the page or try a smaller prompt.");
       } finally {
         if (ticket === requestRef.current) setPending(false);
       }
@@ -122,8 +117,8 @@ export function Calculator({
   };
 
   const gridClass = lockModel
-    ? 'grid grid-cols-1 gap-4 sm:grid-cols-[auto_auto] sm:items-end sm:justify-start'
-    : 'grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end';
+    ? "grid grid-cols-1 gap-4 sm:grid-cols-[auto_auto] sm:items-end sm:justify-start"
+    : "grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end";
 
   return (
     <section id="calculator" className="flex flex-col gap-8">
@@ -176,8 +171,8 @@ export function Calculator({
                     aria-pressed={active}
                     className={`rounded-md border px-2 py-1 text-xs tabular-nums transition-colors ${
                       active
-                        ? 'border-(--accent) bg-(--accent)/10 text-(--accent)'
-                        : 'border-(--border) text-(--text-muted) hover:border-(--accent) hover:text-(--text)'
+                        ? "border-(--accent) bg-(--accent)/10 text-(--accent)"
+                        : "border-(--border) text-(--text-muted) hover:border-(--accent) hover:text-(--text)"
                     }`}
                   >
                     {n}
@@ -201,7 +196,7 @@ export function Calculator({
             </span>
             <button
               type="button"
-              onClick={() => setText('')}
+              onClick={() => setText("")}
               disabled={isEmpty}
               className="text-xs text-(--text-muted) underline-offset-4 hover:text-(--text) hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
             >
@@ -228,7 +223,7 @@ export function Calculator({
           className="flex items-center justify-between text-xs text-(--text-faint)"
         >
           <span>
-            {text.length.toLocaleString('en-US')} / {MAX_INPUT_CHARS.toLocaleString('en-US')}{' '}
+            {text.length.toLocaleString("en-US")} / {MAX_INPUT_CHARS.toLocaleString("en-US")}{" "}
             characters
             {displayPending && (
               <span className="ml-2 inline-flex items-center gap-1.5 text-(--accent)">
@@ -240,7 +235,7 @@ export function Calculator({
               </span>
             )}
           </span>
-          <span>Context window: {pricing.contextWindow.toLocaleString('en-US')} tokens</span>
+          <span>Context window: {pricing.contextWindow.toLocaleString("en-US")} tokens</span>
         </div>
         {displayError && (
           <p
@@ -272,7 +267,7 @@ export function Calculator({
             className="inline-flex w-fit items-center gap-2 rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-sm text-(--text-muted) hover:border-(--accent) hover:text-(--text)"
           >
             <CompareIcon className="text-(--accent)" />
-            {compareOpen ? 'Hide comparison' : 'Compare across all models'}
+            {compareOpen ? "Hide comparison" : "Compare across all models"}
           </button>
           {compareOpen && (
             <CompareTable
@@ -310,12 +305,12 @@ export function Calculator({
 }
 
 function formatUsd(n: number) {
-  if (n === 0) return '$0.00';
-  if (n < 0.01) return '<$0.01';
+  if (n === 0) return "$0.00";
+  if (n < 0.01) return "<$0.01";
   if (n < 1) return `$${n.toFixed(3)}`;
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     maximumFractionDigits: 2,
   }).format(n);
 }

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Sticky bottom bar shown on mobile when the result card has scrolled out of view. Keeps
@@ -25,10 +25,9 @@ export function MobileTotalBar({
   useEffect(() => {
     const target = document.getElementById(observeId);
     if (!target) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setResultInView(entry.isIntersecting),
-      { threshold: 0.1 },
-    );
+    const obs = new IntersectionObserver(([entry]) => setResultInView(entry.isIntersecting), {
+      threshold: 0.1,
+    });
     obs.observe(target);
     return () => obs.disconnect();
   }, [observeId]);
@@ -40,15 +39,12 @@ export function MobileTotalBar({
       ref={ref}
       aria-hidden={!show}
       className={`fixed inset-x-0 bottom-0 z-20 border-t border-(--border) bg-(--surface-2)/95 backdrop-blur transition-transform sm:hidden ${
-        show ? 'translate-y-0' : 'translate-y-full'
+        show ? "translate-y-0" : "translate-y-full"
       }`}
     >
       <div className="mx-auto flex w-full max-w-(--container-app) items-center justify-between gap-3 px-6 py-3">
         <span className="truncate text-xs text-(--text-muted)">{modelLabel}</span>
-        <span
-          className="result-num text-base font-semibold text-(--gold)"
-          data-clarity-mask="true"
-        >
+        <span className="result-num text-base font-semibold text-(--gold)" data-clarity-mask="true">
           {total}
         </span>
       </div>

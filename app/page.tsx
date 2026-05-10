@@ -1,7 +1,7 @@
-import { Calculator } from '@/components/Calculator';
-import { AdSlot } from '@/components/AdSlot';
-import { APPROX_RANGE, latestDataAsOf } from '@/lib/pricing';
-import { renderJsonLd, webApplicationJsonLd } from '@/lib/seo';
+import { Calculator } from "@/components/Calculator";
+import { AdSlot } from "@/components/AdSlot";
+import { APPROX_RANGE, latestDataAsOf } from "@/lib/pricing";
+import { renderJsonLd, webApplicationJsonLd } from "@/lib/seo";
 
 export default function HomePage() {
   return (
@@ -13,8 +13,8 @@ export default function HomePage() {
       <header className="flex flex-col gap-4">
         <p className="text-eyebrow text-(--accent)">Calculator</p>
         <h1 className="text-display-lg max-w-3xl">
-          Token math for <span className="font-serif italic">Claude</span>,{' '}
-          <span className="font-serif italic">Gemini</span>, and{' '}
+          Token math for <span className="font-serif italic">Claude</span>,{" "}
+          <span className="font-serif italic">Gemini</span>, and{" "}
           <span className="font-serif italic">GPT</span>.
         </h1>
         <p className="max-w-2xl text-base text-(--text-muted) sm:text-lg">
@@ -29,7 +29,7 @@ export default function HomePage() {
 
       <p className="text-xs text-(--text-faint)">
         OpenAI counts are exact; Claude and Gemini are approximate ({APPROX_RANGE}) — neither vendor
-        publishes a current client tokenizer. Pricing reflects published rates as of{' '}
+        publishes a current client tokenizer. Pricing reflects published rates as of{" "}
         {latestDataAsOf()}.
       </p>
 

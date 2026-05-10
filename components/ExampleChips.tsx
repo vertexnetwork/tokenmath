@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { EXAMPLE_PRESETS, type ExamplePreset } from '@/lib/examples';
+import { EXAMPLE_PRESETS, type ExamplePreset } from "@/lib/examples";
 
 /**
  * Empty-state preset chips. Shown above the textarea when input is empty so a first-time

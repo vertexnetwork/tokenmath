@@ -73,32 +73,33 @@ Notes
 
 ## Changelog
 
-- 2026-05-10  fix [ui]  Prose heading color + drop Changelog from header + footer columns
-- 2026-05-09  feat  Editorial redesign + compare mode + saved scenarios + privacy receipts
-- 2026-05-09  fix [domain]  Remove next.config www→apex redirect to break Vercel loop
-- 2026-05-09  feat  Rebrand to tokenmath.dev + monetization pivot + pricing auto-refresh
-- 2026-05-09  fix [theme]  Dark is the brand default — ignore system prefers-color-scheme
-- 2026-05-09  fix [ui]  Tighten calculator controls row
-- 2026-05-09  fix [ux]  UX forensic audit — 18 findings across calculator, a11y, copy
-- 2026-05-09  fix [pricing-data]  Keep Verified date on one line (whitespace-nowrap)
-- 2026-05-09  feat  Round 2 — drop GitHub/socials, add OpenAI, accurate Vertex copy
-- 2026-05-09  feat [content]  About, privacy, pricing-data pages
-- 2026-05-09  feat [security]  CSP + security headers in next.config.ts
-- 2026-05-09  feat [analytics]  Microsoft Clarity with prompt + cost masking
-- 2026-05-09  feat [analytics]  Vercel Analytics + Speed Insights, custom events
-- 2026-05-09  feat  Public/ads.txt + app-ads.txt placeholders
-- 2026-05-09  feat [ads]  Provider switch (none/adsense/mediavine) + AdSlot component
-- 2026-05-09  feat [seo]  Per-page Breadcrumb + FAQPage + SoftwareApplication JSON-LD
-- 2026-05-09  feat [content]  MDX pipeline + 5 model pages under /token-calculator/[model]
-- 2026-05-09  feat [seo]  Public/llms.txt static + scripts/build-llms-full.ts wired to prebuild
-- 2026-05-09  feat [seo]  App/sitemap.ts, app/robots.ts, manifest.ts, custom favicon set
-- 2026-05-09  feat [seo]  Metadata, OG default, JSON-LD helpers (WebApp + Organization)
-- 2026-05-09  feat [ui]  Calculator + ModelPicker + ResultCard wired to tokenizer
-- 2026-05-09  feat [lib]  Tokenizers/{claude,gemini} + index countTokens API + Web Worker for >50k chars
-- 2026-05-09  feat [lib]  Pricing.ts with MODELS[] + dataAsOf timestamps
-- 2026-05-09  feat [ui]  Footer with Vertex Network blind link + sister-site modal
-- 2026-05-09  feat [ui]  Header with desktop nav + mobile hamburger drawer (a11y, focus trap)
-- 2026-05-09  feat [ui]  Theme tokens, fonts (Inter + Geist Mono), root layout, dark default
+- 2026-05-10  Auto-generate from git log + render titles only
+- 2026-05-10  Prose heading color + drop Changelog from header + footer columns
+- 2026-05-09  Editorial redesign + compare mode + saved scenarios + privacy receipts
+- 2026-05-09  Remove next.config www→apex redirect to break Vercel loop
+- 2026-05-09  Rebrand to tokenmath.dev + monetization pivot + pricing auto-refresh
+- 2026-05-09  Dark is the brand default — ignore system prefers-color-scheme
+- 2026-05-09  Tighten calculator controls row
+- 2026-05-09  UX forensic audit — 18 findings across calculator, a11y, copy
+- 2026-05-09  Keep Verified date on one line (whitespace-nowrap)
+- 2026-05-09  Round 2 — drop GitHub/socials, add OpenAI, accurate Vertex copy
+- 2026-05-09  About, privacy, pricing-data pages
+- 2026-05-09  CSP + security headers in next.config.ts
+- 2026-05-09  Microsoft Clarity with prompt + cost masking
+- 2026-05-09  Vercel Analytics + Speed Insights, custom events
+- 2026-05-09  Public/ads.txt + app-ads.txt placeholders
+- 2026-05-09  Provider switch (none/adsense/mediavine) + AdSlot component
+- 2026-05-09  Per-page Breadcrumb + FAQPage + SoftwareApplication JSON-LD
+- 2026-05-09  MDX pipeline + 5 model pages under /token-calculator/[model]
+- 2026-05-09  Public/llms.txt static + scripts/build-llms-full.ts wired to prebuild
+- 2026-05-09  App/sitemap.ts, app/robots.ts, manifest.ts, custom favicon set
+- 2026-05-09  Metadata, OG default, JSON-LD helpers (WebApp + Organization)
+- 2026-05-09  Calculator + ModelPicker + ResultCard wired to tokenizer
+- 2026-05-09  Tokenizers/{claude,gemini} + index countTokens API + Web Worker for >50k chars
+- 2026-05-09  Pricing.ts with MODELS[] + dataAsOf timestamps
+- 2026-05-09  Footer with Vertex Network blind link + sister-site modal
+- 2026-05-09  Header with desktop nav + mobile hamburger drawer (a11y, focus trap)
+- 2026-05-09  Theme tokens, fonts (Inter + Geist Mono), root layout, dark default
 
 ## Reference
 

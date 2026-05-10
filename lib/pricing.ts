@@ -8,30 +8,30 @@
  */
 
 export type ModelId =
-  | 'claude-4-5-sonnet'
-  | 'claude-4-5-haiku'
-  | 'claude-4-7-opus'
-  | 'gemini-2-5-pro'
-  | 'gemini-2-5-flash'
-  | 'gpt-5'
-  | 'gpt-5-mini'
-  | 'gpt-5-nano'
-  | 'gpt-4-1'
-  | 'gpt-4-1-mini';
+  | "claude-4-5-sonnet"
+  | "claude-4-5-haiku"
+  | "claude-4-7-opus"
+  | "gemini-2-5-pro"
+  | "gemini-2-5-flash"
+  | "gpt-5"
+  | "gpt-5-mini"
+  | "gpt-5-nano"
+  | "gpt-4-1"
+  | "gpt-4-1-mini";
 
-export type Vendor = 'anthropic' | 'google' | 'openai';
+export type Vendor = "anthropic" | "google" | "openai";
 
 export type ModelSlug =
-  | 'anthropic-claude-4-5-sonnet'
-  | 'anthropic-claude-4-5-haiku'
-  | 'anthropic-claude-4-7-opus'
-  | 'google-gemini-2-5-pro'
-  | 'google-gemini-2-5-flash'
-  | 'openai-gpt-5'
-  | 'openai-gpt-5-mini'
-  | 'openai-gpt-5-nano'
-  | 'openai-gpt-4-1'
-  | 'openai-gpt-4-1-mini';
+  | "anthropic-claude-4-5-sonnet"
+  | "anthropic-claude-4-5-haiku"
+  | "anthropic-claude-4-7-opus"
+  | "google-gemini-2-5-pro"
+  | "google-gemini-2-5-flash"
+  | "openai-gpt-5"
+  | "openai-gpt-5-mini"
+  | "openai-gpt-5-nano"
+  | "openai-gpt-4-1"
+  | "openai-gpt-4-1-mini";
 
 export interface PricingTier {
   /** Token threshold (inclusive). null means "no upper bound". */
@@ -71,129 +71,129 @@ export interface ModelPricing {
 
 export const MODELS: readonly ModelPricing[] = [
   {
-    id: 'claude-4-5-sonnet',
-    slug: 'anthropic-claude-4-5-sonnet',
-    label: 'Claude 4.5 Sonnet',
-    vendor: 'anthropic',
-    family: 'Claude 4.5',
+    id: "claude-4-5-sonnet",
+    slug: "anthropic-claude-4-5-sonnet",
+    label: "Claude 4.5 Sonnet",
+    vendor: "anthropic",
+    family: "Claude 4.5",
     inputUsdPerM: 3,
     outputUsdPerM: 15,
     contextWindow: 200_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://www.anthropic.com/pricing',
+    dataAsOf: "2026-05-09",
+    source: "https://www.anthropic.com/pricing",
   },
   {
-    id: 'claude-4-5-haiku',
-    slug: 'anthropic-claude-4-5-haiku',
-    label: 'Claude 4.5 Haiku',
-    vendor: 'anthropic',
-    family: 'Claude 4.5',
+    id: "claude-4-5-haiku",
+    slug: "anthropic-claude-4-5-haiku",
+    label: "Claude 4.5 Haiku",
+    vendor: "anthropic",
+    family: "Claude 4.5",
     inputUsdPerM: 1,
     outputUsdPerM: 5,
     contextWindow: 200_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://www.anthropic.com/pricing',
+    dataAsOf: "2026-05-09",
+    source: "https://www.anthropic.com/pricing",
   },
   {
-    id: 'claude-4-7-opus',
-    slug: 'anthropic-claude-4-7-opus',
-    label: 'Claude 4.7 Opus',
-    vendor: 'anthropic',
-    family: 'Claude 4.7',
+    id: "claude-4-7-opus",
+    slug: "anthropic-claude-4-7-opus",
+    label: "Claude 4.7 Opus",
+    vendor: "anthropic",
+    family: "Claude 4.7",
     inputUsdPerM: 15,
     outputUsdPerM: 75,
     contextWindow: 200_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://www.anthropic.com/pricing',
+    dataAsOf: "2026-05-09",
+    source: "https://www.anthropic.com/pricing",
   },
   {
-    id: 'gemini-2-5-pro',
-    slug: 'google-gemini-2-5-pro',
-    label: 'Gemini 2.5 Pro',
-    vendor: 'google',
-    family: 'Gemini 2.5',
+    id: "gemini-2-5-pro",
+    slug: "google-gemini-2-5-pro",
+    label: "Gemini 2.5 Pro",
+    vendor: "google",
+    family: "Gemini 2.5",
     // Default tier (≤200k context). Above that, both input + output prices double — see `tiers`.
     inputUsdPerM: 1.25,
     outputUsdPerM: 10,
     contextWindow: 1_000_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://ai.google.dev/pricing',
+    dataAsOf: "2026-05-09",
+    source: "https://ai.google.dev/pricing",
     tiers: [
       { upTo: 200_000, inputUsdPerM: 1.25, outputUsdPerM: 10 },
       { upTo: null, inputUsdPerM: 2.5, outputUsdPerM: 15 },
     ],
   },
   {
-    id: 'gemini-2-5-flash',
-    slug: 'google-gemini-2-5-flash',
-    label: 'Gemini 2.5 Flash',
-    vendor: 'google',
-    family: 'Gemini 2.5',
+    id: "gemini-2-5-flash",
+    slug: "google-gemini-2-5-flash",
+    label: "Gemini 2.5 Flash",
+    vendor: "google",
+    family: "Gemini 2.5",
     inputUsdPerM: 0.3,
     outputUsdPerM: 2.5,
     contextWindow: 1_000_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://ai.google.dev/pricing',
+    dataAsOf: "2026-05-09",
+    source: "https://ai.google.dev/pricing",
   },
   {
-    id: 'gpt-5',
-    slug: 'openai-gpt-5',
-    label: 'GPT-5',
-    vendor: 'openai',
-    family: 'GPT-5',
+    id: "gpt-5",
+    slug: "openai-gpt-5",
+    label: "GPT-5",
+    vendor: "openai",
+    family: "GPT-5",
     inputUsdPerM: 1.25,
     outputUsdPerM: 10,
     contextWindow: 400_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://openai.com/api/pricing/',
+    dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
   },
   {
-    id: 'gpt-5-mini',
-    slug: 'openai-gpt-5-mini',
-    label: 'GPT-5 Mini',
-    vendor: 'openai',
-    family: 'GPT-5',
+    id: "gpt-5-mini",
+    slug: "openai-gpt-5-mini",
+    label: "GPT-5 Mini",
+    vendor: "openai",
+    family: "GPT-5",
     inputUsdPerM: 0.25,
     outputUsdPerM: 2,
     contextWindow: 400_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://openai.com/api/pricing/',
+    dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
   },
   {
-    id: 'gpt-5-nano',
-    slug: 'openai-gpt-5-nano',
-    label: 'GPT-5 Nano',
-    vendor: 'openai',
-    family: 'GPT-5',
+    id: "gpt-5-nano",
+    slug: "openai-gpt-5-nano",
+    label: "GPT-5 Nano",
+    vendor: "openai",
+    family: "GPT-5",
     inputUsdPerM: 0.05,
     outputUsdPerM: 0.4,
     contextWindow: 400_000,
-    dataAsOf: '2026-05-09',
-    source: 'https://openai.com/api/pricing/',
+    dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
   },
   {
-    id: 'gpt-4-1',
-    slug: 'openai-gpt-4-1',
-    label: 'GPT-4.1',
-    vendor: 'openai',
-    family: 'GPT-4.1',
+    id: "gpt-4-1",
+    slug: "openai-gpt-4-1",
+    label: "GPT-4.1",
+    vendor: "openai",
+    family: "GPT-4.1",
     inputUsdPerM: 2,
     outputUsdPerM: 8,
     contextWindow: 1_047_576,
-    dataAsOf: '2026-05-09',
-    source: 'https://openai.com/api/pricing/',
+    dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
   },
   {
-    id: 'gpt-4-1-mini',
-    slug: 'openai-gpt-4-1-mini',
-    label: 'GPT-4.1 Mini',
-    vendor: 'openai',
-    family: 'GPT-4.1',
+    id: "gpt-4-1-mini",
+    slug: "openai-gpt-4-1-mini",
+    label: "GPT-4.1 Mini",
+    vendor: "openai",
+    family: "GPT-4.1",
     inputUsdPerM: 0.4,
     outputUsdPerM: 1.6,
     contextWindow: 1_047_576,
-    dataAsOf: '2026-05-09',
-    source: 'https://openai.com/api/pricing/',
+    dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
   },
 ] as const;
 
@@ -218,7 +218,7 @@ export function listModelSlugs(): ModelSlug[] {
 }
 
 /** Default model for the home page calculator. */
-export const DEFAULT_MODEL_ID: ModelId = 'claude-4-5-sonnet';
+export const DEFAULT_MODEL_ID: ModelId = "claude-4-5-sonnet";
 
 /**
  * Resolve the input/output prices to use for a given total input-token count, picking the
@@ -262,7 +262,7 @@ export function latestDataAsOf(): string {
   return (
     MODELS.map((m) => m.dataAsOf)
       .sort()
-      .at(-1) ?? ''
+      .at(-1) ?? ""
   );
 }
 
@@ -273,27 +273,27 @@ export function latestDataAsOf(): string {
  */
 export const APPROX_DRIFT: Record<Vendor, { label: string; pill: string; blurb: string }> = {
   anthropic: {
-    label: '±2%',
-    pill: '±2% approx',
-    blurb: 'Approximated with cl100k_base — drift typically <2% on English and code.',
+    label: "±2%",
+    pill: "±2% approx",
+    blurb: "Approximated with cl100k_base — drift typically <2% on English and code.",
   },
   google: {
-    label: '±3%',
-    pill: '±3% approx',
-    blurb: 'Approximated with o200k_base; drift typically ~3% on English and code.',
+    label: "±3%",
+    pill: "±3% approx",
+    blurb: "Approximated with o200k_base; drift typically ~3% on English and code.",
   },
   openai: {
-    label: 'exact',
-    pill: 'exact',
-    blurb: 'Exact tokenization via the canonical OpenAI vocab (o200k_base).',
+    label: "exact",
+    pill: "exact",
+    blurb: "Exact tokenization via the canonical OpenAI vocab (o200k_base).",
   },
 };
 
 /** Headline drift range across all approximated vendors. */
-export const APPROX_RANGE = '±2–3%';
+export const APPROX_RANGE = "±2–3%";
 
 /**
  * ISO date the privacy policy was last reviewed. Bump this when the policy text changes,
  * not when the file is edited for unrelated reasons. Surfaced on /privacy.
  */
-export const PRIVACY_UPDATED = '2026-05-09';
+export const PRIVACY_UPDATED = "2026-05-09";

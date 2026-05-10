@@ -1,25 +1,25 @@
 ---
-title: 'GPT-4.1 Mini token & cost calculator'
-description: 'Estimate token counts and API cost for OpenAI GPT-4.1 Mini. Exact tokenization in your browser.'
-modelId: 'gpt-4-1-mini'
+title: "GPT-4.1 Mini token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-4.1 Mini. Exact tokenization in your browser."
+modelId: "gpt-4-1-mini"
 faqs:
-  - q: 'When does GPT-4.1 Mini make sense?'
+  - q: "When does GPT-4.1 Mini make sense?"
     a: "When you need 1M-token context AND budget pressure. GPT-4.1 Mini gives you the same 1,047,576-token window as full GPT-4.1 at roughly 1/5th the per-token cost. It's the right pick for batch processing of large documents, retrieval-free Q&A on long inputs, and any workload where context length is non-negotiable but quality requirements are moderate."
-  - q: 'How does it compare to GPT-5 Mini?'
-    a: 'GPT-5 Mini is cheaper on input ($0.25/M vs $0.40/M) but caps at 400k context. GPT-4.1 Mini extends the window to 1M+ at the cost of slightly higher per-token rates. The deciding factor is almost always context length — pick GPT-5 Mini if your prompt fits, GPT-4.1 Mini otherwise.'
-  - q: 'Is the token count exact?'
-    a: 'Yes. GPT-4.1 Mini shares the o200k_base tokenizer with the rest of the modern OpenAI lineup. We count via the canonical gpt-tokenizer package — exact, no approximation.'
-  - q: 'Should I use Batch API for this model?'
+  - q: "How does it compare to GPT-5 Mini?"
+    a: "GPT-5 Mini is cheaper on input ($0.25/M vs $0.40/M) but caps at 400k context. GPT-4.1 Mini extends the window to 1M+ at the cost of slightly higher per-token rates. The deciding factor is almost always context length — pick GPT-5 Mini if your prompt fits, GPT-4.1 Mini otherwise."
+  - q: "Is the token count exact?"
+    a: "Yes. GPT-4.1 Mini shares the o200k_base tokenizer with the rest of the modern OpenAI lineup. We count via the canonical gpt-tokenizer package — exact, no approximation."
+  - q: "Should I use Batch API for this model?"
     a: 'Yes when feasible. OpenAI''s Batch API discounts most synchronous models 50% for jobs that can wait up to 24 hours. On a long-document workload running through GPT-4.1 Mini in batch mode, the cost lands squarely in "model bill is no longer a real budget conversation" territory.'
-  - q: 'Does my prompt leave the browser?'
-    a: 'No. Tokenization runs entirely in JavaScript on the page (Web Worker for inputs over 50,000 characters). There is no server endpoint that ever receives prompt content.'
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs entirely in JavaScript on the page (Web Worker for inputs over 50,000 characters). There is no server endpoint that ever receives prompt content."
 ---
 
-import { Calculator } from '@/components/Calculator';
-import { ModelPricingTable } from '@/components/ModelPricingTable';
-import { WorkedExamples } from '@/components/WorkedExamples';
-import { SiblingLinks } from '@/components/SiblingLinks';
-import { FaqList } from '@/components/FaqList';
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
 
 # GPT-4.1 Mini token & cost calculator
 

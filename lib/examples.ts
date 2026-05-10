@@ -8,7 +8,7 @@
  */
 
 export interface ExamplePreset {
-  id: 'system' | 'document' | 'code';
+  id: "system" | "document" | "code";
   label: string;
   description: string;
   text: string;
@@ -120,21 +120,21 @@ export class TtlCache<K extends object, V> {
 
 export const EXAMPLE_PRESETS: readonly ExamplePreset[] = [
   {
-    id: 'system',
-    label: 'System prompt',
-    description: 'Agent instructions',
+    id: "system",
+    label: "System prompt",
+    description: "Agent instructions",
     text: SYSTEM_PROMPT,
   },
   {
-    id: 'document',
-    label: 'Document Q&A',
-    description: 'Long-form context',
+    id: "document",
+    label: "Document Q&A",
+    description: "Long-form context",
     text: DOCUMENT_QA,
   },
   {
-    id: 'code',
-    label: 'Code review',
-    description: 'TypeScript file + question',
+    id: "code",
+    label: "Code review",
+    description: "TypeScript file + question",
     text: CODE_REVIEW,
   },
 ] as const;

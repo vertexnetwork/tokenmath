@@ -1,4 +1,4 @@
-import { getModelById, type ModelId } from '@/lib/pricing';
+import { getModelById, type ModelId } from "@/lib/pricing";
 
 export function ModelPricingTable({ modelId }: { modelId: ModelId }) {
   const m = getModelById(modelId);
@@ -21,8 +21,8 @@ export function ModelPricingTable({ modelId }: { modelId: ModelId }) {
             <tr key={idx} className="border-t border-(--border)">
               <td className="px-4 py-2">
                 {tier.upTo === null
-                  ? 'All input'
-                  : `≤ ${tier.upTo.toLocaleString('en-US')} input tokens`}
+                  ? "All input"
+                  : `≤ ${tier.upTo.toLocaleString("en-US")} input tokens`}
               </td>
               <td className="px-4 py-2 text-right tabular-nums">${tier.inputUsdPerM}</td>
               <td className="px-4 py-2 text-right tabular-nums">${tier.outputUsdPerM}</td>
@@ -31,16 +31,16 @@ export function ModelPricingTable({ modelId }: { modelId: ModelId }) {
           <tr className="border-t border-(--border) text-(--text-muted)">
             <td className="px-4 py-2">Context window</td>
             <td className="px-4 py-2 text-right tabular-nums" colSpan={2}>
-              {m.contextWindow.toLocaleString('en-US')} tokens
+              {m.contextWindow.toLocaleString("en-US")} tokens
             </td>
           </tr>
         </tbody>
       </table>
       <p className="border-t border-(--border) bg-(--bg) px-4 py-2 text-xs text-(--text-muted)">
-        Verified against{' '}
+        Verified against{" "}
         <a href={m.source} target="_blank" rel="noopener" className="underline">
           {new URL(m.source).host}
-        </a>{' '}
+        </a>{" "}
         on {m.dataAsOf}.
       </p>
     </div>

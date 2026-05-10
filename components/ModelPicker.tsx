@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { MODELS, type ModelId } from '@/lib/pricing';
+import { MODELS, type ModelId } from "@/lib/pricing";
 
 interface ModelPickerProps {
   value: ModelId;
@@ -47,12 +47,12 @@ function groupByVendor<T extends { vendor: string }>(items: readonly T[]): Recor
 
 function vendorLabel(v: string) {
   switch (v) {
-    case 'anthropic':
-      return 'Anthropic';
-    case 'google':
-      return 'Google';
-    case 'openai':
-      return 'OpenAI';
+    case "anthropic":
+      return "Anthropic";
+    case "google":
+      return "Google";
+    case "openai":
+      return "OpenAI";
     default:
       return v;
   }

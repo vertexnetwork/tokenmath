@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
-import { carbonadsPlacement, carbonadsServeId } from './provider';
-import type { AdSlotPlacement } from './provider';
+import Script from "next/script";
+import { carbonadsPlacement, carbonadsServeId } from "./provider";
+import type { AdSlotPlacement } from "./provider";
 
 /**
  * Carbon Ads embeds a self-contained `<script>` at the placement location and the script

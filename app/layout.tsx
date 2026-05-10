@@ -1,53 +1,57 @@
-import type { Metadata, Viewport } from 'next';
-import { Inter, Geist_Mono, Source_Serif_4 } from 'next/font/google';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { AdsProviderScript } from '@/components/AdsProviderScript';
-import { Analytics } from '@/components/Analytics';
-import { KeyboardHelp } from '@/components/KeyboardHelp';
-import { buildMetadata, organizationJsonLd, renderJsonLd, SITE_URL } from '@/lib/seo';
-import './globals.css';
+import type { Metadata, Viewport } from "next";
+import { Inter, Geist_Mono, Source_Serif_4 } from "next/font/google";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { AdsProviderScript } from "@/components/AdsProviderScript";
+import { Analytics } from "@/components/Analytics";
+import { KeyboardHelp } from "@/components/KeyboardHelp";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import { CookieConsent } from "@/components/consent/CookieConsent";
+import { SiteSchema } from "@/components/seo/SiteSchema";
+import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
+import "./globals.css";
 
 const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  display: 'swap',
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap',
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 // Source Serif 4 is the editorial accent — used for serif emphasis on About / Changelog
 // and a few editorial headings. Loaded with display:swap so it doesn't block FCP.
 const sourceSerif = Source_Serif_4({
-  variable: '--font-source-serif',
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '500', '600'],
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'tokenmath — LLM Token & Cost Calculator',
-    template: '%s | tokenmath',
+    default: `${siteConfig.name} — LLM Token & Cost Calculator`,
+    template: `%s | ${siteConfig.name}`,
   },
+  keywords: [...siteConfig.keywords],
   ...buildMetadata(),
-  // Search-engine verification placeholders — fill in after first deploy.
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: siteConfig.verification.google,
     other: {
-      'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ?? '',
+      "msvalidate.01": siteConfig.verification.bing ?? "",
     },
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0A0A0B',
-  colorScheme: 'dark light',
+  themeColor: siteConfig.theme.colors.bg,
+  colorScheme: "dark light",
 };
 
 // Runs before React hydrates to set html.{dark|light} from localStorage and avoid a flash
@@ -76,16 +80,16 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Header />
-        {children}
-        <Footer />
-        <KeyboardHelp />
-        <AdsProviderScript />
-        <Analytics />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={renderJsonLd(organizationJsonLd())}
-        />
+        <ConsentProvider>
+          <Header />
+          {children}
+          <Footer />
+          <KeyboardHelp />
+          <AdsProviderScript />
+          <Analytics />
+          <CookieConsent />
+        </ConsentProvider>
+        <SiteSchema />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { LiveDotIcon } from './icons';
+import { useEffect, useState } from "react";
+import { LiveDotIcon } from "./icons";
 
 /**
  * Privacy receipts — proof, not claim. Shows live counters of what's leaving the user's
@@ -20,10 +20,10 @@ export function PrivacyReceipts() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const refresh = () => {
-      const cookies = document.cookie ? document.cookie.split(';').filter(Boolean).length : 0;
+      const cookies = document.cookie ? document.cookie.split(";").filter(Boolean).length : 0;
       let storage = 0;
       try {
         storage = window.localStorage.length;
@@ -44,20 +44,20 @@ export function PrivacyReceipts() {
           bumped += list.getEntries().length;
           setCounts((c) => ({ ...c, requests: bumped }));
         });
-        observer.observe({ type: 'resource', buffered: false });
+        observer.observe({ type: "resource", buffered: false });
       } catch {
         observer = null;
       }
     }, 0);
 
     const onStorage = () => refresh();
-    window.addEventListener('storage', onStorage);
+    window.addEventListener("storage", onStorage);
     const interval = window.setInterval(refresh, 1500);
 
     return () => {
       window.clearTimeout(bootHandle);
       observer?.disconnect();
-      window.removeEventListener('storage', onStorage);
+      window.removeEventListener("storage", onStorage);
       window.clearInterval(interval);
     };
   }, []);
@@ -72,12 +72,10 @@ export function PrivacyReceipts() {
         <span className="inline-flex items-center gap-2">
           <LiveDotIcon className="text-(--accent-2)" />
           <span className="font-medium">Verify privacy</span>
-          <span className="text-xs text-(--text-faint)">
-            since this page loaded — updates live
-          </span>
+          <span className="text-xs text-(--text-faint)">since this page loaded — updates live</span>
         </span>
         <span aria-hidden className="text-(--text-faint)">
-          {open ? '−' : '+'}
+          {open ? "−" : "+"}
         </span>
       </summary>
 
@@ -106,8 +104,8 @@ export function PrivacyReceipts() {
         <div className="flex flex-col gap-1">
           <span className="text-eyebrow text-(--text-muted)">Inspect</span>
           <p className="text-xs text-(--text-faint)">
-            Open DevTools → Network. Type into the calculator. No request bodies should
-            contain your prompt text.
+            Open DevTools → Network. Type into the calculator. No request bodies should contain your
+            prompt text.
           </p>
         </div>
       </div>
@@ -124,14 +122,14 @@ function Counter({
   label: string;
   value: string;
   hint: string;
-  tone?: 'positive';
+  tone?: "positive";
 }) {
   return (
     <div className="flex flex-col gap-1">
       <span className="text-eyebrow text-(--text-muted)">{label}</span>
       <span
         className={`result-num text-2xl font-semibold tabular-nums ${
-          tone === 'positive' ? 'text-(--accent-2)' : 'text-(--text)'
+          tone === "positive" ? "text-(--accent-2)" : "text-(--text)"
         }`}
       >
         {value}

@@ -1,6 +1,6 @@
-# tokenmath.dev
+# tokenmath
 
-> Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini, and OpenAI. Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded or logged.
+> Accurate token math for Claude, Gemini, and OpenAI. 100% client-side.
 
 ## Calculators
 
@@ -25,5 +25,8 @@
 ## Reference
 
 - [Privacy policy](https://tokenmath.dev/privacy)
+- [Terms](https://tokenmath.dev/terms)
 - [About](https://tokenmath.dev/about)
+- [Contact](https://tokenmath.dev/contact)
+- [Vertex Network](https://tokenmath.dev/network)
 - [Full reference (machine-readable)](https://tokenmath.dev/llms-full.txt)

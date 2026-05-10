@@ -1,4 +1,4 @@
-import type { ModelId } from '@/lib/pricing';
+import type { ModelId } from "@/lib/pricing";
 
 /**
  * Per-model calibration factor applied to the raw tokenizer count.
@@ -11,14 +11,14 @@ import type { ModelId } from '@/lib/pricing';
  * OpenAI factors should stay 1.0 — anything else means a tokenizer-vs-vocab mismatch.
  */
 export const calibrationFactor: Readonly<Record<ModelId, number>> = Object.freeze({
-  'claude-4-5-sonnet': 1.0,
-  'claude-4-5-haiku': 1.0,
-  'claude-4-7-opus': 1.0,
-  'gemini-2-5-pro': 1.0,
-  'gemini-2-5-flash': 1.0,
-  'gpt-5': 1.0,
-  'gpt-5-mini': 1.0,
-  'gpt-5-nano': 1.0,
-  'gpt-4-1': 1.0,
-  'gpt-4-1-mini': 1.0,
+  "claude-4-5-sonnet": 1.0,
+  "claude-4-5-haiku": 1.0,
+  "claude-4-7-opus": 1.0,
+  "gemini-2-5-pro": 1.0,
+  "gemini-2-5-flash": 1.0,
+  "gpt-5": 1.0,
+  "gpt-5-mini": 1.0,
+  "gpt-5-nano": 1.0,
+  "gpt-4-1": 1.0,
+  "gpt-4-1-mini": 1.0,
 });

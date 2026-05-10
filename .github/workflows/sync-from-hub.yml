@@ -1,0 +1,59 @@
+name: Sync from Vertex hub
+
+# Listens for repository_dispatch events fired by vertex-network-hub's propagate.yml.
+# When the hub publishes a change to network.json / ai-bots.json / ads.txt / app-ads.txt /
+# crawler templates, this workflow pulls the file(s) and opens an auto-merge PR. Spoke CI
+# gates the merge — if the new content breaks the build, the PR stays open.
+
+on:
+  repository_dispatch:
+    types: [hub-sync]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  HUB_RAW: https://raw.githubusercontent.com/ThatMovieGuyOriginal/vertex-network-hub/main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull network.json
+        run: curl -fsSL "$HUB_RAW/config/network.json" -o public/network.json
+
+      - name: Pull ai-bots.json
+        run: curl -fsSL "$HUB_RAW/config/ai-bots.json" -o public/ai-bots.json
+
+      - name: Pull ads.txt
+        run: curl -fsSL "$HUB_RAW/crawler/ads.txt" -o public/ads.txt
+
+      - name: Pull app-ads.txt
+        run: curl -fsSL "$HUB_RAW/crawler/app-ads.txt" -o public/app-ads.txt
+
+      - name: Pull humans.txt
+        run: curl -fsSL "$HUB_RAW/crawler/humans.txt" -o public/humans.txt
+
+      - name: Open PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(hub): sync canonical artifacts from vertex-network-hub"
+          title: "chore(hub): sync from vertex-network-hub"
+          body: |
+            Automated sync of hub-owned artifacts (network.json, ai-bots.json, ads.txt,
+            app-ads.txt, humans.txt). Triggered by `repository_dispatch` from the hub's
+            `propagate.yml`.
+
+            Spoke CI must pass before merge.
+          branch: chore/sync-from-hub
+          delete-branch: true
+          add-paths: |
+            public/network.json
+            public/ai-bots.json
+            public/ads.txt
+            public/app-ads.txt
+            public/humans.txt

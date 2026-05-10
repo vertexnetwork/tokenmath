@@ -1,47 +1,47 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: monday
-      time: '09:00'
-      timezone: 'America/New_York'
+      time: "09:00"
+      timezone: "America/New_York"
     open-pull-requests-limit: 5
     groups:
       next-stack:
         patterns:
-          - 'next'
-          - 'eslint-config-next'
-          - 'react'
-          - 'react-dom'
-          - '@types/react'
-          - '@types/react-dom'
+          - "next"
+          - "eslint-config-next"
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
       tooling:
         patterns:
-          - 'eslint*'
-          - 'prettier*'
-          - 'typescript'
-          - '@types/*'
-          - 'vitest'
-          - '@vitest/*'
-          - '@vitejs/*'
-          - 'jsdom'
+          - "eslint*"
+          - "prettier*"
+          - "typescript"
+          - "@types/*"
+          - "vitest"
+          - "@vitest/*"
+          - "@vitejs/*"
+          - "jsdom"
       tailwind:
         patterns:
-          - 'tailwindcss'
-          - '@tailwindcss/*'
+          - "tailwindcss"
+          - "@tailwindcss/*"
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps)"
       include: scope
 
   - package-ecosystem: github-actions
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: monday
-      time: '09:00'
-      timezone: 'America/New_York'
+      time: "09:00"
+      timezone: "America/New_York"
     commit-message:
-      prefix: 'chore(ci)'
+      prefix: "chore(ci)"
       include: scope

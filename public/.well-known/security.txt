@@ -1,0 +1,8 @@
+# tokenmath.dev — security.txt (RFC 9116)
+# Synced template from vertex-network-hub/crawler/security.txt; site-specific values
+# are populated from siteConfig.security.
+
+Contact: mailto:security@tokenmath.dev
+Expires: 2027-01-01T00:00:00Z
+Preferred-Languages: en
+Canonical: https://tokenmath.dev/.well-known/security.txt

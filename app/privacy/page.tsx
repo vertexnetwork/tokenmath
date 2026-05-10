@@ -1,13 +1,14 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { buildMetadata } from '@/lib/seo';
-import { PRIVACY_UPDATED } from '@/lib/pricing';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
+import { PRIVACY_UPDATED } from "@/lib/pricing";
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Privacy',
+  title: "Privacy",
   description:
-    'How tokenmath handles your data: client-side tokenization, masked analytics, no prompt content ever transmitted off your browser.',
-  path: '/privacy',
+    "How tokenmath handles your data: client-side tokenization, masked analytics, no prompt content ever transmitted off your browser.",
+  path: "/privacy",
 });
 
 export default function PrivacyPage() {
@@ -102,16 +103,16 @@ export default function PrivacyPage() {
         <h2>Verify it for yourself</h2>
 
         <p>
-          The <Link href="/#calculator">Verify privacy panel</Link> on the calculator shows live counters
-          for outgoing requests, cookies, and localStorage keys. Open DevTools → Network and type
-          into the calculator: no request body should ever contain your prompt text.
+          The <Link href="/#calculator">Verify privacy panel</Link> on the calculator shows live
+          counters for outgoing requests, cookies, and localStorage keys. Open DevTools → Network
+          and type into the calculator: no request body should ever contain your prompt text.
         </p>
 
         <h2>Contact</h2>
 
         <p>
-          For privacy questions, email{' '}
-          <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a>.
+          For privacy questions, email{" "}
+          <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.
         </p>
       </article>
     </main>

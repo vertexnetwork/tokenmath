@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   APPROX_DRIFT,
   DEFAULT_MODEL_ID,
@@ -9,8 +9,8 @@ import {
   type ModelId,
   type ModelPricing,
   type Vendor,
-} from '@/lib/pricing';
-import { ArrowRightIcon, CompareIcon, XIcon } from './icons';
+} from "@/lib/pricing";
+import { ArrowRightIcon, CompareIcon, XIcon } from "./icons";
 
 /**
  * Models index in browse mode: sort + vendor filter + multi-select compare. The compare
@@ -18,12 +18,12 @@ import { ArrowRightIcon, CompareIcon, XIcon } from './icons';
  * pricing, context window, drift, and a deep-link into the per-model calculator.
  */
 
-type Sort = 'cost-asc' | 'cost-desc' | 'context-desc' | 'name-asc';
+type Sort = "cost-asc" | "cost-desc" | "context-desc" | "name-asc";
 
 const VENDORS: Array<{ id: Vendor; label: string }> = [
-  { id: 'anthropic', label: 'Anthropic' },
-  { id: 'openai', label: 'OpenAI' },
-  { id: 'google', label: 'Google' },
+  { id: "anthropic", label: "Anthropic" },
+  { id: "openai", label: "OpenAI" },
+  { id: "google", label: "Google" },
 ];
 
 const VENDOR_BLURB: Record<Vendor, string> = {
@@ -33,9 +33,9 @@ const VENDOR_BLURB: Record<Vendor, string> = {
 };
 
 export function ModelsBrowser() {
-  const [sort, setSort] = useState<Sort>('cost-asc');
+  const [sort, setSort] = useState<Sort>("cost-asc");
   const [activeVendors, setActiveVendors] = useState<Set<Vendor>>(
-    () => new Set(['anthropic', 'openai', 'google']),
+    () => new Set(["anthropic", "openai", "google"]),
   );
   const [selected, setSelected] = useState<Set<ModelId>>(new Set());
   const [comparing, setComparing] = useState(false);
@@ -51,7 +51,7 @@ export function ModelsBrowser() {
       if (next.has(v)) next.delete(v);
       else next.add(v);
       // At least one vendor must always be active to keep the page useful.
-      if (next.size === 0) return new Set(['anthropic']);
+      if (next.size === 0) return new Set(["anthropic"]);
       return next;
     });
   };
@@ -82,8 +82,8 @@ export function ModelsBrowser() {
                 aria-pressed={active}
                 className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                   active
-                    ? 'border-(--accent) bg-(--accent)/10 text-(--accent)'
-                    : 'border-(--border) text-(--text-muted) hover:border-(--accent)/60 hover:text-(--text)'
+                    ? "border-(--accent) bg-(--accent)/10 text-(--accent)"
+                    : "border-(--border) text-(--text-muted) hover:border-(--accent)/60 hover:text-(--text)"
                 }`}
               >
                 {v.label}
@@ -135,9 +135,7 @@ export function ModelsBrowser() {
         />
       )}
 
-      {comparing && (
-        <ComparePanel models={selectedModels} onClose={() => setComparing(false)} />
-      )}
+      {comparing && <ComparePanel models={selectedModels} onClose={() => setComparing(false)} />}
     </div>
   );
 }
@@ -183,7 +181,7 @@ function ModelCard({
           <dd className="text-right tabular-nums text-(--text)">${model.outputUsdPerM}/M</dd>
           <dt>Context</dt>
           <dd className="text-right tabular-nums text-(--text)">
-            {model.contextWindow.toLocaleString('en-US')}
+            {model.contextWindow.toLocaleString("en-US")}
           </dd>
           {model.tiers && (
             <>
@@ -212,8 +210,8 @@ function CompareDock({
   return (
     <div className="sticky bottom-4 z-10 mx-auto flex w-full max-w-(--container-app) flex-wrap items-center justify-between gap-3 rounded-xl border border-(--border) bg-(--surface-2)/95 px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)] backdrop-blur">
       <span className="text-sm text-(--text-muted)">
-        <span className="text-(--text)">{selected.length} selected</span> ·{' '}
-        {selected.map((s) => s.label).join(', ')}
+        <span className="text-(--text)">{selected.length} selected</span> ·{" "}
+        {selected.map((s) => s.label).join(", ")}
       </span>
       <div className="flex items-center gap-2">
         <button
@@ -237,13 +235,7 @@ function CompareDock({
   );
 }
 
-function ComparePanel({
-  models,
-  onClose,
-}: {
-  models: ModelPricing[];
-  onClose: () => void;
-}) {
+function ComparePanel({ models, onClose }: { models: ModelPricing[]; onClose: () => void }) {
   return (
     <div
       role="dialog"
@@ -258,8 +250,8 @@ function ComparePanel({
           <div>
             <h2 className="text-display">Comparing {models.length} models</h2>
             <p className="mt-1 text-sm text-(--text-muted)">
-              Pricing snapshot at the model level. For a side-by-side against an actual
-              prompt, paste it into the calculator and toggle compare mode.
+              Pricing snapshot at the model level. For a side-by-side against an actual prompt,
+              paste it into the calculator and toggle compare mode.
             </p>
           </div>
           <button
@@ -298,7 +290,7 @@ function ComparePanel({
                   <td className="py-3 pr-4 text-right tabular-nums">${m.inputUsdPerM}</td>
                   <td className="py-3 pr-4 text-right tabular-nums">${m.outputUsdPerM}</td>
                   <td className="py-3 pr-4 text-right tabular-nums">
-                    {m.contextWindow.toLocaleString('en-US')}
+                    {m.contextWindow.toLocaleString("en-US")}
                   </td>
                   <td className="py-3 text-right text-(--text-faint)">
                     {APPROX_DRIFT[m.vendor].label}
@@ -316,13 +308,13 @@ function ComparePanel({
 function sortModels(list: readonly ModelPricing[], sort: Sort): ModelPricing[] {
   const sorted = [...list];
   switch (sort) {
-    case 'cost-asc':
+    case "cost-asc":
       return sorted.sort((a, b) => a.inputUsdPerM - b.inputUsdPerM);
-    case 'cost-desc':
+    case "cost-desc":
       return sorted.sort((a, b) => b.inputUsdPerM - a.inputUsdPerM);
-    case 'context-desc':
+    case "context-desc":
       return sorted.sort((a, b) => b.contextWindow - a.contextWindow);
-    case 'name-asc':
+    case "name-asc":
       return sorted.sort((a, b) => a.label.localeCompare(b.label));
   }
 }

@@ -9,12 +9,12 @@
  *   stays responsive.
  */
 
-import { MODELS, type ModelId } from '@/lib/pricing';
-import { calibrationFactor } from './calibration';
-import { countClaudeTokens } from './claude';
-import { countGeminiTokens } from './gemini';
-import { countOpenAITokens } from './openai';
-import type { WorkerResponse, TokenizerSource } from './worker';
+import { MODELS, type ModelId } from "@/lib/pricing";
+import { calibrationFactor } from "./calibration";
+import { countClaudeTokens } from "./claude";
+import { countGeminiTokens } from "./gemini";
+import { countOpenAITokens } from "./openai";
+import type { WorkerResponse, TokenizerSource } from "./worker";
 
 const WORKER_THRESHOLD = 50_000;
 
@@ -28,26 +28,26 @@ export interface TokenCount {
   approx: boolean;
 }
 
-type Family = 'claude' | 'gemini' | 'openai';
+type Family = "claude" | "gemini" | "openai";
 
 function familyOf(model: ModelId): Family {
-  if (model.startsWith('claude-')) return 'claude';
-  if (model.startsWith('gemini-')) return 'gemini';
-  return 'openai';
+  if (model.startsWith("claude-")) return "claude";
+  if (model.startsWith("gemini-")) return "gemini";
+  return "openai";
 }
 
 function isApprox(model: ModelId): boolean {
-  return familyOf(model) !== 'openai';
+  return familyOf(model) !== "openai";
 }
 
 function sourceFor(model: ModelId): TokenizerSource {
   switch (familyOf(model)) {
-    case 'claude':
-      return 'gpt-tokenizer-cl100k';
-    case 'openai':
-      return 'gpt-tokenizer-o200k';
-    case 'gemini':
-      return 'gemini-approx';
+    case "claude":
+      return "gpt-tokenizer-cl100k";
+    case "openai":
+      return "gpt-tokenizer-o200k";
+    case "gemini":
+      return "gemini-approx";
   }
 }
 
@@ -56,7 +56,7 @@ export async function countTokens(model: ModelId, text: string): Promise<TokenCo
     return { tokens: 0, ms: 0, source: sourceFor(model), approx: isApprox(model) };
   }
 
-  if (text.length > WORKER_THRESHOLD && typeof Worker !== 'undefined') {
+  if (text.length > WORKER_THRESHOLD && typeof Worker !== "undefined") {
     return countInWorker(model, text);
   }
 
@@ -67,9 +67,9 @@ async function countInThread(model: ModelId, text: string): Promise<TokenCount> 
   const started = performance.now();
   const family = familyOf(model);
   let raw: number;
-  if (family === 'claude') {
+  if (family === "claude") {
     raw = await countClaudeTokens(text);
-  } else if (family === 'openai') {
+  } else if (family === "openai") {
     raw = await countOpenAITokens(text);
   } else {
     raw = await countGeminiTokens(text);
@@ -95,8 +95,8 @@ const pending = new Map<number, (r: WorkerResponse) => void>();
 
 function getWorker(): Worker {
   if (workerSingleton) return workerSingleton;
-  workerSingleton = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
-  workerSingleton.addEventListener('message', (event: MessageEvent<WorkerResponse>) => {
+  workerSingleton = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
+  workerSingleton.addEventListener("message", (event: MessageEvent<WorkerResponse>) => {
     const resolve = pending.get(event.data.id);
     if (resolve) {
       pending.delete(event.data.id);
@@ -140,7 +140,7 @@ export async function countAllModels(text: string): Promise<Map<ModelId, number>
   ]);
   for (const m of MODELS) {
     const family = familyOf(m.id);
-    const raw = family === 'claude' ? claudeRaw : family === 'openai' ? openaiRaw : geminiRaw;
+    const raw = family === "claude" ? claudeRaw : family === "openai" ? openaiRaw : geminiRaw;
     result.set(m.id, applyCalibration(m.id, raw));
   }
   return result;

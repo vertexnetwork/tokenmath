@@ -1,31 +1,32 @@
-import type { Metadata } from 'next';
-import { AffiliateSlot } from '@/components/AffiliateSlot';
-import { buildMetadata } from '@/lib/seo';
-import { MODELS, latestDataAsOf, type Vendor } from '@/lib/pricing';
-import { ExternalLinkIcon } from '@/components/icons';
+import type { Metadata } from "next";
+import { AffiliateSlot } from "@/components/AffiliateSlot";
+import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
+import { MODELS, latestDataAsOf, type Vendor } from "@/lib/pricing";
+import { ExternalLinkIcon } from "@/components/icons";
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Pricing data',
+  title: "Pricing data",
   description:
-    'Where tokenmath sources its pricing data, with direct links to each vendor’s pricing page and the date each entry was last verified.',
-  path: '/pricing-data',
+    "Where tokenmath sources its pricing data, with direct links to each vendor’s pricing page and the date each entry was last verified.",
+  path: "/pricing-data",
 });
 
 const VENDOR_INFO: Record<Vendor, { name: string; pricingUrl: string; note: string }> = {
   anthropic: {
-    name: 'Anthropic',
-    pricingUrl: 'https://www.anthropic.com/pricing',
-    note: 'Per-million pricing for Claude models, plus prompt-caching discount tiers.',
+    name: "Anthropic",
+    pricingUrl: "https://www.anthropic.com/pricing",
+    note: "Per-million pricing for Claude models, plus prompt-caching discount tiers.",
   },
   google: {
-    name: 'Google',
-    pricingUrl: 'https://ai.google.dev/pricing',
-    note: 'Gemini API pricing — note the tiered rate above 200,000 input tokens for Pro.',
+    name: "Google",
+    pricingUrl: "https://ai.google.dev/pricing",
+    note: "Gemini API pricing — note the tiered rate above 200,000 input tokens for Pro.",
   },
   openai: {
-    name: 'OpenAI',
-    pricingUrl: 'https://openai.com/api/pricing/',
-    note: 'GPT-5 / GPT-4.1 / o-series pricing, plus cached-input discount rates.',
+    name: "OpenAI",
+    pricingUrl: "https://openai.com/api/pricing/",
+    note: "GPT-5 / GPT-4.1 / o-series pricing, plus cached-input discount rates.",
   },
 };
 
@@ -43,8 +44,8 @@ export default function PricingDataPage() {
         <h1 className="text-display-lg">Every rate, dated and sourced.</h1>
         <p className="max-w-prose text-base text-(--text-muted) sm:text-lg">
           Every price in tokenmath comes from the vendor&apos;s own public pricing page — links
-          below. Each entry is stamped with the date we last reconciled it against the source.
-          Most recent verification across all entries:{' '}
+          below. Each entry is stamped with the date we last reconciled it against the source. Most
+          recent verification across all entries:{" "}
           <span className="text-(--text)">{latestDataAsOf()}</span>.
         </p>
       </header>
@@ -90,9 +91,7 @@ export default function PricingDataPage() {
                 <th className="px-4 py-2.5 text-right text-eyebrow">Input $/M</th>
                 <th className="px-4 py-2.5 text-right text-eyebrow">Output $/M</th>
                 <th className="px-4 py-2.5 text-right text-eyebrow">Context</th>
-                <th className="whitespace-nowrap px-4 py-2.5 text-right text-eyebrow">
-                  Verified
-                </th>
+                <th className="whitespace-nowrap px-4 py-2.5 text-right text-eyebrow">Verified</th>
                 <th className="px-4 py-2.5 text-right text-eyebrow">Source</th>
               </tr>
             </thead>
@@ -103,7 +102,7 @@ export default function PricingDataPage() {
                   <td className="px-4 py-3 text-right tabular-nums">${m.inputUsdPerM}</td>
                   <td className="px-4 py-3 text-right tabular-nums">${m.outputUsdPerM}</td>
                   <td className="px-4 py-3 text-right tabular-nums">
-                    {m.contextWindow.toLocaleString('en-US')}
+                    {m.contextWindow.toLocaleString("en-US")}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums text-(--text-muted)">
                     {m.dataAsOf}
@@ -129,19 +128,19 @@ export default function PricingDataPage() {
       <section className="flex flex-col gap-3">
         <h2 className="text-display">Tiered pricing</h2>
         <p className="text-sm text-(--text-muted)">
-          A few models charge different rates above a context threshold. The calculator applies
-          the right tier automatically based on input size; the breakdown is here for reference.
+          A few models charge different rates above a context threshold. The calculator applies the
+          right tier automatically based on input size; the breakdown is here for reference.
         </p>
         <ul className="flex flex-col gap-2 rounded-xl border border-(--border) bg-(--surface) p-4 text-sm">
           {MODELS.filter((m) => m.tiers && m.tiers.length > 0).map((m) => (
             <li key={m.id} className="text-(--text-muted)">
-              <strong className="text-(--text)">{m.label}</strong>:{' '}
+              <strong className="text-(--text)">{m.label}</strong>:{" "}
               {m.tiers
                 ?.map(
                   (t) =>
-                    `${t.upTo === null ? 'above the threshold' : `≤ ${t.upTo.toLocaleString('en-US')} input tokens`}: $${t.inputUsdPerM} input / $${t.outputUsdPerM} output per 1M`,
+                    `${t.upTo === null ? "above the threshold" : `≤ ${t.upTo.toLocaleString("en-US")} input tokens`}: $${t.inputUsdPerM} input / $${t.outputUsdPerM} output per 1M`,
                 )
-                .join('; ')}
+                .join("; ")}
               .
             </li>
           ))}
@@ -151,12 +150,16 @@ export default function PricingDataPage() {
       <section className="flex flex-col gap-3">
         <h2 className="text-display">Reporting an outdated price</h2>
         <p className="text-sm text-(--text-muted)">
-          If you spot a stale rate, email{' '}
-          <a href="mailto:hello@tokenmath.dev" className="text-(--accent) hover:underline">
-            hello@tokenmath.dev
-          </a>{' '}
-          with the corrected number and a link to the vendor&apos;s pricing page. We typically
-          ship a fix within a day — see the <a href="/changelog" className="text-(--accent) hover:underline">changelog</a>.
+          If you spot a stale rate, email{" "}
+          <a href={`mailto:${siteConfig.supportEmail}`} className="text-(--accent) hover:underline">
+            {siteConfig.supportEmail}
+          </a>{" "}
+          with the corrected number and a link to the vendor&apos;s pricing page. We typically ship
+          a fix within a day — see the{" "}
+          <a href="/changelog" className="text-(--accent) hover:underline">
+            changelog
+          </a>
+          .
         </p>
       </section>
 

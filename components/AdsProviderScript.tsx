@@ -1,7 +1,7 @@
-import { AdSenseScript } from '@/lib/ads/adsense';
-import { CarbonScript } from '@/lib/ads/carbon';
-import { MediaVineScript } from '@/lib/ads/mediavine';
-import { adProvider } from '@/lib/ads/provider';
+import { AdSenseScript } from "@/lib/ads/adsense";
+import { CarbonScript } from "@/lib/ads/carbon";
+import { MediaVineScript } from "@/lib/ads/mediavine";
+import { adProvider } from "@/lib/ads/provider";
 
 /**
  * Loaded once in app/layout.tsx. The actual `<script>` tag is provider-specific and only
@@ -11,8 +11,8 @@ import { adProvider } from '@/lib/ads/provider';
  * CarbonScript() returns null intentionally.
  */
 export function AdsProviderScript() {
-  if (adProvider === 'adsense') return <AdSenseScript />;
-  if (adProvider === 'mediavine') return <MediaVineScript />;
-  if (adProvider === 'carbon') return <CarbonScript />;
+  if (adProvider === "adsense") return <AdSenseScript />;
+  if (adProvider === "mediavine") return <MediaVineScript />;
+  if (adProvider === "carbon") return <CarbonScript />;
   return null;
 }

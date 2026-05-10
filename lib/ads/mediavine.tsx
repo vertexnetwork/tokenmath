@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
-import { mediavineSiteId } from './provider';
+import Script from "next/script";
+import { mediavineSiteId } from "./provider";
 
 /**
  * MediaVine auto-injects ads into pages once their wrapper script loads — there are no

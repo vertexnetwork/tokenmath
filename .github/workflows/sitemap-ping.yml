@@ -1,0 +1,30 @@
+name: Sitemap ping
+
+# After every push to main, ping IndexNow + Bing so search engines re-crawl the sitemap
+# without waiting for their normal cadence. Both APIs are POST-only and idempotent.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/sitemap.ts"
+      - "lib/pricing.ts"
+      - "content/**"
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Bing IndexNow
+        run: |
+          curl -fsS -X POST "https://www.bing.com/indexnow" \
+            -H "Content-Type: application/json" \
+            -d '{"host":"tokenmath.dev","key":"${{ secrets.INDEXNOW_KEY }}","keyLocation":"https://tokenmath.dev/${{ secrets.INDEXNOW_KEY }}.txt","urlList":["https://tokenmath.dev/sitemap.xml"]}' \
+            || true
+
+      - name: Ping Google (sitemap re-fetch)
+        run: |
+          curl -fsS "https://www.google.com/ping?sitemap=https://tokenmath.dev/sitemap.xml" || true

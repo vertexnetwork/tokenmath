@@ -1,4 +1,4 @@
-import { costUsd, getModelById, type ModelId } from '@/lib/pricing';
+import { costUsd, getModelById, type ModelId } from "@/lib/pricing";
 
 interface Scenario {
   label: string;
@@ -9,22 +9,22 @@ interface Scenario {
 
 const DEFAULT_SCENARIOS: Scenario[] = [
   {
-    label: 'Short chat turn',
+    label: "Short chat turn",
     inputTokens: 800,
     outputTokens: 400,
-    description: 'A typical Q&A turn with a small system prompt.',
+    description: "A typical Q&A turn with a small system prompt.",
   },
   {
-    label: 'System prompt + tool spec',
+    label: "System prompt + tool spec",
     inputTokens: 5000,
     outputTokens: 500,
-    description: 'A larger context window with a tool schema, single response.',
+    description: "A larger context window with a tool schema, single response.",
   },
   {
-    label: 'Long document Q&A',
+    label: "Long document Q&A",
     inputTokens: 50_000,
     outputTokens: 1500,
-    description: 'A long-form input (e.g. transcript) with a structured response.',
+    description: "A long-form input (e.g. transcript) with a structured response.",
   },
 ];
 
@@ -56,10 +56,10 @@ export function WorkedExamples({ modelId, scenarios = DEFAULT_SCENARIOS }: Worke
                   <div className="text-xs text-(--text-muted)">{s.description}</div>
                 </td>
                 <td className="px-4 py-3 text-right tabular-nums">
-                  {s.inputTokens.toLocaleString('en-US')}
+                  {s.inputTokens.toLocaleString("en-US")}
                 </td>
                 <td className="px-4 py-3 text-right tabular-nums">
-                  {s.outputTokens.toLocaleString('en-US')}
+                  {s.outputTokens.toLocaleString("en-US")}
                 </td>
                 <td className="px-4 py-3 text-right tabular-nums text-(--accent)">
                   {formatUsd(cost.totalUsd)}
@@ -74,12 +74,12 @@ export function WorkedExamples({ modelId, scenarios = DEFAULT_SCENARIOS }: Worke
 }
 
 function formatUsd(n: number) {
-  if (n === 0) return '$0.00';
-  if (n < 0.01) return '<$0.01';
+  if (n === 0) return "$0.00";
+  if (n < 0.01) return "<$0.01";
   if (n < 1) return `$${n.toFixed(3)}`;
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     maximumFractionDigits: 2,
   }).format(n);
 }

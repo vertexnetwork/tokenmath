@@ -16,17 +16,17 @@
  * detected" exits 0 with a clean log so the workflow can decide whether to open a PR.
  */
 
-import { readFile, writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-import { MODELS, type ModelPricing } from '../lib/pricing';
+import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+import { MODELS, type ModelPricing } from "../lib/pricing";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(here, '..');
-const PRICING_FILE = resolve(ROOT, 'lib/pricing.ts');
+const ROOT = resolve(here, "..");
+const PRICING_FILE = resolve(ROOT, "lib/pricing.ts");
 
-const MODEL = 'claude-haiku-4-5';
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+const MODEL = "claude-haiku-4-5";
+const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const HTML_BUDGET_CHARS = 50_000;
 const SANITY_MIN_RATIO = 0.1;
 const SANITY_MAX_RATIO = 10;
@@ -39,7 +39,7 @@ interface ExtractedPricing {
 
 interface RefreshResult {
   model: ModelPricing;
-  status: 'unchanged' | 'updated' | 'rejected' | 'error';
+  status: "unchanged" | "updated" | "rejected" | "error";
   changes?: Array<{ field: string; old: number; new: number }>;
   reason?: string;
 }
@@ -50,19 +50,19 @@ function todayIso(): string {
 
 function stripNoise(html: string): string {
   return html
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
-    .replace(/\son[a-z]+="[^"]*"/gi, '')
-    .replace(/\s{2,}/g, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, "")
+    .replace(/\son[a-z]+="[^"]*"/gi, "")
+    .replace(/\s{2,}/g, " ")
     .trim();
 }
 
 async function fetchPage(url: string): Promise<string> {
   const res = await fetch(url, {
     headers: {
-      'User-Agent': 'tokenmath-pricing-refresh/1.0 (+https://tokenmath.dev)',
-      Accept: 'text/html,application/xhtml+xml',
+      "User-Agent": "tokenmath-pricing-refresh/1.0 (+https://tokenmath.dev)",
+      Accept: "text/html,application/xhtml+xml",
     },
   });
   if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
@@ -71,7 +71,7 @@ async function fetchPage(url: string): Promise<string> {
 
 async function extractPricing(model: ModelPricing, html: string): Promise<ExtractedPricing> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY is not set');
+  if (!apiKey) throw new Error("ANTHROPIC_API_KEY is not set");
 
   const trimmed = stripNoise(html).slice(0, HTML_BUDGET_CHARS);
 
@@ -98,31 +98,31 @@ Rules:
 - No prose, no markdown, no code fences — just the JSON object.`;
 
   const res = await fetch(ANTHROPIC_API_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 200,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: "user", content: prompt }],
     }),
   });
   if (!res.ok) {
-    const body = await res.text().catch(() => '');
+    const body = await res.text().catch(() => "");
     throw new Error(`Anthropic API ${res.status}: ${body.slice(0, 500)}`);
   }
   const data = (await res.json()) as { content?: Array<{ type: string; text?: string }> };
-  const text = data.content?.find((b) => b.type === 'text')?.text ?? '';
+  const text = data.content?.find((b) => b.type === "text")?.text ?? "";
   const match = text.match(/\{[\s\S]*\}/);
   if (!match) throw new Error(`No JSON object in response: ${text.slice(0, 200)}`);
   const parsed = JSON.parse(match[0]) as ExtractedPricing;
   if (
-    typeof parsed.inputUsdPerM !== 'number' ||
-    typeof parsed.outputUsdPerM !== 'number' ||
-    typeof parsed.contextWindow !== 'number'
+    typeof parsed.inputUsdPerM !== "number" ||
+    typeof parsed.outputUsdPerM !== "number" ||
+    typeof parsed.contextWindow !== "number"
   ) {
     throw new Error(`Malformed JSON shape: ${JSON.stringify(parsed)}`);
   }
@@ -149,13 +149,13 @@ function updatePricingFile(
 
   // Walk back to the opening `{` of this object literal.
   let openIdx = startIdx;
-  while (openIdx > 0 && source[openIdx] !== '{') openIdx--;
+  while (openIdx > 0 && source[openIdx] !== "{") openIdx--;
   // Walk forward to the matching `}`.
   let depth = 1;
   let closeIdx = openIdx + 1;
   while (closeIdx < source.length && depth > 0) {
-    if (source[closeIdx] === '{') depth++;
-    else if (source[closeIdx] === '}') depth--;
+    if (source[closeIdx] === "{") depth++;
+    else if (source[closeIdx] === "}") depth--;
     if (depth === 0) break;
     closeIdx++;
   }
@@ -169,7 +169,7 @@ function updatePricingFile(
     block = block.replace(/(dataAsOf:\s*')[^']+(')/, `$1${todayIso()}$2`);
   }
   // lastVerified is added if missing, otherwise updated.
-  if (block.includes('lastVerified:')) {
+  if (block.includes("lastVerified:")) {
     block = block.replace(/(lastVerified:\s*')[^']+(')/, `$1${todayIso()}$2`);
   } else {
     // Insert before the closing `}` on the last line.
@@ -180,7 +180,7 @@ function updatePricingFile(
 
 async function main(): Promise<void> {
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY is required.');
+    console.error("ANTHROPIC_API_KEY is required.");
     process.exit(1);
   }
 
@@ -191,7 +191,7 @@ async function main(): Promise<void> {
     return pageCache.get(url)!;
   };
 
-  let pricingSrc = await readFile(PRICING_FILE, 'utf8');
+  let pricingSrc = await readFile(PRICING_FILE, "utf8");
   const results: RefreshResult[] = [];
 
   for (const model of MODELS) {
@@ -200,9 +200,9 @@ async function main(): Promise<void> {
       const extracted = await extractPricing(model, html);
 
       const candidates: Array<{ field: keyof ExtractedPricing; old: number; new: number }> = [
-        { field: 'inputUsdPerM', old: model.inputUsdPerM, new: extracted.inputUsdPerM },
-        { field: 'outputUsdPerM', old: model.outputUsdPerM, new: extracted.outputUsdPerM },
-        { field: 'contextWindow', old: model.contextWindow, new: extracted.contextWindow },
+        { field: "inputUsdPerM", old: model.inputUsdPerM, new: extracted.inputUsdPerM },
+        { field: "outputUsdPerM", old: model.outputUsdPerM, new: extracted.outputUsdPerM },
+        { field: "contextWindow", old: model.contextWindow, new: extracted.contextWindow },
       ];
 
       const accepted: typeof candidates = [];
@@ -217,7 +217,7 @@ async function main(): Promise<void> {
         console.warn(
           `! ${model.id}: rejected out-of-bounds candidate(s): ${rejected
             .map((r) => `${r.field} ${r.old}→${r.new}`)
-            .join(', ')}`,
+            .join(", ")}`,
         );
       }
 
@@ -225,33 +225,33 @@ async function main(): Promise<void> {
         // Bump lastVerified anyway, but only when we got a clean response (otherwise the
         // earlier throw would have caught us).
         pricingSrc = updatePricingFile(pricingSrc, model, [], false);
-        results.push({ model, status: 'unchanged' });
+        results.push({ model, status: "unchanged" });
         console.log(`  ${model.id}: unchanged (verified)`);
         continue;
       }
 
       pricingSrc = updatePricingFile(pricingSrc, model, accepted, true);
-      results.push({ model, status: 'updated', changes: accepted });
+      results.push({ model, status: "updated", changes: accepted });
       console.log(
-        `✓ ${model.id}: updated → ${accepted.map((c) => `${c.field} ${c.old}→${c.new}`).join(', ')}`,
+        `✓ ${model.id}: updated → ${accepted.map((c) => `${c.field} ${c.old}→${c.new}`).join(", ")}`,
       );
     } catch (err) {
       const reason = err instanceof Error ? err.message : String(err);
-      results.push({ model, status: 'error', reason });
+      results.push({ model, status: "error", reason });
       console.error(`✗ ${model.id}: ${reason}`);
     }
   }
 
-  await writeFile(PRICING_FILE, pricingSrc, 'utf8');
+  await writeFile(PRICING_FILE, pricingSrc, "utf8");
 
   // Summary table for the GitHub Actions log.
-  const updated = results.filter((r) => r.status === 'updated').length;
-  const unchanged = results.filter((r) => r.status === 'unchanged').length;
-  const errored = results.filter((r) => r.status === 'error').length;
-  console.log('---');
+  const updated = results.filter((r) => r.status === "updated").length;
+  const unchanged = results.filter((r) => r.status === "unchanged").length;
+  const errored = results.filter((r) => r.status === "error").length;
+  console.log("---");
   console.log(`Updated: ${updated} · Unchanged: ${unchanged} · Errored: ${errored}`);
   if (errored > 0) {
-    console.log('Errors are non-fatal; the workflow continues so partial updates can land.');
+    console.log("Errors are non-fatal; the workflow continues so partial updates can land.");
   }
 }
 

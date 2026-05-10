@@ -14,10 +14,10 @@ export function ContextMeter({
   const pct = Math.min(100, Math.round(ratio * 100));
   const tone =
     ratio >= 1
-      ? { bar: 'bg-amber-400', text: 'text-amber-300', label: 'Over' }
+      ? { bar: "bg-amber-400", text: "text-amber-300", label: "Over" }
       : ratio >= 0.75
-        ? { bar: 'bg-amber-400/70', text: 'text-amber-300/90', label: 'Near limit' }
-        : { bar: 'bg-(--accent)/70', text: 'text-(--text-faint)', label: '' };
+        ? { bar: "bg-amber-400/70", text: "text-amber-300/90", label: "Near limit" }
+        : { bar: "bg-(--accent)/70", text: "text-(--text-faint)", label: "" };
 
   return (
     <div className="flex flex-col gap-2">

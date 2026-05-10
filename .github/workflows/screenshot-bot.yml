@@ -1,0 +1,65 @@
+name: Screenshot bot
+
+# On every push to main, capture a homepage screenshot at 1280×800 and PR it into the hub
+# repo at screenshots/{domain}.png. The hub's /network page uses these as preview tiles.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/page.tsx"
+      - "app/globals.css"
+      - "components/**"
+
+permissions:
+  contents: read
+
+env:
+  HUB_REPO: ThatMovieGuyOriginal/vertex-network-hub
+  DOMAIN: tokenmath.dev
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build + start
+        run: |
+          pnpm build
+          pnpm start &
+          npx wait-on http://localhost:3000
+
+      - name: Capture screenshot
+        run: |
+          mkdir -p out
+          npx -y playwright-cli screenshot \
+            --viewport-size=1280,800 \
+            http://localhost:3000 out/${DOMAIN}.png
+
+      - name: Push to hub
+        env:
+          GH_TOKEN: ${{ secrets.HUB_PUSH_TOKEN }}
+        run: |
+          git clone https://x-access-token:${GH_TOKEN}@github.com/${HUB_REPO}.git hub
+          mkdir -p hub/screenshots
+          cp out/${DOMAIN}.png hub/screenshots/${DOMAIN}.png
+          cd hub
+          git config user.name "vertex-screenshot-bot"
+          git config user.email "bot@vertex.local"
+          git add screenshots/${DOMAIN}.png
+          git diff --cached --quiet || git commit -m "chore(screenshots): refresh ${DOMAIN}"
+          git push || true

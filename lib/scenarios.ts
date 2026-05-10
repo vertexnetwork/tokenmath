@@ -6,9 +6,9 @@
  * carries a `v` field; readers ignore entries with an unknown version.
  */
 
-import type { ModelId } from './pricing';
+import type { ModelId } from "./pricing";
 
-const STORAGE_KEY = 'tokenmath:scenarios:v1';
+const STORAGE_KEY = "tokenmath:scenarios:v1";
 const MAX_SCENARIOS = 10;
 const SCHEMA_VERSION = 1;
 
@@ -23,7 +23,7 @@ export interface SavedScenario {
 }
 
 export function listScenarios(): SavedScenario[] {
-  if (typeof window === 'undefined') return [];
+  if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
@@ -41,12 +41,12 @@ export function saveScenario(input: {
   text: string;
   outputTokens: number;
 }): SavedScenario | null {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   if (input.text.length === 0) return null;
   const scenario: SavedScenario = {
     v: SCHEMA_VERSION,
     id: cryptoRandomId(),
-    name: input.name.trim() || 'Untitled scenario',
+    name: input.name.trim() || "Untitled scenario",
     modelId: input.modelId,
     text: input.text,
     outputTokens: input.outputTokens,
@@ -65,7 +65,7 @@ export function saveScenario(input: {
 }
 
 export function deleteScenario(id: string): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
     const next = listScenarios().filter((s) => s.id !== id);
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
@@ -75,7 +75,7 @@ export function deleteScenario(id: string): void {
 }
 
 export function clearAllScenarios(): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
     window.localStorage.removeItem(STORAGE_KEY);
   } catch {
@@ -84,21 +84,21 @@ export function clearAllScenarios(): void {
 }
 
 function isValid(x: unknown): x is SavedScenario {
-  if (!x || typeof x !== 'object') return false;
+  if (!x || typeof x !== "object") return false;
   const s = x as Record<string, unknown>;
   return (
     s.v === SCHEMA_VERSION &&
-    typeof s.id === 'string' &&
-    typeof s.name === 'string' &&
-    typeof s.modelId === 'string' &&
-    typeof s.text === 'string' &&
-    typeof s.outputTokens === 'number' &&
-    typeof s.savedAt === 'number'
+    typeof s.id === "string" &&
+    typeof s.name === "string" &&
+    typeof s.modelId === "string" &&
+    typeof s.text === "string" &&
+    typeof s.outputTokens === "number" &&
+    typeof s.savedAt === "number"
   );
 }
 
 function cryptoRandomId(): string {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
   }
   return `s-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
