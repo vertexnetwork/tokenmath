@@ -47,17 +47,18 @@ html.dark {
 /*
  * Tailwind Typography (`prose`) palette overrides.
  *
- * The plugin sets its `--tw-prose-*` defaults ON the `.prose` element itself, so binding
- * them at `:root` doesn't win on specificity (the headings revert to the plugin's
- * light-mode default `#111827`, which renders as near-invisible on our warm-dark bg —
- * exactly the bug that produced the "weirdly dim section headings" on /about). Setting
- * them on `.prose` directly takes precedence and adapts cleanly to both themes.
+ * The plugin sets its `--tw-prose-*` defaults ON the `.prose` element itself
+ * (`.prose { --tw-prose-headings: #111827; ... }`), so binding the same vars at `:root`
+ * doesn't win — the plugin's rule lives on a more specific element. We have to bind on
+ * `.prose` too. Using `html .prose` lifts our specificity to (0,1,1) so we beat the
+ * plugin's (0,1,0) regardless of source order or layer arrangement; the previous
+ * `:where(.prose)` pattern was zero-specificity and lost the cascade outright (which
+ * showed up as nearly-invisible section headings on /about and /privacy).
  *
  * We bind both the regular and the invert palettes to the same theme tokens so `prose`
- * works whether or not `prose-invert` is applied. `:where(...)` keeps specificity at 0,0,0
- * so consumers can still override per-element with utilities like `prose-headings:text-...`.
+ * works whether or not `prose-invert` is applied.
  */
-:where(.prose) {
+html .prose {
   --tw-prose-body: var(--text-muted);
   --tw-prose-headings: var(--text);
   --tw-prose-lead: var(--text-muted);

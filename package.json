@@ -8,7 +8,7 @@
   "packageManager": "pnpm@11.0.9",
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/build-llms-full.ts",
+    "prebuild": "tsx scripts/build-changelog.ts && tsx scripts/build-llms-full.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

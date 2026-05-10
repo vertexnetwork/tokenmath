@@ -42,13 +42,11 @@ function buildPricingTable(): string {
 }
 
 function buildChangelog(): string {
+  if (CHANGELOG.length === 0) return '_No entries yet._';
   return CHANGELOG.map((entry) => {
-    const lines = [`### ${entry.date} — ${entry.title}`];
-    if (entry.summary) lines.push('', entry.summary);
-    lines.push('');
-    for (const c of entry.changes) lines.push(`- ${c}`);
-    return lines.join('\n');
-  }).join('\n\n');
+    const scope = entry.scope ? ` [${entry.scope}]` : '';
+    return `- ${entry.date}  ${entry.type}${scope}  ${entry.title}`;
+  }).join('\n');
 }
 
 function buildContent(): string {

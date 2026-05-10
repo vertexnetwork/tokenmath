@@ -73,39 +73,32 @@ Notes
 
 ## Changelog
 
-### 2026-05-09 — Editorial redesign
-
-A visual overhaul plus compare mode, saved scenarios, and live privacy receipts — the redesign moves the calculator from a serviceable utility to something that looks and behaves like a deliberate piece of dev infrastructure.
-
-- Redesigned every surface in an Editorial Quiet style: layered warm-dark, hero total in parchment gold (mono, tabular), Source Serif 4 accent on editorial pages.
-- Compare mode — toggle on the home calculator to see your prompt scored against all 10 models in a single sortable table.
-- Saved scenarios — keep up to 10 prompt + model + response-length combinations on this browser. Stored only in localStorage; nothing is uploaded.
-- Privacy receipts panel — live counters of outgoing requests, cookies, and localStorage keys so the privacy contract is verifiable by inspection.
-- Cost-split bar and context-window meter inline on the result card.
-- Mobile sticky total bar that surfaces the answer when the result card scrolls out of view.
-- Models index: vendor filters, sort by cost or context window, multi-select for side-by-side comparison.
-- Keyboard shortcuts — press ? for the full list. Includes Linear-style g-then-letter navigation.
-- New wordmark, monogram favicon, and per-model OG cards rebuilt to match.
-- Calibrated empty-state example chips so first-time visitors see a real result in one click.
-
-### 2026-05-08 — OpenAI added; brand renamed to tokenmath
-
-GPT-5 and GPT-4.1 families now use exact tokenization; the rest stay approximate. Project renamed from tokencount to tokenmath.
-
-- Added GPT-5, GPT-5 Mini, GPT-5 Nano, GPT-4.1, and GPT-4.1 Mini with exact o200k_base tokenization.
-- Brand and domain renamed: tokenmath / tokenmath.dev.
-- Pricing data verified against Anthropic, Google, and OpenAI public pricing pages on 2026-05-09.
-- pSEO routes regenerated with refreshed worked examples per family.
-
-### 2026-05-01 — Initial release
-
-Client-side LLM token counter for Anthropic Claude and Google Gemini. Tokenization in JavaScript on the user’s browser; nothing about the prompt leaves the device.
-
-- Claude 4.5 Sonnet, Claude 4.5 Haiku, Claude 4.7 Opus, Gemini 2.5 Pro, and Gemini 2.5 Flash supported with cl100k_base / o200k_base approximations.
-- Tiered pricing modeled correctly (Gemini 2.5 Pro doubles input + output above 200k input tokens).
-- Web Worker tokenization for inputs longer than 50,000 characters so the page stays responsive.
-- WebApplication, SoftwareApplication, FAQPage, BreadcrumbList, and Organization JSON-LD on the relevant routes.
-- Programmatic SEO under /token-calculator/[model] with worked examples and per-model FAQ.
+- 2026-05-10  fix [ui]  Prose heading color + drop Changelog from header + footer columns
+- 2026-05-09  feat  Editorial redesign + compare mode + saved scenarios + privacy receipts
+- 2026-05-09  fix [domain]  Remove next.config www→apex redirect to break Vercel loop
+- 2026-05-09  feat  Rebrand to tokenmath.dev + monetization pivot + pricing auto-refresh
+- 2026-05-09  fix [theme]  Dark is the brand default — ignore system prefers-color-scheme
+- 2026-05-09  fix [ui]  Tighten calculator controls row
+- 2026-05-09  fix [ux]  UX forensic audit — 18 findings across calculator, a11y, copy
+- 2026-05-09  fix [pricing-data]  Keep Verified date on one line (whitespace-nowrap)
+- 2026-05-09  feat  Round 2 — drop GitHub/socials, add OpenAI, accurate Vertex copy
+- 2026-05-09  feat [content]  About, privacy, pricing-data pages
+- 2026-05-09  feat [security]  CSP + security headers in next.config.ts
+- 2026-05-09  feat [analytics]  Microsoft Clarity with prompt + cost masking
+- 2026-05-09  feat [analytics]  Vercel Analytics + Speed Insights, custom events
+- 2026-05-09  feat  Public/ads.txt + app-ads.txt placeholders
+- 2026-05-09  feat [ads]  Provider switch (none/adsense/mediavine) + AdSlot component
+- 2026-05-09  feat [seo]  Per-page Breadcrumb + FAQPage + SoftwareApplication JSON-LD
+- 2026-05-09  feat [content]  MDX pipeline + 5 model pages under /token-calculator/[model]
+- 2026-05-09  feat [seo]  Public/llms.txt static + scripts/build-llms-full.ts wired to prebuild
+- 2026-05-09  feat [seo]  App/sitemap.ts, app/robots.ts, manifest.ts, custom favicon set
+- 2026-05-09  feat [seo]  Metadata, OG default, JSON-LD helpers (WebApp + Organization)
+- 2026-05-09  feat [ui]  Calculator + ModelPicker + ResultCard wired to tokenizer
+- 2026-05-09  feat [lib]  Tokenizers/{claude,gemini} + index countTokens API + Web Worker for >50k chars
+- 2026-05-09  feat [lib]  Pricing.ts with MODELS[] + dataAsOf timestamps
+- 2026-05-09  feat [ui]  Footer with Vertex Network blind link + sister-site modal
+- 2026-05-09  feat [ui]  Header with desktop nav + mobile hamburger drawer (a11y, focus trap)
+- 2026-05-09  feat [ui]  Theme tokens, fonts (Inter + Geist Mono), root layout, dark default
 
 ## Reference
 
