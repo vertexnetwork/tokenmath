@@ -37,4 +37,18 @@ describe('countTokens', () => {
     expect(result.approx).toBe(true);
     expect(result.ms).toBeGreaterThanOrEqual(0);
   });
+
+  it('reports exact (non-approx) counts for OpenAI', async () => {
+    const result = await countTokens('gpt-5', 'Hello, world!');
+    expect(result.approx).toBe(false);
+    expect(result.source).toBe('gpt-tokenizer-o200k');
+    expect(result.tokens).toBeGreaterThanOrEqual(1);
+    expect(result.tokens).toBeLessThanOrEqual(5);
+  });
+
+  it('routes GPT-4.1 to o200k', async () => {
+    const result = await countTokens('gpt-4-1', 'one two three four five');
+    expect(result.source).toBe('gpt-tokenizer-o200k');
+    expect(result.approx).toBe(false);
+  });
 });

@@ -86,15 +86,7 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
 
         <p>
-          For privacy questions, open an issue on the{' '}
-          <a
-            href="https://github.com/ThatMovieGuyOriginal/tokencount"
-            target="_blank"
-            rel="noopener"
-          >
-            GitHub repository
-          </a>
-          .
+          For privacy questions, email <a href="mailto:hello@tokencount.ai">hello@tokencount.ai</a>.
         </p>
       </article>
     </main>

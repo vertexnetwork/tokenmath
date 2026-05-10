@@ -14,22 +14,26 @@ const SISTER_SITES: SisterSite[] = [
   {
     name: 'Shopifont',
     href: 'https://shopifont.app',
-    blurb: 'Type-pairing previews and licensing checks for Shopify stores.',
+    blurb:
+      'Generates @font-face CSS, settings JSON, and CSS overrides for adding custom fonts to Shopify OS 2.0 themes.',
   },
   {
     name: 'Etsy Margin Tools',
     href: 'https://etsymargin.tools',
-    blurb: 'Fee + shipping calculators for Etsy sellers.',
+    blurb:
+      'Calculates true Etsy profit after listing fees, transaction fees, payment processing, and off-site ads.',
   },
   {
     name: 'CaptionSnap',
     href: 'https://captionsnap.io',
-    blurb: 'On-brand caption generator for short-form video.',
+    blurb:
+      'Paste ad copy, see exactly where it gets truncated across 42 placements on 8 ad platforms.',
   },
   {
     name: 'KDP Cover Pro',
     href: 'https://kdpcover.pro',
-    blurb: 'Spec-correct cover layouts for Amazon KDP.',
+    blurb:
+      'Calculates spine width and full-cover dimensions for KDP books from page count, format, and paper type.',
   },
 ];
 
@@ -38,9 +42,14 @@ export function Footer() {
     <footer className="mt-auto border-t border-(--border)">
       <div className="mx-auto flex w-full max-w-(--container-app) flex-col gap-4 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-(--text-muted)">
-          tokencount — accurate token math for Claude and Gemini.
+          tokencount — accurate token math for Claude, Gemini, and OpenAI.
         </p>
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-(--text-muted)">
+          <li>
+            <Link href="/about" className="hover:text-(--text)">
+              About
+            </Link>
+          </li>
           <li>
             <Link href="/privacy" className="hover:text-(--text)">
               Privacy
@@ -52,23 +61,8 @@ export function Footer() {
             </Link>
           </li>
           <li>
-            <a
-              href="https://github.com/ThatMovieGuyOriginal/tokencount"
-              className="hover:text-(--text)"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://x.com/tokview"
-              className="hover:text-(--text)"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @tokview
+            <a href="mailto:hello@tokencount.ai" className="hover:text-(--text)">
+              hello@tokencount.ai
             </a>
           </li>
         </ul>

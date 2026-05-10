@@ -1,0 +1,58 @@
+---
+title: 'GPT-5 Mini token & cost calculator'
+description: 'Estimate token counts and API cost for OpenAI GPT-5 Mini. Exact tokenization in your browser.'
+modelId: 'gpt-5-mini'
+faqs:
+  - q: 'When is Mini good enough?'
+    a: 'For extraction, classification, summarization, structured rewriting, schema-validated output, and most agent-loop plumbing. Mini handles the majority of production traffic in well-engineered systems. The places where it strains: multi-step ambiguous reasoning, long-document synthesis without retrieval, and tasks where output prose quality is the product. Promote those to GPT-5 (or to GPT-4.1 if context length is the binding constraint).'
+  - q: 'How accurate is the token count?'
+    a: "Exact. gpt-tokenizer ships OpenAI's canonical o200k_base vocab, so the number you see matches what OpenAI bills. No approximation, no calibration factor."
+  - q: "What's the right max_tokens for Mini-driven workloads?"
+    a: "Lower than you'd set for GPT-5. Mini's output rate is $2/M — 5× cheaper than GPT-5 — but at high volume even small savings compound. For structured-output workloads, set max_tokens to roughly 1.5× your expected schema size and validate the response."
+  - q: 'Does Mini support the same context as GPT-5?'
+    a: "Yes — 400,000 tokens. The full GPT-5 family shares the same context window, so you don't lose long-context capability when routing to Mini."
+  - q: 'How does GPT-5 Mini compare to Claude 4.5 Haiku?'
+    a: "They occupy the same niche — frontier-quality cheap models for production plumbing. Haiku is slightly more expensive on output ($5/M vs Mini's $2/M); Mini's price advantage is real. The decision should come from your eval set — instruction-following, structured-output reliability, and your specific task mix matter more than the price gap."
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# GPT-5 Mini token & cost calculator
+
+**OpenAI GPT-5 Mini** is the workhorse of the GPT-5 family — the model designed to handle the 80% of production AI traffic that doesn't need flagship reasoning. At $0.25 input / $2 output per million tokens, it sits in the same per-token tier as Claude 4.5 Haiku and Gemini 2.5 Flash, with the GPT-5 family's quality genealogy and the same 400,000-token context window as full GPT-5.
+
+The math that makes Mini economic: at these prices, **the model bill stops being the primary cost conversation**. A short chat turn costs fractions of a cent. A 5,000-token system prompt at 100,000 daily requests rounds to $125/day in input cost — defensible for any AI feature with even modest engagement. The lever to optimize at this price level is correctness and reliability of routing, not cost-per-token.
+
+<Calculator defaultModelId="gpt-5-mini" lockModel />
+
+## Pricing
+
+Mini is flat-priced. Note the 8× input/output ratio mirrors the rest of the GPT-5 family — the same prompt-engineering instincts transfer up and down the tier.
+
+<ModelPricingTable modelId="gpt-5-mini" />
+
+## Worked examples
+
+Scenarios at three realistic prompt sizes. Mini's price floor means even the long-document Q&A scenario stays well under a dime per request.
+
+<WorkedExamples modelId="gpt-5-mini" />
+
+A useful framing: **Mini is where you should default until you have evidence you need GPT-5.** Production teams that ship cost-aware routing typically run 70–90% of traffic on Mini and reserve GPT-5 for an explicit "hard request" path — usually triggered by content classifier output or a task-difficulty heuristic. If you're running 100% on GPT-5 because it's "the smart one," you're likely overspending by 3–4× without quality lift.
+
+## How is this counted?
+
+Mini uses OpenAI's canonical `o200k_base` tokenizer, shipped via the MIT-licensed `gpt-tokenizer` package. The count is exact — calibration factor 1.0, no approximation. Inputs over 50,000 characters tokenize in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The two most useful comparisons: GPT-5 (when Mini's quality bar isn't enough) and Claude 4.5 Haiku (the cross-vendor budget tier with a similar capability profile).
+
+<SiblingLinks modelId="gpt-5-mini" />

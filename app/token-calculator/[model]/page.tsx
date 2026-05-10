@@ -55,6 +55,16 @@ async function loadContent(slug: ModelSlug): Promise<ModelMdxModule> {
       return import('@/content/models/google-gemini-2-5-pro.mdx');
     case 'google-gemini-2-5-flash':
       return import('@/content/models/google-gemini-2-5-flash.mdx');
+    case 'openai-gpt-5':
+      return import('@/content/models/openai-gpt-5.mdx');
+    case 'openai-gpt-5-mini':
+      return import('@/content/models/openai-gpt-5-mini.mdx');
+    case 'openai-gpt-5-nano':
+      return import('@/content/models/openai-gpt-5-nano.mdx');
+    case 'openai-gpt-4-1':
+      return import('@/content/models/openai-gpt-4-1.mdx');
+    case 'openai-gpt-4-1-mini':
+      return import('@/content/models/openai-gpt-4-1-mini.mdx');
   }
 }
 
@@ -78,7 +88,7 @@ export default async function ModelPage(props: { params: Promise<{ model: string
           </li>
           <li aria-hidden>/</li>
           <li>
-            <Link href="/#models" className="hover:text-(--text)">
+            <Link href="/models" className="hover:text-(--text)">
               Models
             </Link>
           </li>
@@ -110,7 +120,7 @@ export default async function ModelPage(props: { params: Promise<{ model: string
         dangerouslySetInnerHTML={renderJsonLd(
           breadcrumbListJsonLd([
             { name: 'Home', path: '/' },
-            { name: 'Models', path: '/#models' },
+            { name: 'Models', path: '/models' },
             { name: model.label, path: `/token-calculator/${model.slug}` },
           ]),
         )}

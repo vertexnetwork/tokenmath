@@ -43,9 +43,9 @@ function buildPricingTable(): string {
 function buildContent(): string {
   return `# tokencount.ai — full reference
 
-Client-side LLM token counter and API cost calculator for Anthropic Claude and Google Gemini.
-Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded or
-logged. Pricing data is current as of ${latestDataAsOf()}.
+Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini, and
+OpenAI. Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded
+or logged. Pricing data is current as of ${latestDataAsOf()}.
 
 ## Pricing table
 
@@ -60,12 +60,13 @@ Notes
 ## Tokenizer notes
 
 - Claude 4.x: approximated via gpt-tokenizer's cl100k_base encoding. Anthropic does not publish
-  a current client tokenizer; @anthropic-ai/tokenizer is available for older Claude vocab
-  (Claude 1/2/3) but is not used here. Calibration factor is 1.0 by default.
+  a current client tokenizer. Calibration factor 1.0 by default; drift typically <2% on
+  English and code.
 - Gemini 2.5: approximated via js-tiktoken's o200k_base. Google does not publish a client
-  tokenizer. Calibration factor is 1.0 by default.
-- Approximation accuracy is empirically within ±2% across typical prompts. Treat all counts as
-  estimates suitable for cost-budgeting, not for billing reconciliation.
+  tokenizer. Calibration factor 1.0; drift typically ~3% on English.
+- OpenAI (GPT-5 family + GPT-4.1 family): exact tokenization via gpt-tokenizer's o200k_base —
+  the canonical OpenAI vocab. No approximation, no calibration needed; the count matches what
+  OpenAI bills.
 
 ## Privacy contract
 

@@ -1,0 +1,58 @@
+---
+title: 'GPT-4.1 token & cost calculator'
+description: 'Estimate token counts and API cost for OpenAI GPT-4.1. Exact tokenization in your browser.'
+modelId: 'gpt-4-1'
+faqs:
+  - q: 'When should I pick GPT-4.1 over GPT-5?'
+    a: "When context length is the binding constraint. GPT-4.1 supports 1,047,576-token context — over 2× larger than GPT-5's 400k. For workflows that involve whole codebases, long transcripts, or document collections that don't fit in GPT-5's window, GPT-4.1 is the OpenAI answer. On shorter prompts where context isn't the issue, GPT-5 is meaningfully cheaper and often higher quality."
+  - q: 'Is the token count exact?'
+    a: "Yes. GPT-4.1 uses OpenAI's canonical o200k_base tokenizer, which gpt-tokenizer ships verbatim. The count is exact — no approximation, no calibration factor."
+  - q: "How does GPT-4.1 compare to Gemini 2.5 Pro's long context?"
+    a: 'Both support million-token windows, but the pricing geometry is different. Gemini 2.5 Pro charges a tier surcharge above 200k tokens (roughly doubles input + output rates); GPT-4.1 stays flat-priced regardless of input size. For sustained large-input workloads, GPT-4.1 is often cheaper despite a higher baseline rate.'
+  - q: "What's the right way to think about input cost at this scale?"
+    a: "A single 800,000-token request on GPT-4.1 costs $1.60 just for input — meaningful at low traffic, fast to compound at scale. If your workload involves repeated full-context calls (e.g. agent re-reading the same large doc), prompt caching is essential. OpenAI's cached-input rate is roughly half the standard input rate."
+  - q: 'Does my prompt leave the browser?'
+    a: 'No. Tokenization runs entirely client-side, in a Web Worker for inputs over 50,000 characters. There is no server endpoint that ever receives prompt content.'
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# GPT-4.1 token & cost calculator
+
+**OpenAI GPT-4.1** is the long-context member of OpenAI's frontier lineup — the model to reach for when your input is too big for GPT-5's 400k-token window. At 1,047,576 tokens of context, GPT-4.1 is one of three models in this calculator's roster (alongside Gemini 2.5 Pro and Flash) that can handle whole-codebase or whole-transcript workloads in a single call. The pricing — $2 input / $8 output per million — is higher than GPT-5 on input but lower on output, and it stays flat regardless of how much context you push through.
+
+The right way to position GPT-4.1 in your stack: **route by input size, not by overall complexity**. For any request that fits comfortably under 200k tokens, GPT-5 (or Sonnet, or Pro) is usually the better quality-per-dollar pick. The moment you cross into the territory where retrieval would otherwise be the alternative — and where retrieval risks losing relevant context — GPT-4.1 starts winning, often dramatically.
+
+<Calculator defaultModelId="gpt-4-1" lockModel />
+
+## Pricing
+
+GPT-4.1 is flat-priced. The calculator above will warn you if your input would exceed the 1.047M-token context window, but at typical usage there's plenty of headroom.
+
+<ModelPricingTable modelId="gpt-4-1" />
+
+## Worked examples
+
+These three scenarios stay well under the context window. To stress-test long-context economics, paste a real long input above and watch the cost scale linearly — there's no tier surcharge here, unlike Gemini 2.5 Pro.
+
+<WorkedExamples modelId="gpt-4-1" />
+
+The pattern that pays off on GPT-4.1: **prompt caching, aggressively.** When a workload involves the same large document being referenced across many requests (agent loop, multi-turn conversation, batch rewrites), caching turns the input bill from a real number into a rounding error. The first request pays full freight; the next thousand pay roughly half. For long-context applications this is the difference between a feature that ships and a feature that gets cut for cost.
+
+## How is this counted?
+
+GPT-4.1 uses the same `o200k_base` tokenizer as GPT-5 and GPT-5 Mini/Nano. We count via `gpt-tokenizer` (MIT) — the canonical OpenAI vocab, exact match, calibration factor 1.0. Inputs over 50,000 characters tokenize in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The most useful comparisons: GPT-4.1 Mini (the budget version with the same 1M context window), GPT-5 (when context length isn't the bottleneck), and Gemini 2.5 Pro (the cross-vendor long-context option with tiered pricing).
+
+<SiblingLinks modelId="gpt-4-1" />

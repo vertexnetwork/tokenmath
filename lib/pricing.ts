@@ -12,16 +12,26 @@ export type ModelId =
   | 'claude-4-5-haiku'
   | 'claude-4-7-opus'
   | 'gemini-2-5-pro'
-  | 'gemini-2-5-flash';
+  | 'gemini-2-5-flash'
+  | 'gpt-5'
+  | 'gpt-5-mini'
+  | 'gpt-5-nano'
+  | 'gpt-4-1'
+  | 'gpt-4-1-mini';
 
-export type Vendor = 'anthropic' | 'google';
+export type Vendor = 'anthropic' | 'google' | 'openai';
 
 export type ModelSlug =
   | 'anthropic-claude-4-5-sonnet'
   | 'anthropic-claude-4-5-haiku'
   | 'anthropic-claude-4-7-opus'
   | 'google-gemini-2-5-pro'
-  | 'google-gemini-2-5-flash';
+  | 'google-gemini-2-5-flash'
+  | 'openai-gpt-5'
+  | 'openai-gpt-5-mini'
+  | 'openai-gpt-5-nano'
+  | 'openai-gpt-4-1'
+  | 'openai-gpt-4-1-mini';
 
 export interface PricingTier {
   /** Token threshold (inclusive). null means "no upper bound". */
@@ -118,6 +128,66 @@ export const MODELS: readonly ModelPricing[] = [
     contextWindow: 1_000_000,
     dataAsOf: '2026-05-09',
     source: 'https://ai.google.dev/pricing',
+  },
+  {
+    id: 'gpt-5',
+    slug: 'openai-gpt-5',
+    label: 'GPT-5',
+    vendor: 'openai',
+    family: 'GPT-5',
+    inputUsdPerM: 1.25,
+    outputUsdPerM: 10,
+    contextWindow: 400_000,
+    dataAsOf: '2026-05-09',
+    source: 'https://openai.com/api/pricing/',
+  },
+  {
+    id: 'gpt-5-mini',
+    slug: 'openai-gpt-5-mini',
+    label: 'GPT-5 Mini',
+    vendor: 'openai',
+    family: 'GPT-5',
+    inputUsdPerM: 0.25,
+    outputUsdPerM: 2,
+    contextWindow: 400_000,
+    dataAsOf: '2026-05-09',
+    source: 'https://openai.com/api/pricing/',
+  },
+  {
+    id: 'gpt-5-nano',
+    slug: 'openai-gpt-5-nano',
+    label: 'GPT-5 Nano',
+    vendor: 'openai',
+    family: 'GPT-5',
+    inputUsdPerM: 0.05,
+    outputUsdPerM: 0.4,
+    contextWindow: 400_000,
+    dataAsOf: '2026-05-09',
+    source: 'https://openai.com/api/pricing/',
+  },
+  {
+    id: 'gpt-4-1',
+    slug: 'openai-gpt-4-1',
+    label: 'GPT-4.1',
+    vendor: 'openai',
+    family: 'GPT-4.1',
+    inputUsdPerM: 2,
+    outputUsdPerM: 8,
+    contextWindow: 1_047_576,
+    dataAsOf: '2026-05-09',
+    source: 'https://openai.com/api/pricing/',
+  },
+  {
+    id: 'gpt-4-1-mini',
+    slug: 'openai-gpt-4-1-mini',
+    label: 'GPT-4.1 Mini',
+    vendor: 'openai',
+    family: 'GPT-4.1',
+    inputUsdPerM: 0.4,
+    outputUsdPerM: 1.6,
+    contextWindow: 1_047_576,
+    dataAsOf: '2026-05-09',
+    source: 'https://openai.com/api/pricing/',
   },
 ] as const;
 

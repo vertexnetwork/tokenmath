@@ -8,13 +8,9 @@ type NavItem = { href: string; label: string; external?: boolean };
 
 const NAV: NavItem[] = [
   { href: '/#calculator', label: 'Calculator' },
-  { href: '/#models', label: 'Models' },
+  { href: '/models', label: 'Models' },
+  { href: '/pricing-data', label: 'Pricing data' },
   { href: '/about', label: 'About' },
-  {
-    href: 'https://github.com/ThatMovieGuyOriginal/tokencount',
-    label: 'GitHub',
-    external: true,
-  },
 ];
 
 export function Header() {

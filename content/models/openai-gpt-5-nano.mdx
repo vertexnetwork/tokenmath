@@ -1,0 +1,58 @@
+---
+title: 'GPT-5 Nano token & cost calculator'
+description: 'Estimate token counts and API cost for OpenAI GPT-5 Nano. Exact tokenization in your browser.'
+modelId: 'gpt-5-nano'
+faqs:
+  - q: 'What is Nano good for?'
+    a: "Volume tasks where you'd historically have used a small fine-tuned model: bulk classification, sentiment scoring, intent detection, lightweight extraction, schema validation, A/B-test variant generation, batch rewrites. Nano is fast and cheap enough that the model bill becomes a rounding error in your infrastructure spend."
+  - q: 'When does Nano stop being good enough?'
+    a: 'Anything that requires reliable multi-step reasoning, long-document synthesis, or generating customer-facing prose at high quality. Nano is not the right model for code generation in production, complex summarization, or any task where a confident-but-wrong answer is worse than no answer. Promote those workloads to Mini or full GPT-5.'
+  - q: 'How accurate is the token count?'
+    a: "Exact. The calculator uses OpenAI's canonical o200k_base tokenizer (via gpt-tokenizer). No approximation, no calibration."
+  - q: 'Is Nano really 25× cheaper than GPT-5?'
+    a: 'On input, yes — $0.05/M for Nano vs $1.25/M for GPT-5. On output, the gap is similar: $0.40/M vs $10/M. At Nano prices a million-token request costs less than a single GPT-5 short chat turn. The tradeoff is in capability, not in the math.'
+  - q: 'Can I batch Nano calls?'
+    a: "Yes, and you should. OpenAI's Batch API discounts most models 50% for jobs that can wait up to 24 hours; on Nano, that pushes cost into territory where the model bill genuinely disappears from your P&L. The calculator above shows synchronous-API pricing — divide by two for batch."
+---
+
+import { Calculator } from '@/components/Calculator';
+import { ModelPricingTable } from '@/components/ModelPricingTable';
+import { WorkedExamples } from '@/components/WorkedExamples';
+import { SiblingLinks } from '@/components/SiblingLinks';
+import { FaqList } from '@/components/FaqList';
+
+# GPT-5 Nano token & cost calculator
+
+**OpenAI GPT-5 Nano** is the cheapest entry in the GPT-5 family — a model built specifically for the workloads where you previously couldn't justify calling an LLM at all. At $0.05 input / $0.40 output per million tokens, Nano sits at roughly 1/25th the cost of full GPT-5 and well below Claude 4.5 Haiku or Gemini 2.5 Flash. The implication for product design is real: tasks that were uneconomic at GPT-4-class pricing become straightforwardly affordable here.
+
+The honest framing for Nano: **it shifts the bottleneck from cost to reliability.** When the model bill is fractions of a cent per request, the engineering question becomes "how often does this model get the right answer," not "can we afford to call it." Spend your time on evals, schema validation, and routing logic; the per-million numbers will take care of themselves.
+
+<Calculator defaultModelId="gpt-5-nano" lockModel />
+
+## Pricing
+
+Nano is flat-priced. Even the most input-heavy realistic workload at this rate still fits comfortably under a cent per request.
+
+<ModelPricingTable modelId="gpt-5-nano" />
+
+## Worked examples
+
+The scenarios below show what Nano costs at three typical prompt sizes. All three round to a fraction of a cent — the price floor is the point.
+
+<WorkedExamples modelId="gpt-5-nano" />
+
+A pattern worth knowing: **Nano + a downstream classifier is often better than Mini.** For high-volume classification or extraction, calling Nano with a strict JSON schema and a tight `max_tokens` cap, then validating the response with deterministic code, is frequently more reliable than running Mini at default settings. The cheap model with rigid output constraints often beats a smarter model with sloppy ones.
+
+## How is this counted?
+
+Nano uses OpenAI's canonical `o200k_base` tokenizer, the same vocab as GPT-5 and GPT-4.1. The count is exact via `gpt-tokenizer` (MIT) — calibration factor 1.0. Inputs over 50,000 characters run in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Related models
+
+The most relevant comparisons: GPT-5 Mini (when Nano's capability bar is too low) and the cross-vendor budget tiers — Claude 4.5 Haiku and Gemini 2.5 Flash.
+
+<SiblingLinks modelId="gpt-5-nano" />

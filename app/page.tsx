@@ -11,7 +11,7 @@ export default function HomePage() {
           LLM Token & Cost Calculator
         </h1>
         <p className="max-w-2xl text-base text-(--text-muted) sm:text-lg">
-          Paste a prompt. See the exact token count and API cost across Claude and Gemini. Runs
+          Paste a prompt. See the token count and API cost across Claude, Gemini, and OpenAI. Runs
           entirely in your browser.
         </p>
       </header>
@@ -21,8 +21,9 @@ export default function HomePage() {
       <AdSlot placement="home-below-result" />
 
       <p className="text-xs text-(--text-muted)">
-        Token counts are approximate (±2%) for Claude/Gemini current-gen models. Pricing reflects
-        published rates as of {latestDataAsOf()}.
+        OpenAI counts are exact; Claude and Gemini are approximate (±2–3%) — neither vendor
+        publishes a current client tokenizer. Pricing reflects published rates as of{' '}
+        {latestDataAsOf()}.
       </p>
 
       <script

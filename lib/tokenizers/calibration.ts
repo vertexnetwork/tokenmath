@@ -3,11 +3,12 @@ import type { ModelId } from '@/lib/pricing';
 /**
  * Per-model calibration factor applied to the raw tokenizer count.
  *
- * We approximate Claude 4.x with @anthropic-ai/tokenizer (older Claude vocab) and Gemini 2.5
- * with o200k_base — neither is a 1:1 match for the current vendor tokenizer, so we expose a
- * single multiplier to nudge the approximation toward the vendor's reference counts.
+ * - Claude 4.x: approximated with cl100k_base (no official client tokenizer).
+ * - Gemini 2.5: approximated with o200k_base (no official client tokenizer).
+ * - OpenAI: gpt-tokenizer ships the canonical OpenAI vocab — the count is exact, factor 1.0.
  *
- * Update with empirical reference samples (see tests/tokenizer.test.ts).
+ * Update Claude/Gemini factors with empirical reference samples (see tests/tokenizer.test.ts).
+ * OpenAI factors should stay 1.0 — anything else means a tokenizer-vs-vocab mismatch.
  */
 export const calibrationFactor: Readonly<Record<ModelId, number>> = Object.freeze({
   'claude-4-5-sonnet': 1.0,
@@ -15,4 +16,9 @@ export const calibrationFactor: Readonly<Record<ModelId, number>> = Object.freez
   'claude-4-7-opus': 1.0,
   'gemini-2-5-pro': 1.0,
   'gemini-2-5-flash': 1.0,
+  'gpt-5': 1.0,
+  'gpt-5-mini': 1.0,
+  'gpt-5-nano': 1.0,
+  'gpt-4-1': 1.0,
+  'gpt-4-1-mini': 1.0,
 });

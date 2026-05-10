@@ -3,8 +3,8 @@
  *
  * - Lazy-loads the underlying tokenizer libraries on first call.
  * - Applies the per-model calibration factor.
- * - Reports `approx: true` for all current Claude 4.x and Gemini 2.5 models, since neither
- *   vendor publishes a current client tokenizer.
+ * - Reports `approx: false` for OpenAI (canonical tokenizer ships in gpt-tokenizer) and
+ *   `approx: true` for Claude + Gemini (no official client tokenizer published).
  * - For inputs > 50_000 characters, runs tokenization in a Web Worker so the main thread
  *   stays responsive.
  */
@@ -13,6 +13,7 @@ import type { ModelId } from '@/lib/pricing';
 import { calibrationFactor } from './calibration';
 import { countClaudeTokens } from './claude';
 import { countGeminiTokens } from './gemini';
+import { countOpenAITokens } from './openai';
 import type { WorkerResponse, TokenizerSource } from './worker';
 
 const WORKER_THRESHOLD = 50_000;
@@ -23,13 +24,36 @@ export interface TokenCount {
   tokens: number;
   ms: number;
   source: TokenizerSource;
-  /** True for all approximation-based counts. Currently always true for our supported models. */
+  /** True for approximation-based counts (Claude / Gemini); false for OpenAI (exact). */
   approx: boolean;
+}
+
+type Family = 'claude' | 'gemini' | 'openai';
+
+function familyOf(model: ModelId): Family {
+  if (model.startsWith('claude-')) return 'claude';
+  if (model.startsWith('gemini-')) return 'gemini';
+  return 'openai';
+}
+
+function isApprox(model: ModelId): boolean {
+  return familyOf(model) !== 'openai';
+}
+
+function sourceFor(model: ModelId): TokenizerSource {
+  switch (familyOf(model)) {
+    case 'claude':
+      return 'gpt-tokenizer-cl100k';
+    case 'openai':
+      return 'gpt-tokenizer-o200k';
+    case 'gemini':
+      return 'gemini-approx';
+  }
 }
 
 export async function countTokens(model: ModelId, text: string): Promise<TokenCount> {
   if (text.length === 0) {
-    return { tokens: 0, ms: 0, source: sourceFor(model), approx: true };
+    return { tokens: 0, ms: 0, source: sourceFor(model), approx: isApprox(model) };
   }
 
   if (text.length > WORKER_THRESHOLD && typeof Worker !== 'undefined') {
@@ -41,20 +65,22 @@ export async function countTokens(model: ModelId, text: string): Promise<TokenCo
 
 async function countInThread(model: ModelId, text: string): Promise<TokenCount> {
   const started = performance.now();
-  const raw = model.startsWith('claude-')
-    ? await countClaudeTokens(text)
-    : await countGeminiTokens(text);
+  const family = familyOf(model);
+  let raw: number;
+  if (family === 'claude') {
+    raw = await countClaudeTokens(text);
+  } else if (family === 'openai') {
+    raw = await countOpenAITokens(text);
+  } else {
+    raw = await countGeminiTokens(text);
+  }
   const tokens = applyCalibration(model, raw);
   return {
     tokens,
     ms: performance.now() - started,
     source: sourceFor(model),
-    approx: true,
+    approx: isApprox(model),
   };
-}
-
-function sourceFor(model: ModelId): TokenizerSource {
-  return model.startsWith('claude-') ? 'gpt-tokenizer-cl100k' : 'gemini-approx';
 }
 
 function applyCalibration(model: ModelId, raw: number): number {
@@ -69,8 +95,6 @@ const pending = new Map<number, (r: WorkerResponse) => void>();
 
 function getWorker(): Worker {
   if (workerSingleton) return workerSingleton;
-  // The new URL(..., import.meta.url) form is what Webpack and Turbopack recognize as a
-  // worker entry — it triggers a separate bundle. Module workers are widely supported.
   workerSingleton = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
   workerSingleton.addEventListener('message', (event: MessageEvent<WorkerResponse>) => {
     const resolve = pending.get(event.data.id);
@@ -95,5 +119,5 @@ async function countInWorker(model: ModelId, text: string): Promise<TokenCount> 
     return countInThread(model, text);
   }
   const tokens = applyCalibration(model, response.tokens);
-  return { tokens, ms: response.ms, source: response.source, approx: true };
+  return { tokens, ms: response.ms, source: response.source, approx: isApprox(model) };
 }

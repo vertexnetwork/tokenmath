@@ -9,6 +9,7 @@
 import type { ModelId } from '@/lib/pricing';
 import { countClaudeTokens } from './claude';
 import { countGeminiTokens } from './gemini';
+import { countOpenAITokens } from './openai';
 
 export type TokenizerSource = 'gpt-tokenizer-cl100k' | 'gpt-tokenizer-o200k' | 'gemini-approx';
 
@@ -40,9 +41,18 @@ ctx.addEventListener('message', async (event: MessageEvent<WorkerRequest>) => {
   const { id, model, text } = event.data;
   const started = performance.now();
   try {
-    const isClaude = model.startsWith('claude-');
-    const tokens = isClaude ? await countClaudeTokens(text) : await countGeminiTokens(text);
-    const source: TokenizerSource = isClaude ? 'gpt-tokenizer-cl100k' : 'gemini-approx';
+    let tokens: number;
+    let source: TokenizerSource;
+    if (model.startsWith('claude-')) {
+      tokens = await countClaudeTokens(text);
+      source = 'gpt-tokenizer-cl100k';
+    } else if (model.startsWith('gemini-')) {
+      tokens = await countGeminiTokens(text);
+      source = 'gemini-approx';
+    } else {
+      tokens = await countOpenAITokens(text);
+      source = 'gpt-tokenizer-o200k';
+    }
     const response: WorkerSuccess = {
       id,
       ok: true,

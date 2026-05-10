@@ -3,9 +3,12 @@ import { type ModelPricing } from '@/lib/pricing';
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokencount.ai';
 export const SITE_NAME = 'tokencount';
-export const SITE_DESCRIPTION = 'Accurate token math for Claude and Gemini. 100% client-side.';
-export const SITE_TWITTER = '@tokview';
+export const SITE_DESCRIPTION =
+  'Accurate token math for Claude, Gemini, and OpenAI. 100% client-side.';
+export const SITE_CONTACT_EMAIL = 'hello@tokencount.ai';
 
+// Vertex sister sites — rendered in the Organization JSON-LD sameAs list. These are partner
+// sites in the same network, not social profiles.
 const VERTEX_SAME_AS = [
   'https://shopifont.app',
   'https://etsymargin.tools',
@@ -45,13 +48,6 @@ export function buildMetadata({
       description,
       siteName: SITE_NAME,
       images: [{ url: ogImage, width: 1200, height: 630 }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      creator: SITE_TWITTER,
-      title: fullTitle,
-      description,
-      images: [ogImage],
     },
   };
 }

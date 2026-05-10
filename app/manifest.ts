@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'tokencount',
     short_name: 'tokencount',
-    description: 'Accurate token math for Claude and Gemini. 100% client-side.',
+    description: 'Accurate token math for Claude, Gemini, and OpenAI. 100% client-side.',
     start_url: '/',
     display: 'standalone',
     theme_color: '#0A0A0B',

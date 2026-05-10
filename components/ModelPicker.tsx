@@ -47,6 +47,8 @@ function vendorLabel(v: string) {
       return 'Anthropic';
     case 'google':
       return 'Google';
+    case 'openai':
+      return 'OpenAI';
     default:
       return v;
   }
