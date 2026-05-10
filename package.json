@@ -48,7 +48,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-next": "16.2.6",
     "eslint-config-prettier": "^10.1.5",
     "jsdom": "^29.1.1",
@@ -56,7 +56,7 @@
     "sharp": "^0.34.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
-    "typescript": "^5",
+    "typescript": "^6",
     "vitest": "^4.0.7"
   }
 }
