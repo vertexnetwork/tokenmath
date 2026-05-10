@@ -68,7 +68,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls={dialogId}
             onClick={() => setOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
           >
             <HamburgerIcon open={open} />
           </button>
@@ -89,7 +89,7 @@ export function Header() {
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-(--bg)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md hover:bg-(--bg)"
           >
             <HamburgerIcon open={true} />
           </button>
