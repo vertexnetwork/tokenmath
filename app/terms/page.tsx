@@ -24,7 +24,7 @@ export default function TermsPage() {
         <p className="text-sm text-(--text-faint)">Last updated: {UPDATED}</p>
       </header>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <h2>What this site is</h2>
         <p>
           {siteConfig.name} is a free calculator for estimating LLM token counts and API costs. It

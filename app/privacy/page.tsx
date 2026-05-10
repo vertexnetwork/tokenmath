@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <p className="text-sm text-(--text-faint)">Last updated: {updated}</p>
       </header>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <h2>What we collect</h2>
 
         <p>

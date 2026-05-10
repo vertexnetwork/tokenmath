@@ -6,16 +6,20 @@ const YEAR = new Date().getFullYear();
 
 type FooterItem = { href: string; label: string; external?: boolean };
 
+// Block + py-1.5 gives each footer link its own tap area (≈40px tall) so adjacent links
+// in the same column don't fail Lighthouse's tap-targets proximity check.
+const FOOTER_LINK_CLASS = "block py-1.5 hover:text-(--text)";
+
 function FooterEntry({ item }: { item: FooterItem }) {
   if (item.external) {
     return (
-      <a href={item.href} target="_blank" rel="noopener" className="hover:text-(--text)">
+      <a href={item.href} target="_blank" rel="noopener" className={FOOTER_LINK_CLASS}>
         {item.label}
       </a>
     );
   }
   return (
-    <Link href={item.href} className="hover:text-(--text)">
+    <Link href={item.href} className={FOOTER_LINK_CLASS}>
       {item.label}
     </Link>
   );
@@ -47,7 +51,7 @@ export function Footer() {
             ))}
           </FooterColumn>
           <FooterColumn label="Contact">
-            <a href={`mailto:${siteConfig.supportEmail}`} className="hover:text-(--text)">
+            <a href={`mailto:${siteConfig.supportEmail}`} className={FOOTER_LINK_CLASS}>
               {siteConfig.supportEmail}
             </a>
           </FooterColumn>
@@ -71,7 +75,7 @@ function FooterColumn({ label, children }: { label: string; children: React.Reac
   return (
     <div className="flex flex-col gap-2.5">
       <span className="text-eyebrow text-(--text-faint)">{label}</span>
-      <div className="flex flex-col gap-1.5 text-xs text-(--text-muted)">{children}</div>
+      <div className="flex flex-col text-xs text-(--text-muted)">{children}</div>
     </div>
   );
 }

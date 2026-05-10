@@ -30,7 +30,7 @@ export default function AboutPage() {
         else&apos;s server.
       </p>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <h2>How it works</h2>
 
         <p>

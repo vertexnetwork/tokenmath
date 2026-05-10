@@ -27,12 +27,12 @@ export function buildMetadata({
   const fullTitle = title ?? `${siteConfig.name} — LLM Token & Cost Calculator`;
   const ogImage = image ?? new URL("/api/og", siteConfig.url).toString();
 
-  return {
-    title: title ? title : undefined,
+  // Only include `title` when caller passed one. Spreading `...buildMetadata()` from a
+  // parent layout used to clobber the layout's `title.default` / `title.template` config
+  // with `undefined`, breaking the page's <title> element entirely.
+  const meta: Metadata = {
     description,
-    alternates: {
-      canonical: url,
-    },
+    alternates: { canonical: url },
     openGraph: {
       type: "website",
       url,
@@ -48,6 +48,8 @@ export function buildMetadata({
       images: [ogImage],
     },
   };
+  if (title) meta.title = title;
+  return meta;
 }
 
 // --- JSON-LD builders ------------------------------------------------------

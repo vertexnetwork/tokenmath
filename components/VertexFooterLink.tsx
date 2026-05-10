@@ -13,7 +13,7 @@ export function VertexFooterLink() {
       <Link
         href="/network"
         onClick={() => events.vertexFooterOpened()}
-        className="text-xs text-(--text-faint) underline-offset-4 hover:text-(--text) hover:underline"
+        className="text-xs text-(--text-faint) underline underline-offset-4 hover:text-(--text)"
       >
         Part of the Vertex Network
       </Link>

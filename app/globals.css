@@ -91,6 +91,14 @@ html.dark {
  * `.prose` too. Using `html .prose` lifts our specificity to (0,1,1) so we beat the
  * plugin's (0,1,0) regardless of source order or layer arrangement.
  */
+/* Always underline prose links — WCAG 1.4.1 requires links to be distinguishable from
+ * surrounding text by something other than color alone. Tailwind Typography defaults to
+ * underlined; some pages explicitly removed it via prose-a:no-underline (now reverted). */
+html .prose a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 html .prose {
   --tw-prose-body: var(--text-muted);
   --tw-prose-headings: var(--text);
