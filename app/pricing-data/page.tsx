@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { AffiliateSlot } from '@/components/AffiliateSlot';
 import { buildMetadata } from '@/lib/seo';
 import { MODELS, latestDataAsOf, type Vendor } from '@/lib/pricing';
+import { ExternalLinkIcon } from '@/components/icons';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Pricing data',
@@ -35,23 +36,25 @@ export default function PricingDataPage() {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10 sm:py-16"
     >
-      <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
-        <h1>Pricing data</h1>
-
-        <p>
+      <header className="flex flex-col gap-3">
+        <p className="text-eyebrow text-(--accent)">Pricing data</p>
+        <h1 className="text-display-lg">Every rate, dated and sourced.</h1>
+        <p className="max-w-prose text-base text-(--text-muted) sm:text-lg">
           Every price in tokenmath comes from the vendor&apos;s own public pricing page — links
-          below. Each entry is stamped with a <code>dataAsOf</code> date showing when we last
-          reconciled it against the source. Most recent verification across all entries:{' '}
-          <strong>{latestDataAsOf()}</strong>.
+          below. Each entry is stamped with the date we last reconciled it against the source.
+          Most recent verification across all entries:{' '}
+          <span className="text-(--text)">{latestDataAsOf()}</span>.
         </p>
+      </header>
 
-        <h2>Vendor sources</h2>
-
-        <p>Click through to verify any rate against the original source:</p>
-
-        <div className="not-prose my-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <section className="flex flex-col gap-3">
+        <h2 className="text-display">Vendor sources</h2>
+        <p className="text-sm text-(--text-muted)">
+          Click through to verify any rate against the original source.
+        </p>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {vendors.map((v) => {
             const info = VENDOR_INFO[v];
             return (
@@ -60,54 +63,60 @@ export default function PricingDataPage() {
                 href={info.pricingUrl}
                 target="_blank"
                 rel="noopener"
-                className="block rounded-xl border border-(--border) bg-(--surface) p-4 hover:border-(--accent)"
+                className="group flex flex-col gap-2 rounded-xl border border-(--border) bg-(--surface) p-4 hover:border-(--accent)"
               >
                 <div className="text-sm font-medium">{info.name}</div>
-                <div className="mt-1 text-xs text-(--text-muted)">{info.note}</div>
-                <div className="mt-2 text-xs text-(--accent)">
+                <div className="text-xs text-(--text-muted)">{info.note}</div>
+                <div className="mt-auto inline-flex items-center gap-1 text-xs text-(--accent)">
                   {new URL(info.pricingUrl).host}
-                  {new URL(info.pricingUrl).pathname.replace(/\/$/, '')} →
+                  <ExternalLinkIcon className="opacity-80 transition-opacity group-hover:opacity-100" />
                 </div>
               </a>
             );
           })}
         </div>
+      </section>
 
-        <h2>Current table</h2>
-
-        <p>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-display">Current table</h2>
+        <p className="text-sm text-(--text-muted)">
           The <em>Source</em> column links to the exact page each rate was verified from.
         </p>
-
-        <div className="not-prose my-6 overflow-x-auto rounded-xl border border-(--border)">
+        <div className="overflow-x-auto rounded-xl border border-(--border) bg-(--surface)">
           <table className="w-full text-sm">
-            <thead className="bg-(--bg) text-(--text-muted)">
+            <thead className="bg-(--bg)/60 text-(--text-faint)">
               <tr>
-                <th className="px-4 py-2 text-left text-xs uppercase tracking-wide">Model</th>
-                <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Input $/M</th>
-                <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Output $/M</th>
-                <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Context</th>
-                <th className="whitespace-nowrap px-4 py-2 text-right text-xs uppercase tracking-wide">
+                <th className="px-4 py-2.5 text-left text-eyebrow">Model</th>
+                <th className="px-4 py-2.5 text-right text-eyebrow">Input $/M</th>
+                <th className="px-4 py-2.5 text-right text-eyebrow">Output $/M</th>
+                <th className="px-4 py-2.5 text-right text-eyebrow">Context</th>
+                <th className="whitespace-nowrap px-4 py-2.5 text-right text-eyebrow">
                   Verified
                 </th>
-                <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Source</th>
+                <th className="px-4 py-2.5 text-right text-eyebrow">Source</th>
               </tr>
             </thead>
             <tbody>
               {MODELS.map((m) => (
                 <tr key={m.id} className="border-t border-(--border)">
-                  <td className="px-4 py-3 font-medium">{m.label}</td>
+                  <td className="px-4 py-3 font-medium text-(--text)">{m.label}</td>
                   <td className="px-4 py-3 text-right tabular-nums">${m.inputUsdPerM}</td>
                   <td className="px-4 py-3 text-right tabular-nums">${m.outputUsdPerM}</td>
                   <td className="px-4 py-3 text-right tabular-nums">
                     {m.contextWindow.toLocaleString('en-US')}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+                  <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums text-(--text-muted)">
                     {m.dataAsOf}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <a href={m.source} target="_blank" rel="noopener" className="text-(--accent)">
+                    <a
+                      href={m.source}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center gap-1 text-(--accent)"
+                    >
                       {new URL(m.source).host}
+                      <ExternalLinkIcon className="opacity-70" />
                     </a>
                   </td>
                 </tr>
@@ -115,18 +124,18 @@ export default function PricingDataPage() {
             </tbody>
           </table>
         </div>
+      </section>
 
-        <h2>Tiered pricing</h2>
-
-        <p>
-          A few models charge different rates above a context threshold. The calculator applies the
-          right tier automatically based on input size, but the breakdown is here for reference:
+      <section className="flex flex-col gap-3">
+        <h2 className="text-display">Tiered pricing</h2>
+        <p className="text-sm text-(--text-muted)">
+          A few models charge different rates above a context threshold. The calculator applies
+          the right tier automatically based on input size; the breakdown is here for reference.
         </p>
-
-        <ul>
+        <ul className="flex flex-col gap-2 rounded-xl border border-(--border) bg-(--surface) p-4 text-sm">
           {MODELS.filter((m) => m.tiers && m.tiers.length > 0).map((m) => (
-            <li key={m.id}>
-              <strong>{m.label}</strong>:{' '}
+            <li key={m.id} className="text-(--text-muted)">
+              <strong className="text-(--text)">{m.label}</strong>:{' '}
               {m.tiers
                 ?.map(
                   (t) =>
@@ -137,15 +146,19 @@ export default function PricingDataPage() {
             </li>
           ))}
         </ul>
+      </section>
 
-        <h2>Reporting an outdated price</h2>
-
-        <p>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-display">Reporting an outdated price</h2>
+        <p className="text-sm text-(--text-muted)">
           If you spot a stale rate, email{' '}
-          <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a> with the corrected number and
-          a link to the vendor&apos;s pricing page. We typically ship a fix within a day.
+          <a href="mailto:hello@tokenmath.dev" className="text-(--accent) hover:underline">
+            hello@tokenmath.dev
+          </a>{' '}
+          with the corrected number and a link to the vendor&apos;s pricing page. We typically
+          ship a fix within a day — see the <a href="/changelog" className="text-(--accent) hover:underline">changelog</a>.
         </p>
-      </article>
+      </section>
 
       <AffiliateSlot placement="pricing-data-footer" />
     </main>

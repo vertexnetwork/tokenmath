@@ -8,6 +8,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { MODELS, latestDataAsOf } from '../lib/pricing';
+import { CHANGELOG } from '../lib/changelog';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(here, '..');
@@ -40,6 +41,16 @@ function buildPricingTable(): string {
   return lines.join('\n');
 }
 
+function buildChangelog(): string {
+  return CHANGELOG.map((entry) => {
+    const lines = [`### ${entry.date} — ${entry.title}`];
+    if (entry.summary) lines.push('', entry.summary);
+    lines.push('');
+    for (const c of entry.changes) lines.push(`- ${c}`);
+    return lines.join('\n');
+  }).join('\n\n');
+}
+
 function buildContent(): string {
   return `# tokenmath.dev — full reference
 
@@ -68,6 +79,19 @@ Notes
   the canonical OpenAI vocab. No approximation, no calibration needed; the count matches what
   OpenAI bills.
 
+## Calculator features
+
+- Home calculator at https://tokenmath.dev/ supports a Compare mode that tokenizes the prompt
+  against every supported model and ranks the table by total cost.
+- Per-model calculators at /token-calculator/[slug] include worked examples, FAQ, and a
+  per-model pricing table dated against the vendor source.
+- Saved scenarios store up to 10 prompt + model + response-length combinations on the user's
+  browser via localStorage. Nothing is uploaded.
+- The result card shows a cost-split bar (input vs output share) and a context-window meter,
+  warning when input exceeds the selected model's window.
+- A live "verify privacy" panel surfaces real-time counts of outgoing requests, cookies, and
+  localStorage keys so users can audit the privacy contract by inspection.
+
 ## Privacy contract
 
 - No prompt content is ever transmitted off the user's browser. The only server-rendered
@@ -81,10 +105,17 @@ Notes
 
 ${MODELS.map((m) => `- ${m.label}: https://tokenmath.dev/token-calculator/${m.slug}`).join('\n')}
 
+## Changelog
+
+${buildChangelog()}
+
 ## Reference
 
+- Home: https://tokenmath.dev/
+- Models index: https://tokenmath.dev/models
 - Pricing data sources: https://tokenmath.dev/pricing-data
 - Privacy policy: https://tokenmath.dev/privacy
+- Changelog: https://tokenmath.dev/changelog
 - About: https://tokenmath.dev/about
 `;
 }

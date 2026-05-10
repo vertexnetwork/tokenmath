@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import { Wordmark } from './Wordmark';
 
 type NavItem = { href: string; label: string; external?: boolean };
 
 const NAV: NavItem[] = [
   { href: '/#calculator', label: 'Calculator' },
   { href: '/models', label: 'Models' },
-  { href: '/pricing-data', label: 'Pricing data' },
+  { href: '/pricing-data', label: 'Pricing' },
+  { href: '/changelog', label: 'Changelog' },
   { href: '/about', label: 'About' },
 ];
 
@@ -48,15 +50,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-(--border) bg-(--bg)/80 backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-(--container-app) items-center justify-between px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-semibold tracking-tight"
-          aria-label="tokenmath home"
-        >
-          <span aria-hidden className="text-(--accent)">
-            ⟨t⟩
-          </span>
-          <span>tokenmath</span>
+        <Link href="/" aria-label="tokenmath home" className="rounded-md">
+          <Wordmark size="md" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">

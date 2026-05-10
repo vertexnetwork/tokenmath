@@ -36,6 +36,19 @@ Notes
   the canonical OpenAI vocab. No approximation, no calibration needed; the count matches what
   OpenAI bills.
 
+## Calculator features
+
+- Home calculator at https://tokenmath.dev/ supports a Compare mode that tokenizes the prompt
+  against every supported model and ranks the table by total cost.
+- Per-model calculators at /token-calculator/[slug] include worked examples, FAQ, and a
+  per-model pricing table dated against the vendor source.
+- Saved scenarios store up to 10 prompt + model + response-length combinations on the user's
+  browser via localStorage. Nothing is uploaded.
+- The result card shows a cost-split bar (input vs output share) and a context-window meter,
+  warning when input exceeds the selected model's window.
+- A live "verify privacy" panel surfaces real-time counts of outgoing requests, cookies, and
+  localStorage keys so users can audit the privacy contract by inspection.
+
 ## Privacy contract
 
 - No prompt content is ever transmitted off the user's browser. The only server-rendered
@@ -58,8 +71,47 @@ Notes
 - GPT-4.1: https://tokenmath.dev/token-calculator/openai-gpt-4-1
 - GPT-4.1 Mini: https://tokenmath.dev/token-calculator/openai-gpt-4-1-mini
 
+## Changelog
+
+### 2026-05-09 — Editorial redesign
+
+A visual overhaul plus compare mode, saved scenarios, and live privacy receipts — the redesign moves the calculator from a serviceable utility to something that looks and behaves like a deliberate piece of dev infrastructure.
+
+- Redesigned every surface in an Editorial Quiet style: layered warm-dark, hero total in parchment gold (mono, tabular), Source Serif 4 accent on editorial pages.
+- Compare mode — toggle on the home calculator to see your prompt scored against all 10 models in a single sortable table.
+- Saved scenarios — keep up to 10 prompt + model + response-length combinations on this browser. Stored only in localStorage; nothing is uploaded.
+- Privacy receipts panel — live counters of outgoing requests, cookies, and localStorage keys so the privacy contract is verifiable by inspection.
+- Cost-split bar and context-window meter inline on the result card.
+- Mobile sticky total bar that surfaces the answer when the result card scrolls out of view.
+- Models index: vendor filters, sort by cost or context window, multi-select for side-by-side comparison.
+- Keyboard shortcuts — press ? for the full list. Includes Linear-style g-then-letter navigation.
+- New wordmark, monogram favicon, and per-model OG cards rebuilt to match.
+- Calibrated empty-state example chips so first-time visitors see a real result in one click.
+
+### 2026-05-08 — OpenAI added; brand renamed to tokenmath
+
+GPT-5 and GPT-4.1 families now use exact tokenization; the rest stay approximate. Project renamed from tokencount to tokenmath.
+
+- Added GPT-5, GPT-5 Mini, GPT-5 Nano, GPT-4.1, and GPT-4.1 Mini with exact o200k_base tokenization.
+- Brand and domain renamed: tokenmath / tokenmath.dev.
+- Pricing data verified against Anthropic, Google, and OpenAI public pricing pages on 2026-05-09.
+- pSEO routes regenerated with refreshed worked examples per family.
+
+### 2026-05-01 — Initial release
+
+Client-side LLM token counter for Anthropic Claude and Google Gemini. Tokenization in JavaScript on the user’s browser; nothing about the prompt leaves the device.
+
+- Claude 4.5 Sonnet, Claude 4.5 Haiku, Claude 4.7 Opus, Gemini 2.5 Pro, and Gemini 2.5 Flash supported with cl100k_base / o200k_base approximations.
+- Tiered pricing modeled correctly (Gemini 2.5 Pro doubles input + output above 200k input tokens).
+- Web Worker tokenization for inputs longer than 50,000 characters so the page stays responsive.
+- WebApplication, SoftwareApplication, FAQPage, BreadcrumbList, and Organization JSON-LD on the relevant routes.
+- Programmatic SEO under /token-calculator/[model] with worked examples and per-model FAQ.
+
 ## Reference
 
+- Home: https://tokenmath.dev/
+- Models index: https://tokenmath.dev/models
 - Pricing data sources: https://tokenmath.dev/pricing-data
 - Privacy policy: https://tokenmath.dev/privacy
+- Changelog: https://tokenmath.dev/changelog
 - About: https://tokenmath.dev/about

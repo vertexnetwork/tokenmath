@@ -1,12 +1,25 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
-import { DEFAULT_MODEL_ID, getModelById, type ModelId } from '@/lib/pricing';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  costUsd,
+  DEFAULT_MODEL_ID,
+  getModelById,
+  type ModelId,
+} from '@/lib/pricing';
 import { countTokens } from '@/lib/tokenizers';
 import { bucketFor, events } from '@/lib/analytics';
+import type { ExamplePreset } from '@/lib/examples';
+import type { SavedScenario } from '@/lib/scenarios';
 import { AffiliateSlot } from './AffiliateSlot';
 import { ModelPicker } from './ModelPicker';
 import { ResultCard } from './ResultCard';
+import { ExampleChips } from './ExampleChips';
+import { CompareTable } from './CompareTable';
+import { SavedScenarios } from './SavedScenarios';
+import { PrivacyReceipts } from './PrivacyReceipts';
+import { MobileTotalBar } from './MobileTotalBar';
+import { CompareIcon, LockIcon } from './icons';
 
 interface CalculatorProps {
   defaultModelId?: ModelId;
@@ -33,10 +46,12 @@ export function Calculator({
   const promptMetaId = useId();
   const modelId = useId();
   const outputId = useId();
+  const resultId = useId();
 
   const [text, setText] = useState('');
   const [model, setModel] = useState<ModelId>(defaultModelId);
   const [expectedOutputTokens, setExpectedOutputTokens] = useState<number>(DEFAULT_OUTPUT_TOKENS);
+  const [compareOpen, setCompareOpen] = useState(false);
 
   const [tokens, setTokens] = useState(0);
   const [approx, setApprox] = useState(true);
@@ -44,6 +59,7 @@ export function Calculator({
   const [error, setError] = useState<string | null>(null);
 
   const requestRef = useRef(0);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Pending + error are kept in state but DERIVED for display so empty-text resets don't need
   // a synchronous setState in the effect body (keeps `react-hooks/set-state-in-effect` quiet).
@@ -89,12 +105,28 @@ export function Calculator({
   const displayError = isEmpty ? null : error;
   const pricing = getModelById(model);
 
+  const totalUsd = useMemo(
+    () => costUsd(pricing, displayTokens, expectedOutputTokens).totalUsd,
+    [pricing, displayTokens, expectedOutputTokens],
+  );
+
+  const onPickPreset = (preset: ExamplePreset) => {
+    setText(preset.text);
+    textareaRef.current?.focus();
+  };
+
+  const onLoadScenario = (s: SavedScenario) => {
+    setText(s.text);
+    setExpectedOutputTokens(s.outputTokens);
+    if (!lockModel) setModel(s.modelId);
+  };
+
   const gridClass = lockModel
     ? 'grid grid-cols-1 gap-4 sm:grid-cols-[auto_auto] sm:items-end sm:justify-start'
     : 'grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end';
 
   return (
-    <section id="calculator" className="flex flex-col gap-6">
+    <section id="calculator" className="flex flex-col gap-8">
       <div className={gridClass}>
         {!lockModel && (
           <div id="models">
@@ -112,7 +144,7 @@ export function Calculator({
           <label
             htmlFor={outputId}
             title="How long you expect the model's reply to be. Used for the output-cost estimate."
-            className="text-xs uppercase tracking-wide text-(--text-muted)"
+            className="text-eyebrow text-(--text-muted)"
           >
             Expected response (output tokens)
           </label>
@@ -126,7 +158,9 @@ export function Calculator({
               value={expectedOutputTokens}
               onChange={(e) => {
                 const next = Number.parseInt(e.target.value, 10);
-                const clamped = Number.isFinite(next) ? Math.max(0, Math.min(next, MAX_OUTPUT_TOKENS)) : 0;
+                const clamped = Number.isFinite(next)
+                  ? Math.max(0, Math.min(next, MAX_OUTPUT_TOKENS))
+                  : 0;
                 setExpectedOutputTokens(clamped);
               }}
               className="w-28 rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-sm tabular-nums text-(--text) focus:border-(--accent) focus:outline-none"
@@ -155,20 +189,14 @@ export function Calculator({
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-3">
-          <label
-            htmlFor={promptId}
-            className="text-xs uppercase tracking-wide text-(--text-muted)"
-          >
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <label htmlFor={promptId} className="text-eyebrow text-(--text-muted)">
             Prompt
           </label>
-          <div className="flex items-center gap-3">
-            <span
-              className="inline-flex items-center gap-1.5 text-xs text-(--text-muted)"
-              aria-label="Privacy"
-            >
-              <span aria-hidden>🔒</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 text-xs text-(--text-muted)">
+              <LockIcon className="text-(--accent-2)" />
               Client-side. Never uploaded.
             </span>
             <button
@@ -183,6 +211,7 @@ export function Calculator({
         </div>
         <textarea
           id={promptId}
+          ref={textareaRef}
           rows={12}
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -192,11 +221,11 @@ export function Calculator({
           aria-describedby={promptMetaId}
           // Per §6.2 — Clarity must mask all prompt input. The ResultCard masks cost totals.
           data-clarity-mask="true"
-          className="input-prompt min-h-48 w-full resize-y rounded-xl border border-(--border) bg-(--surface) p-4 text-sm leading-6 text-(--text) placeholder:text-(--text-muted)/60 focus:border-(--accent) focus:outline-none"
+          className="input-prompt min-h-48 w-full resize-y rounded-xl border border-(--border) bg-(--surface) p-4 text-sm leading-6 text-(--text) placeholder:text-(--text-faint) focus:border-(--accent) focus:outline-none"
         />
         <div
           id={promptMetaId}
-          className="flex items-center justify-between text-xs text-(--text-muted)"
+          className="flex items-center justify-between text-xs text-(--text-faint)"
         >
           <span>
             {text.length.toLocaleString('en-US')} / {MAX_INPUT_CHARS.toLocaleString('en-US')}{' '}
@@ -205,7 +234,7 @@ export function Calculator({
               <span className="ml-2 inline-flex items-center gap-1.5 text-(--accent)">
                 <span
                   aria-hidden
-                  className="inline-block h-2 w-2 animate-pulse rounded-full bg-(--accent)"
+                  className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-(--accent)"
                 />
                 tokenizing…
               </span>
@@ -222,16 +251,71 @@ export function Calculator({
             {displayError}
           </p>
         )}
+        {isEmpty && <ExampleChips onPick={onPickPreset} />}
       </div>
 
-      <ResultCard
-        model={pricing}
-        inputTokens={displayTokens}
-        outputTokens={expectedOutputTokens}
-        approx={approx}
+      <div id={resultId}>
+        <ResultCard
+          model={pricing}
+          inputTokens={displayTokens}
+          outputTokens={expectedOutputTokens}
+          approx={approx}
+        />
+      </div>
+
+      {!lockModel && (
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => setCompareOpen((v) => !v)}
+            aria-expanded={compareOpen}
+            className="inline-flex w-fit items-center gap-2 rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-sm text-(--text-muted) hover:border-(--accent) hover:text-(--text)"
+          >
+            <CompareIcon className="text-(--accent)" />
+            {compareOpen ? 'Hide comparison' : 'Compare across all models'}
+          </button>
+          {compareOpen && (
+            <CompareTable
+              text={text}
+              outputTokens={expectedOutputTokens}
+              selectedModelId={model}
+              onSelect={(next) => {
+                events.modelChanged(model, next);
+                setModel(next);
+              }}
+            />
+          )}
+        </div>
+      )}
+
+      <SavedScenarios
+        currentText={text}
+        currentModelId={model}
+        currentOutputTokens={expectedOutputTokens}
+        onLoad={onLoadScenario}
       />
 
+      <PrivacyReceipts />
+
       <AffiliateSlot placement="result-below-total" />
+
+      <MobileTotalBar
+        total={formatUsd(totalUsd)}
+        modelLabel={pricing.label}
+        visible={!isEmpty}
+        observeId={resultId}
+      />
     </section>
   );
+}
+
+function formatUsd(n: number) {
+  if (n === 0) return '$0.00';
+  if (n < 0.01) return '<$0.01';
+  if (n < 1) return `$${n.toFixed(3)}`;
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 2,
+  }).format(n);
 }

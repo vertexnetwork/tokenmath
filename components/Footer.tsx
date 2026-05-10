@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { events } from '@/lib/analytics';
+import { ExternalLinkIcon, XIcon } from './icons';
 
 type SisterSite = {
   name: string;
@@ -58,6 +59,11 @@ export function Footer() {
           <li>
             <Link href="/pricing-data" className="hover:text-(--text)">
               Pricing data
+            </Link>
+          </li>
+          <li>
+            <Link href="/changelog" className="hover:text-(--text)">
+              Changelog
             </Link>
           </li>
           <li>
@@ -126,7 +132,7 @@ function VertexLink() {
             onClick={() => setOpen(false)}
             className="-mr-2 -mt-1 inline-flex h-8 w-8 items-center justify-center rounded-md text-(--text-muted) hover:bg-(--bg) hover:text-(--text)"
           >
-            <span aria-hidden>×</span>
+            <XIcon />
           </button>
         </div>
         <ul className="divide-y divide-(--border)">
@@ -140,7 +146,10 @@ function VertexLink() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-medium">{site.name}</span>
-                  <span className="text-xs text-(--text-muted)">{new URL(site.href).host}</span>
+                  <span className="inline-flex items-center gap-1 text-xs text-(--text-muted)">
+                    {new URL(site.href).host}
+                    <ExternalLinkIcon className="opacity-60" />
+                  </span>
                 </div>
                 <p className="mt-1 text-xs text-(--text-muted)">{site.blurb}</p>
               </a>

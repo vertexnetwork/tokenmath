@@ -30,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    {
+      url: new URL('/changelog', SITE_URL).toString(),
+      lastModified: today,
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
   ];
 
   const modelRoutes: MetadataRoute.Sitemap = listModelSlugs().map((slug) => ({

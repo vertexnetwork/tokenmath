@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { buildMetadata } from '@/lib/seo';
 import { APPROX_RANGE } from '@/lib/pricing';
 
@@ -13,18 +14,22 @@ export default function AboutPage() {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10 sm:py-16"
     >
-      <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
-        <h1>About tokenmath</h1>
+      <header className="flex flex-col gap-3">
+        <p className="text-eyebrow text-(--accent)">About</p>
+        <h1 className="text-display-lg">A small, opinionated tool.</h1>
+      </header>
 
-        <p>
-          <strong>tokenmath</strong> is a calculator for two questions every team building with
-          Anthropic Claude, Google Gemini, or OpenAI&apos;s GPT family ends up asking: how many
-          tokens is this prompt, and what is it going to cost? It exists because answering those
-          questions shouldn&apos;t require pasting your prompt into someone else&apos;s server.
-        </p>
+      <p className="font-serif text-xl leading-relaxed text-(--text)">
+        <strong className="font-serif">tokenmath</strong> is a calculator for two questions every
+        team building with Anthropic Claude, Google Gemini, or OpenAI&apos;s GPT family ends up
+        asking: how many tokens is this prompt, and what is it going to cost? It exists because
+        answering those questions shouldn&apos;t require pasting your prompt into someone
+        else&apos;s server.
+      </p>
 
+      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
         <h2>How it works</h2>
 
         <p>
@@ -49,19 +54,21 @@ export default function AboutPage() {
         <ul>
           <li>
             <strong>Your prompt never leaves your browser.</strong> There is no server endpoint that
-            ever receives prompt text. The only serverless function on this site is
+            ever receives prompt text. The only serverless function on this site is{' '}
             <code>/api/og</code> — used to render social preview images — and it only accepts two
             short query strings used in the OG card itself.
           </li>
           <li>
             <strong>Analytics are aggregate.</strong> We use Vercel Web Analytics for page-level
             metrics and Microsoft Clarity for session replay; both are configured to mask the prompt
-            textarea and cost totals. See the <a href="/privacy">privacy policy</a> for specifics.
+            textarea and cost totals. See the <Link href="/privacy">privacy policy</Link> for
+            specifics, or the <Link href="/#calculator">verify-privacy panel</Link> on the
+            calculator for a live tally.
           </li>
           <li>
             <strong>Pricing data is dated.</strong> Every model carries a <code>dataAsOf</code>{' '}
             stamp showing when we last verified its rate against the vendor&apos;s public pricing
-            page. See <a href="/pricing-data">pricing data</a> for the current table.
+            page. See <Link href="/pricing-data">pricing data</Link> for the current table.
           </li>
         </ul>
 
@@ -73,6 +80,7 @@ export default function AboutPage() {
             Vertex Network
           </a>{' '}
           — a small set of developer + creator tools sharing a common stack and design language.
+          For a running list of what&apos;s shipped, see the <Link href="/changelog">changelog</Link>.
         </p>
       </article>
     </main>

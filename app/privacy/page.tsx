@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { buildMetadata } from '@/lib/seo';
 import { PRIVACY_UPDATED } from '@/lib/pricing';
 
@@ -17,10 +18,13 @@ export default function PrivacyPage() {
       tabIndex={-1}
       className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
     >
-      <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
-        <h1>Privacy</h1>
-        <p className="text-sm text-(--text-muted)">Last updated: {updated}</p>
+      <header className="flex flex-col gap-3">
+        <p className="text-eyebrow text-(--accent)">Privacy</p>
+        <h1 className="text-display-lg">What we collect, and what we don&apos;t.</h1>
+        <p className="text-sm text-(--text-faint)">Last updated: {updated}</p>
+      </header>
 
+      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
         <h2>What we collect</h2>
 
         <p>
@@ -55,13 +59,20 @@ export default function PrivacyPage() {
           </li>
         </ul>
 
-        <h2>Cookies</h2>
+        <h2>Cookies and storage</h2>
 
         <p>
           The site itself sets no cookies. Vercel Analytics and Microsoft Clarity may set
           first-party cookies for session correlation. If we later enable advertising (currently
           disabled), the ad provider may set additional cookies; we will update this page when that
           happens.
+        </p>
+
+        <p>
+          The <strong>Saved scenarios</strong> feature stores the prompts you explicitly save in
+          your browser&apos;s <code>localStorage</code>. They never leave your device. You can
+          delete them at any time from the Saved scenarios panel on the calculator, or clear your
+          browser&apos;s site data.
         </p>
 
         <h2>Third parties</h2>
@@ -88,10 +99,19 @@ export default function PrivacyPage() {
           Clarity: 13 months at time of writing).
         </p>
 
+        <h2>Verify it for yourself</h2>
+
+        <p>
+          The <Link href="/#calculator">Verify privacy panel</Link> on the calculator shows live counters
+          for outgoing requests, cookies, and localStorage keys. Open DevTools → Network and type
+          into the calculator: no request body should ever contain your prompt text.
+        </p>
+
         <h2>Contact</h2>
 
         <p>
-          For privacy questions, email <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a>.
+          For privacy questions, email{' '}
+          <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a>.
         </p>
       </article>
     </main>

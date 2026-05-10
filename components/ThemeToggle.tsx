@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { events } from '@/lib/analytics';
+import { MoonIcon, SunIcon } from './icons';
 
 type Theme = 'dark' | 'light';
 
@@ -51,9 +52,7 @@ export function ThemeToggle() {
       onClick={toggle}
       className="inline-flex h-9 w-9 items-center justify-center rounded-md text-(--text-muted) hover:bg-(--surface) hover:text-(--text)"
     >
-      <span aria-hidden className="text-base leading-none">
-        {theme === 'dark' ? '☀' : '☾'}
-      </span>
+      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }

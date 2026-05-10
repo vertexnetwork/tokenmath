@@ -1,43 +1,102 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
-/* Per §3.2 — design tokens. Tailwind v4 reads these via @theme. */
+/*
+ * Editorial Quiet design tokens.
+ *
+ * The dark palette is warm-dark (not pure black/white) with three surface tiers so the
+ * calculator visibly rises off the page. Light is a designed cream/paper palette, not a
+ * naive #FFF inversion. `--gold` is reserved for one role only: the answer (total cost).
+ */
 @theme {
-  /* Brand palette */
   --color-bg: #0a0a0b;
-  --color-surface: #15161a;
-  --color-border: #26272b;
+  --color-surface: #131418;
+  --color-surface-2: #1b1c21;
+  --color-border: #22232a;
+  --color-border-strong: #2e2f37;
   --color-text: #e7e7ea;
   --color-text-muted: #9c9ca3;
-  --color-accent: #a78bfa;
+  --color-text-faint: #6b6c74;
+  --color-accent: #b4a0f5;
   --color-accent-2: #34d399;
+  --color-gold: #e5c07b;
 
-  /* Type — UI: Inter, Mono: Geist Mono (loaded via next/font in app/layout.tsx) */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, 'Times New Roman', serif;
 
-  /* Container max width */
   --container-app: 1100px;
+  --container-prose: 720px;
 }
 
-/* Dark by default per §3.2; the .light class on <html> opts into the light palette. */
 :root,
 html.dark {
   color-scheme: dark;
   --bg: var(--color-bg);
   --surface: var(--color-surface);
+  --surface-2: var(--color-surface-2);
   --border: var(--color-border);
+  --border-strong: var(--color-border-strong);
   --text: var(--color-text);
   --text-muted: var(--color-text-muted);
+  --text-faint: var(--color-text-faint);
+  --accent: var(--color-accent);
+  --gold: var(--color-gold);
+
+  /* Tailwind Typography (`prose`) — bind both the regular and the inverted palette to our
+   * theme vars so `prose` adapts to dark/light without us toggling `prose-invert`. */
+  --tw-prose-body: var(--text-muted);
+  --tw-prose-headings: var(--text);
+  --tw-prose-lead: var(--text-muted);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--text);
+  --tw-prose-counters: var(--text-faint);
+  --tw-prose-bullets: var(--text-faint);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--text);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--text-faint);
+  --tw-prose-kbd: var(--text);
+  --tw-prose-code: var(--text);
+  --tw-prose-pre-code: var(--text);
+  --tw-prose-pre-bg: var(--surface);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+  --tw-prose-invert-body: var(--text-muted);
+  --tw-prose-invert-headings: var(--text);
+  --tw-prose-invert-lead: var(--text-muted);
+  --tw-prose-invert-links: var(--accent);
+  --tw-prose-invert-bold: var(--text);
+  --tw-prose-invert-counters: var(--text-faint);
+  --tw-prose-invert-bullets: var(--text-faint);
+  --tw-prose-invert-hr: var(--border);
+  --tw-prose-invert-quotes: var(--text);
+  --tw-prose-invert-quote-borders: var(--border);
+  --tw-prose-invert-captions: var(--text-faint);
+  --tw-prose-invert-kbd: var(--text);
+  --tw-prose-invert-code: var(--text);
+  --tw-prose-invert-pre-code: var(--text);
+  --tw-prose-invert-pre-bg: var(--surface);
+  --tw-prose-invert-th-borders: var(--border);
+  --tw-prose-invert-td-borders: var(--border);
 }
 
+/*
+ * Editorial light theme — warm cream/paper rather than #FFF. Designed to read as
+ * "letterpress on uncoated stock," not as a naïve inversion of dark mode.
+ */
 html.light {
   color-scheme: light;
-  --bg: #ffffff;
-  --surface: #f6f6f7;
-  --border: #e4e4e7;
-  --text: #15161a;
+  --bg: #faf9f6;
+  --surface: #f3f1ec;
+  --surface-2: #ebe8e0;
+  --border: #d9d4c8;
+  --border-strong: #b9b3a1;
+  --text: #1a1a1f;
   --text-muted: #5b5d66;
+  --text-faint: #888a90;
+  --accent: #6e57c7;
+  --gold: #8a6f1f;
 }
 
 html,
@@ -52,4 +111,74 @@ body {
 textarea.input-prompt,
 .result-num {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* Editorial display type — used for hero numbers and headings. Sized with clamp() so the
+ * single class scales smoothly from 375px to 1100px without per-breakpoint overrides. */
+.text-display-xl {
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.text-display-lg {
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+.text-display {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.text-eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* The single accented numeric — reserved for the headline answer. Mono, tabular, gold,
+ * with the kerning loosened slightly so wide numbers don't read as cramped. */
+.result-hero {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+  font-feature-settings: 'zero' 1;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+
+/* Selection — subtle, on-brand. */
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--text);
+}
+
+/* Focus rings — quieter than browser default but still meeting WCAG 2.1 1.4.11. */
+:where(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Hairline rule used between editorial sections. Avoids 1px shimmer on hi-DPI by using
+ * a small inline-shadow trick rather than a border. */
+.rule {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Visually-hidden helper for screen-reader-only labels in compact UI clusters. */
+.sr-only-on-load {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

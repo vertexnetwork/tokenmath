@@ -15,9 +15,15 @@
 - [GPT-4.1](https://tokenmath.dev/token-calculator/openai-gpt-4-1): tokens + USD cost
 - [GPT-4.1 Mini](https://tokenmath.dev/token-calculator/openai-gpt-4-1-mini): tokens + USD cost
 
+## Features
+
+- [Home calculator](https://tokenmath.dev/): paste a prompt, see token count + USD cost. Compare mode tokenizes against every supported model in one tap.
+- [Models index](https://tokenmath.dev/models): every supported model with vendor filters, sort controls, and multi-select side-by-side comparison.
+- [Pricing data](https://tokenmath.dev/pricing-data): every rate dated and linked to the vendor's public pricing page.
+- [Changelog](https://tokenmath.dev/changelog): what shipped and when.
+
 ## Reference
 
-- [Pricing data sources](https://tokenmath.dev/pricing-data)
 - [Privacy policy](https://tokenmath.dev/privacy)
 - [About](https://tokenmath.dev/about)
 - [Full reference (machine-readable)](https://tokenmath.dev/llms-full.txt)

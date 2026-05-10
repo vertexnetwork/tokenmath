@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Geist_Mono } from 'next/font/google';
+import { Inter, Geist_Mono, Source_Serif_4 } from 'next/font/google';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AdsProviderScript } from '@/components/AdsProviderScript';
 import { Analytics } from '@/components/Analytics';
+import { KeyboardHelp } from '@/components/KeyboardHelp';
 import { buildMetadata, organizationJsonLd, renderJsonLd, SITE_URL } from '@/lib/seo';
 import './globals.css';
 
@@ -17,6 +18,15 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
+});
+
+// Source Serif 4 is the editorial accent — used for serif emphasis on About / Changelog
+// and a few editorial headings. Loaded with display:swap so it doesn't block FCP.
+const sourceSerif = Source_Serif_4({
+  variable: '--font-source-serif',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${inter.variable} ${geistMono.variable} ${sourceSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -69,6 +79,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <KeyboardHelp />
         <AdsProviderScript />
         <Analytics />
         <script

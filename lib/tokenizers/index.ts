@@ -9,7 +9,7 @@
  *   stays responsive.
  */
 
-import type { ModelId } from '@/lib/pricing';
+import { MODELS, type ModelId } from '@/lib/pricing';
 import { calibrationFactor } from './calibration';
 import { countClaudeTokens } from './claude';
 import { countGeminiTokens } from './gemini';
@@ -120,4 +120,28 @@ async function countInWorker(model: ModelId, text: string): Promise<TokenCount> 
   }
   const tokens = applyCalibration(model, response.tokens);
   return { tokens, ms: response.ms, source: response.source, approx: isApprox(model) };
+}
+
+/**
+ * Tokenize once per *vocab* (cl100k for Claude, o200k via gpt-tokenizer for OpenAI,
+ * o200k via js-tiktoken for Gemini), then apply per-model calibration for all 10 models.
+ * Lets the Compare-mode table render without re-tokenizing the prompt 10 times.
+ */
+export async function countAllModels(text: string): Promise<Map<ModelId, number>> {
+  const result = new Map<ModelId, number>();
+  if (text.length === 0) {
+    for (const m of MODELS) result.set(m.id, 0);
+    return result;
+  }
+  const [claudeRaw, openaiRaw, geminiRaw] = await Promise.all([
+    countClaudeTokens(text),
+    countOpenAITokens(text),
+    countGeminiTokens(text),
+  ]);
+  for (const m of MODELS) {
+    const family = familyOf(m.id);
+    const raw = family === 'claude' ? claudeRaw : family === 'openai' ? openaiRaw : geminiRaw;
+    result.set(m.id, applyCalibration(m.id, raw));
+  }
+  return result;
 }
