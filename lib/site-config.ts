@@ -71,6 +71,11 @@ export const siteConfig = {
         { href: "/about", label: "About" },
         { href: "/changelog", label: "Changelog" },
         { href: "/network", label: "Vertex Network" },
+        {
+          href: "https://github.com/vertexnetwork/tokenmath",
+          label: "Source ↗",
+          external: true,
+        },
       ],
       legal: [
         { href: "/privacy", label: "Privacy" },

@@ -4,6 +4,23 @@ import { VertexFooterLink } from "./VertexFooterLink";
 
 const YEAR = new Date().getFullYear();
 
+type FooterItem = { href: string; label: string; external?: boolean };
+
+function FooterEntry({ item }: { item: FooterItem }) {
+  if (item.external) {
+    return (
+      <a href={item.href} target="_blank" rel="noopener" className="hover:text-(--text)">
+        {item.label}
+      </a>
+    );
+  }
+  return (
+    <Link href={item.href} className="hover:text-(--text)">
+      {item.label}
+    </Link>
+  );
+}
+
 export function Footer() {
   const { product, company, legal } = siteConfig.nav.footer;
 
@@ -16,23 +33,17 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
           <FooterColumn label="Product">
             {product.map((item) => (
-              <Link key={item.href} href={item.href} className="hover:text-(--text)">
-                {item.label}
-              </Link>
+              <FooterEntry key={item.href} item={item} />
             ))}
           </FooterColumn>
           <FooterColumn label="Company">
             {company.map((item) => (
-              <Link key={item.href} href={item.href} className="hover:text-(--text)">
-                {item.label}
-              </Link>
+              <FooterEntry key={item.href} item={item} />
             ))}
           </FooterColumn>
           <FooterColumn label="Legal">
             {legal.map((item) => (
-              <Link key={item.href} href={item.href} className="hover:text-(--text)">
-                {item.label}
-              </Link>
+              <FooterEntry key={item.href} item={item} />
             ))}
           </FooterColumn>
           <FooterColumn label="Contact">

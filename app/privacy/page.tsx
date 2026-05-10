@@ -108,6 +108,14 @@ export default function PrivacyPage() {
           and type into the calculator: no request body should ever contain your prompt text.
         </p>
 
+        <p>
+          Or read the source —{" "}
+          <a href={siteConfig.repoUrl} target="_blank" rel="noopener">
+            {siteConfig.repoUrl.replace("https://", "")}
+          </a>{" "}
+          — and audit the privacy contract directly.
+        </p>
+
         <h2>Contact</h2>
 
         <p>
