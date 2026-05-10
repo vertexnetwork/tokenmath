@@ -32,7 +32,6 @@ export function Calculator({
   const promptMetaId = useId();
   const modelId = useId();
   const outputId = useId();
-  const outputHelpId = useId();
 
   const [text, setText] = useState('');
   const [model, setModel] = useState<ModelId>(defaultModelId);
@@ -90,8 +89,8 @@ export function Calculator({
   const pricing = getModelById(model);
 
   const gridClass = lockModel
-    ? 'grid grid-cols-1 gap-4 md:grid-cols-[auto_auto] md:items-end md:justify-start'
-    : 'grid grid-cols-1 gap-4 md:grid-cols-[1fr_auto_auto] md:items-end';
+    ? 'grid grid-cols-1 gap-4 sm:grid-cols-[auto_auto] sm:items-end sm:justify-start'
+    : 'grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end';
 
   return (
     <section id="calculator" className="flex flex-col gap-6">
@@ -111,12 +110,10 @@ export function Calculator({
         <div className="flex flex-col gap-2">
           <label
             htmlFor={outputId}
+            title="How long you expect the model's reply to be. Used for the output-cost estimate."
             className="text-xs uppercase tracking-wide text-(--text-muted)"
           >
-            Expected response{' '}
-            <span className="lowercase tracking-normal text-(--text-muted)/70">
-              (output tokens)
-            </span>
+            Expected response (output tokens)
           </label>
           <div className="flex items-center gap-2">
             <input
@@ -126,13 +123,12 @@ export function Calculator({
               max={MAX_OUTPUT_TOKENS}
               step={64}
               value={expectedOutputTokens}
-              aria-describedby={outputHelpId}
               onChange={(e) => {
                 const next = Number.parseInt(e.target.value, 10);
                 const clamped = Number.isFinite(next) ? Math.max(0, Math.min(next, MAX_OUTPUT_TOKENS)) : 0;
                 setExpectedOutputTokens(clamped);
               }}
-              className="w-32 rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-sm tabular-nums text-(--text) focus:border-(--accent) focus:outline-none"
+              className="w-28 rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-sm tabular-nums text-(--text) focus:border-(--accent) focus:outline-none"
             />
             <div className="flex gap-1" role="group" aria-label="Response length presets">
               {OUTPUT_PRESETS.map((n) => {
@@ -155,35 +151,34 @@ export function Calculator({
               })}
             </div>
           </div>
-          <p id={outputHelpId} className="text-xs text-(--text-muted)">
-            How long you expect the model&apos;s reply to be. Used for the output-cost estimate.
-          </p>
         </div>
-        <span
-          className="inline-flex h-9 items-center gap-2 rounded-full border border-(--border) bg-(--bg) px-3 text-xs text-(--text-muted)"
-          aria-label="Privacy"
-        >
-          <span aria-hidden>🔒</span>
-          Client-side. Never uploaded.
-        </span>
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-3">
           <label
             htmlFor={promptId}
             className="text-xs uppercase tracking-wide text-(--text-muted)"
           >
             Prompt
           </label>
-          <button
-            type="button"
-            onClick={() => setText('')}
-            disabled={isEmpty}
-            className="text-xs text-(--text-muted) underline-offset-4 hover:text-(--text) hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
-          >
-            Clear
-          </button>
+          <div className="flex items-center gap-3">
+            <span
+              className="inline-flex items-center gap-1.5 text-xs text-(--text-muted)"
+              aria-label="Privacy"
+            >
+              <span aria-hidden>🔒</span>
+              Client-side. Never uploaded.
+            </span>
+            <button
+              type="button"
+              onClick={() => setText('')}
+              disabled={isEmpty}
+              className="text-xs text-(--text-muted) underline-offset-4 hover:text-(--text) hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
+            >
+              Clear
+            </button>
+          </div>
         </div>
         <textarea
           id={promptId}
