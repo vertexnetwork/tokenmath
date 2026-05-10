@@ -40,9 +40,10 @@ export const viewport: Viewport = {
   colorScheme: 'dark light',
 };
 
-// Runs before React hydrates to set html.{dark|light} from localStorage (or system preference)
-// and avoid a flash of the wrong theme. Kept inline + minified manually so it's small.
-const THEME_BOOT_SCRIPT = `(function(){try{var s=localStorage.getItem('theme');var t=s==='light'||s==='dark'?s:(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');var c=document.documentElement.classList;c.toggle('dark',t==='dark');c.toggle('light',t==='light');}catch(e){}})();`;
+// Runs before React hydrates to set html.{dark|light} from localStorage and avoid a flash
+// of the wrong theme. Dark is the brand default — system `prefers-color-scheme` is ignored;
+// a user lands on light only if they explicitly toggled and we persisted that choice.
+const THEME_BOOT_SCRIPT = `(function(){try{var s=localStorage.getItem('theme');var t=s==='light'?'light':'dark';var c=document.documentElement.classList;c.toggle('dark',t==='dark');c.toggle('light',t==='light');}catch(e){}})();`;
 
 export default function RootLayout({
   children,
