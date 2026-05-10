@@ -21,7 +21,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Pull network.json
         run: curl -fsSL "$HUB_RAW/config/network.json" -o public/network.json
@@ -39,7 +39,7 @@ jobs:
         run: curl -fsSL "$HUB_RAW/crawler/humans.txt" -o public/humans.txt
 
       - name: Open PR if anything changed
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore(hub): sync canonical artifacts from vertex-network-hub"
           title: "chore(hub): sync from vertex-network-hub"

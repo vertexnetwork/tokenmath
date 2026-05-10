@@ -13,6 +13,10 @@ export interface ChangelogEntry {
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     "date": "2026-05-10",
+    "title": "Ship Vertex Network spec compliance (P0 + P1 + P2)"
+  },
+  {
+    "date": "2026-05-10",
     "title": "Auto-generate from git log + render titles only"
   },
   {
@@ -121,4 +125,4 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   }
 ] as const;
 
-export const CHANGELOG_GENERATED_AT = '2026-05-10T08:30:01.991Z';
+export const CHANGELOG_GENERATED_AT = '2026-05-10T08:39:41.902Z';
