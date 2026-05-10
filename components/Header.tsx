@@ -12,7 +12,6 @@ const NAV: NavItem[] = [
   { href: '/#calculator', label: 'Calculator' },
   { href: '/models', label: 'Models' },
   { href: '/pricing-data', label: 'Pricing' },
-  { href: '/changelog', label: 'Changelog' },
   { href: '/about', label: 'About' },
 ];
 

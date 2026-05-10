@@ -41,40 +41,59 @@ const SISTER_SITES: SisterSite[] = [
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-(--border)">
-      <div className="mx-auto flex w-full max-w-(--container-app) flex-col gap-4 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex w-full max-w-(--container-app) flex-col gap-6 px-6 py-10 sm:py-12">
         <p className="text-xs text-(--text-muted)">
           tokenmath — accurate token math for Claude, Gemini, and OpenAI.
         </p>
-        <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-(--text-muted)">
-          <li>
-            <Link href="/about" className="hover:text-(--text)">
-              About
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
+          <FooterColumn label="Tool">
+            <Link href="/#calculator" className="hover:text-(--text)">
+              Calculator
             </Link>
-          </li>
-          <li>
-            <Link href="/privacy" className="hover:text-(--text)">
-              Privacy
+            <Link href="/models" className="hover:text-(--text)">
+              Models
             </Link>
-          </li>
-          <li>
             <Link href="/pricing-data" className="hover:text-(--text)">
               Pricing data
             </Link>
-          </li>
-          <li>
+          </FooterColumn>
+          <FooterColumn label="Project">
             <Link href="/changelog" className="hover:text-(--text)">
               Changelog
             </Link>
-          </li>
-          <li>
+            <Link href="/about" className="hover:text-(--text)">
+              About
+            </Link>
+          </FooterColumn>
+          <FooterColumn label="Legal">
+            <Link href="/privacy" className="hover:text-(--text)">
+              Privacy
+            </Link>
+          </FooterColumn>
+          <FooterColumn label="Contact">
             <a href="mailto:hello@tokenmath.dev" className="hover:text-(--text)">
               hello@tokenmath.dev
             </a>
-          </li>
-        </ul>
+          </FooterColumn>
+        </div>
       </div>
       <VertexLink />
     </footer>
+  );
+}
+
+function FooterColumn({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      <span className="text-eyebrow text-(--text-faint)">{label}</span>
+      <div className="flex flex-col gap-1.5 text-xs text-(--text-muted)">{children}</div>
+    </div>
   );
 }
 
