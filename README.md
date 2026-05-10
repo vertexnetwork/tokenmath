@@ -25,17 +25,17 @@ Open http://localhost:3000.
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `pnpm dev` | Start the Turbopack dev server |
-| `pnpm build` | Production build (runs `prebuild` → `next build`) |
-| `pnpm start` | Serve the production build |
-| `pnpm lint` | ESLint (Next + Prettier rules) |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm test` | Vitest unit tests |
-| `pnpm test:e2e` | Playwright smoke tests |
-| `pnpm format` | Prettier write |
-| `pnpm format:check` | Prettier check (CI) |
+| Command             | What it does                                      |
+| ------------------- | ------------------------------------------------- |
+| `pnpm dev`          | Start the Turbopack dev server                    |
+| `pnpm build`        | Production build (runs `prebuild` → `next build`) |
+| `pnpm start`        | Serve the production build                        |
+| `pnpm lint`         | ESLint (Next + Prettier rules)                    |
+| `pnpm typecheck`    | `tsc --noEmit`                                    |
+| `pnpm test`         | Vitest unit tests                                 |
+| `pnpm test:e2e`     | Playwright smoke tests                            |
+| `pnpm format`       | Prettier write                                    |
+| `pnpm format:check` | Prettier check (CI)                               |
 
 ## Project layout
 
@@ -67,6 +67,7 @@ pnpm dlx vercel link        # Link this directory to a Vercel project
 ```
 
 Project settings:
+
 - **Framework preset**: Next.js (auto-detected)
 - **Node version**: 20.x
 - **Build command**: `pnpm build` (default)
@@ -78,11 +79,11 @@ Project settings:
 Set these in **Project Settings → Environment Variables** for both Production + Preview.
 The full list is in [`.env.example`](.env.example); minimum viable set:
 
-| Var | Value | Notes |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://tokencount.ai` | Required. |
-| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1` | Optional. Default on. |
-| `NEXT_PUBLIC_AD_PROVIDER` | `none` | Switch to `adsense` or `mediavine` post-approval. |
+| Var                            | Value                   | Notes                                             |
+| ------------------------------ | ----------------------- | ------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`         | `https://tokencount.ai` | Required.                                         |
+| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1`                     | Optional. Default on.                             |
+| `NEXT_PUBLIC_AD_PROVIDER`      | `none`                  | Switch to `adsense` or `mediavine` post-approval. |
 
 ### 3. Domains
 
@@ -94,6 +95,7 @@ The full list is in [`.env.example`](.env.example); minimum viable set:
 ### 4. Branch protection
 
 `main` is the production branch. Recommended GitHub branch protection on `main`:
+
 - Require PR
 - Require CI green (the `Lint · Typecheck · Test · Build` job in
   [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
