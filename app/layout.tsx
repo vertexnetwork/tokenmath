@@ -40,6 +40,10 @@ export const viewport: Viewport = {
   colorScheme: 'dark light',
 };
 
+// Runs before React hydrates to set html.{dark|light} from localStorage (or system preference)
+// and avoid a flash of the wrong theme. Kept inline + minified manually so it's small.
+const THEME_BOOT_SCRIPT = `(function(){try{var s=localStorage.getItem('theme');var t=s==='light'||s==='dark'?s:(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');var c=document.documentElement.classList;c.toggle('dark',t==='dark');c.toggle('light',t==='light');}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,7 +55,16 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
+        <a
+          href="#main"
+          className="sr-only z-50 rounded-md bg-(--accent) px-3 py-2 text-sm font-medium text-(--bg) focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
+        >
+          Skip to main content
+        </a>
         <Header />
         {children}
         <Footer />

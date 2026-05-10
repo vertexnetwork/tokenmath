@@ -78,7 +78,11 @@ export default async function ModelPage(props: { params: Promise<{ model: string
   const faqs = Mod.frontmatter?.faqs ?? [];
 
   return (
-    <main className="mx-auto flex w-full max-w-(--container-app) flex-1 flex-col gap-6 px-6 py-10 sm:py-16">
+    <main
+      id="main"
+      tabIndex={-1}
+      className="mx-auto flex w-full max-w-(--container-app) flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+    >
       <nav aria-label="Breadcrumb" className="text-xs text-(--text-muted)">
         <ol className="flex flex-wrap items-center gap-2">
           <li>

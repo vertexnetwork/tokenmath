@@ -135,7 +135,7 @@ function VertexLink() {
               <a
                 href={site.href}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className="block px-5 py-4 hover:bg-(--bg)"
               >
                 <div className="flex items-center justify-between gap-3">

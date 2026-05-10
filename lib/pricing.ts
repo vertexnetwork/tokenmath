@@ -259,3 +259,35 @@ export function latestDataAsOf(): string {
       .at(-1) ?? ''
   );
 }
+
+/**
+ * Approximation drift, per-vendor. Single source of truth for the "how accurate is this?"
+ * copy that surfaces in ResultCard, Models page, About page, and pSEO MDX. If the
+ * tokenizer or calibration changes, update here and every page reflects it.
+ */
+export const APPROX_DRIFT: Record<Vendor, { label: string; pill: string; blurb: string }> = {
+  anthropic: {
+    label: '±2%',
+    pill: '±2% approx',
+    blurb: 'Approximated with cl100k_base — drift typically <2% on English and code.',
+  },
+  google: {
+    label: '±3%',
+    pill: '±3% approx',
+    blurb: 'Approximated with o200k_base; drift typically ~3% on English and code.',
+  },
+  openai: {
+    label: 'exact',
+    pill: 'exact',
+    blurb: 'Exact tokenization via the canonical OpenAI vocab (o200k_base).',
+  },
+};
+
+/** Headline drift range across all approximated vendors. */
+export const APPROX_RANGE = '±2–3%';
+
+/**
+ * ISO date the privacy policy was last reviewed. Bump this when the policy text changes,
+ * not when the file is edited for unrelated reasons. Surfaced on /privacy.
+ */
+export const PRIVACY_UPDATED = '2026-05-09';

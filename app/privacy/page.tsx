@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
+import { PRIVACY_UPDATED } from '@/lib/pricing';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Privacy',
@@ -9,9 +10,13 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function PrivacyPage() {
-  const updated = '2026-05-09';
+  const updated = PRIVACY_UPDATED;
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16">
+    <main
+      id="main"
+      tabIndex={-1}
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+    >
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
         <h1>Privacy</h1>
         <p className="text-sm text-(--text-muted)">Last updated: {updated}</p>

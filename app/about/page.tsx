@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo';
+import { APPROX_RANGE } from '@/lib/pricing';
 
 export const metadata: Metadata = buildMetadata({
   title: 'About tokencount',
@@ -9,15 +10,19 @@ export const metadata: Metadata = buildMetadata({
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16">
+    <main
+      id="main"
+      tabIndex={-1}
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+    >
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
         <h1>About tokencount</h1>
 
         <p>
           <strong>tokencount</strong> is a calculator for two questions every team building with
-          Anthropic Claude or Google Gemini ends up asking: how many tokens is this prompt, and what
-          is it going to cost? It exists because answering those questions shouldn&apos;t require
-          pasting your prompt into someone else&apos;s server.
+          Anthropic Claude, Google Gemini, or OpenAI&apos;s GPT family ends up asking: how many
+          tokens is this prompt, and what is it going to cost? It exists because answering those
+          questions shouldn&apos;t require pasting your prompt into someone else&apos;s server.
         </p>
 
         <h2>How it works</h2>
@@ -31,12 +36,12 @@ export default function AboutPage() {
         </p>
 
         <p>
-          We treat tokenizers as approximations. Anthropic and Google don&apos;t ship official
-          client-side tokenizers for their current generation models, so we use the closest public
-          encodings — <code>cl100k_base</code> for Claude, <code>o200k_base</code> for Gemini — and
-          apply per-model calibration to nudge the result toward the vendor counts. In practice the
-          drift is well under 5% on typical English and code; treat the number as a budgeting
-          estimate, not a billing reconciliation.
+          OpenAI ships a canonical client-side tokenizer (<code>o200k_base</code>), so GPT-5 and
+          GPT-4.1 counts are exact. Anthropic and Google don&apos;t publish current client
+          tokenizers, so we approximate Claude with <code>cl100k_base</code> and Gemini with{' '}
+          <code>o200k_base</code>, applying per-model calibration to nudge the result toward the
+          vendor counts. In practice the drift is {APPROX_RANGE} on typical English and code; treat
+          those numbers as budgeting estimates, not billing reconciliations.
         </p>
 
         <h2>What we promise</h2>

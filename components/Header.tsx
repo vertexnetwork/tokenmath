@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
+import { ThemeToggle } from './ThemeToggle';
 
 type NavItem = { href: string; label: string; external?: boolean };
 
@@ -58,7 +59,7 @@ export function Header() {
           <span>tokencount</span>
         </Link>
 
-        <nav aria-label="Primary" className="hidden md:block">
+        <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
           <ul className="flex items-center gap-6 text-sm">
             {NAV.map((item) => (
               <li key={item.href}>
@@ -66,18 +67,22 @@ export function Header() {
               </li>
             ))}
           </ul>
+          <ThemeToggle />
         </nav>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={open}
-          aria-controls={dialogId}
-          onClick={() => setOpen(true)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
-        >
-          <HamburgerIcon open={false} />
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls={dialogId}
+            onClick={() => setOpen((prev) => !prev)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
+          >
+            <HamburgerIcon open={open} />
+          </button>
+        </div>
       </div>
 
       <dialog
@@ -114,18 +119,30 @@ export function Header() {
 }
 
 function NavLink({ item, mobile = false }: { item: NavItem; mobile?: boolean }) {
+  const pathname = usePathname();
+  const itemPath = item.href.split('#')[0] || '/';
+  const isActive = pathname === itemPath;
   const base = mobile
-    ? 'block rounded-md px-3 py-3 text-base text-(--text) hover:bg-(--bg)'
-    : 'text-(--text-muted) hover:text-(--text) transition-colors';
+    ? 'block rounded-md px-3 py-3 text-base hover:bg-(--bg)'
+    : 'transition-colors';
+  const stateClass = isActive ? 'text-(--text)' : 'text-(--text-muted) hover:text-(--text)';
+  const className = `${base} ${stateClass}`;
+  const ariaCurrent = isActive ? ('page' as const) : undefined;
   if (item.external) {
     return (
-      <a href={item.href} target="_blank" rel="noopener noreferrer" className={base}>
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        aria-current={ariaCurrent}
+      >
         {item.label}
       </a>
     );
   }
   return (
-    <Link href={item.href} className={base}>
+    <Link href={item.href} className={className} aria-current={ariaCurrent}>
       {item.label}
     </Link>
   );

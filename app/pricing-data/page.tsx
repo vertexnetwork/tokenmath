@@ -31,7 +31,11 @@ export default function PricingDataPage() {
   const vendors = Array.from(new Set(MODELS.map((m) => m.vendor)));
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16">
+    <main
+      id="main"
+      tabIndex={-1}
+      className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10 sm:py-16"
+    >
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-(--accent) prose-a:no-underline">
         <h1>Pricing data</h1>
 

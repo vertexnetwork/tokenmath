@@ -23,8 +23,12 @@ export function ModelPicker({ value, onChange, id }: ModelPickerProps) {
         {Object.entries(groupByVendor(MODELS)).map(([vendor, items]) => (
           <optgroup key={vendor} label={vendorLabel(vendor)}>
             {items.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.label} — ${m.inputUsdPerM}/${m.outputUsdPerM}/M
+              <option
+                key={m.id}
+                value={m.id}
+                aria-label={`${m.label}, input $${m.inputUsdPerM} per million tokens, output $${m.outputUsdPerM} per million tokens`}
+              >
+                {m.label} — ${m.inputUsdPerM} in / ${m.outputUsdPerM} out per 1M
               </option>
             ))}
           </optgroup>

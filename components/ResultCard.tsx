@@ -1,6 +1,8 @@
 'use client';
 
-import { costUsd, type ModelPricing } from '@/lib/pricing';
+import Link from 'next/link';
+import { useState } from 'react';
+import { APPROX_DRIFT, costUsd, MODELS, type ModelPricing } from '@/lib/pricing';
 
 interface ResultCardProps {
   model: ModelPricing;
@@ -12,6 +14,7 @@ interface ResultCardProps {
 export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultCardProps) {
   const { inputUsd, outputUsd, totalUsd } = costUsd(model, inputTokens, outputTokens);
   const overContext = inputTokens > model.contextWindow;
+  const drift = APPROX_DRIFT[model.vendor];
 
   return (
     <div className="rounded-xl border border-(--border) bg-(--surface) p-5">
@@ -20,9 +23,9 @@ export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultC
           {approx && (
             <span
               className="ml-2 inline-flex items-center rounded-full border border-(--border) px-2 py-0.5 text-[10px] uppercase tracking-wide text-(--text-muted)"
-              title="Approximate — vendor tokenizers are not published for current-gen Claude/Gemini"
+              title={`Approximate — ${drift.blurb}`}
             >
-              ±2% approx
+              {drift.pill}
             </span>
           )}
         </Stat>
@@ -35,13 +38,117 @@ export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultC
         <Stat label="Total" value={formatUsd(totalUsd)} accent dataMask="result-cost" />
       </div>
 
-      {overContext && (
-        <p className="mt-4 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-200">
-          Input exceeds {formatNumber(model.contextWindow)}-token context window for {model.label}.
-          The API will refuse the request.
+      <div className="mt-4 flex items-center justify-end">
+        <CopyButton
+          model={model}
+          inputTokens={inputTokens}
+          outputTokens={outputTokens}
+          inputUsd={inputUsd}
+          outputUsd={outputUsd}
+          totalUsd={totalUsd}
+        />
+      </div>
+
+      {overContext && <OverContextWarning model={model} inputTokens={inputTokens} />}
+    </div>
+  );
+}
+
+function OverContextWarning({
+  model,
+  inputTokens,
+}: {
+  model: ModelPricing;
+  inputTokens: number;
+}) {
+  // Find models with a window that fits the current input. Sort by smallest fitting window
+  // first (cheapest swap most often) and cap at three suggestions.
+  const alternatives = MODELS.filter(
+    (m) => m.id !== model.id && m.contextWindow >= inputTokens,
+  )
+    .sort((a, b) => a.contextWindow - b.contextWindow)
+    .slice(0, 3);
+
+  const overage = inputTokens - model.contextWindow;
+
+  return (
+    <div
+      role="alert"
+      aria-live="polite"
+      className="mt-4 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-200"
+    >
+      <p>
+        <strong>Over context window.</strong> Input is {formatNumber(inputTokens)} tokens — exceeds{' '}
+        {model.label}&apos;s {formatNumber(model.contextWindow)}-token limit by{' '}
+        {formatNumber(overage)}. The API will refuse the request.
+      </p>
+      {alternatives.length > 0 && (
+        <p className="mt-2 text-amber-100/90">
+          Fits in:{' '}
+          {alternatives.map((m, i) => (
+            <span key={m.id}>
+              <Link
+                href={`/token-calculator/${m.slug}`}
+                className="underline-offset-4 hover:underline"
+              >
+                {m.label} ({formatNumber(m.contextWindow)})
+              </Link>
+              {i < alternatives.length - 1 ? ', ' : '.'}
+            </span>
+          ))}
         </p>
       )}
     </div>
+  );
+}
+
+function CopyButton({
+  model,
+  inputTokens,
+  outputTokens,
+  inputUsd,
+  outputUsd,
+  totalUsd,
+}: {
+  model: ModelPricing;
+  inputTokens: number;
+  outputTokens: number;
+  inputUsd: number;
+  outputUsd: number;
+  totalUsd: number;
+}) {
+  const [copied, setCopied] = useState(false);
+  const disabled = inputTokens === 0;
+
+  const onClick = async () => {
+    if (disabled) return;
+    const summary = [
+      `${model.label}`,
+      `Input:  ${formatNumber(inputTokens)} tokens (${formatUsd(inputUsd)})`,
+      `Output: ${formatNumber(outputTokens)} tokens (${formatUsd(outputUsd)}, est.)`,
+      `Total:  ${formatUsd(totalUsd)}`,
+      `— tokencount.ai`,
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(summary);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard can fail in iframes / insecure contexts — silently no-op.
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label="Copy result summary"
+      className="inline-flex items-center gap-2 rounded-md border border-(--border) bg-(--bg) px-3 py-1.5 text-xs text-(--text-muted) hover:border-(--accent) hover:text-(--text) disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-(--border) disabled:hover:text-(--text-muted)"
+    >
+      <span aria-hidden>{copied ? '✓' : '⧉'}</span>
+      {copied ? 'Copied' : 'Copy summary'}
+    </button>
   );
 }
 
