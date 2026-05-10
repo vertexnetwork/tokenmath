@@ -82,7 +82,9 @@ export default function PricingDataPage() {
                 <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Input $/M</th>
                 <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Output $/M</th>
                 <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Context</th>
-                <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Verified</th>
+                <th className="whitespace-nowrap px-4 py-2 text-right text-xs uppercase tracking-wide">
+                  Verified
+                </th>
                 <th className="px-4 py-2 text-right text-xs uppercase tracking-wide">Source</th>
               </tr>
             </thead>
@@ -95,7 +97,9 @@ export default function PricingDataPage() {
                   <td className="px-4 py-3 text-right tabular-nums">
                     {m.contextWindow.toLocaleString('en-US')}
                   </td>
-                  <td className="px-4 py-3 text-right tabular-nums">{m.dataAsOf}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+                    {m.dataAsOf}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <a href={m.source} target="_blank" rel="noopener" className="text-(--accent)">
                       {new URL(m.source).host}
