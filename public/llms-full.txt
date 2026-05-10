@@ -73,6 +73,7 @@ Notes
 
 ## Changelog
 
+- 2026-05-10  Address all flagged audits across 6 LH reports + raise thresholds
 - 2026-05-10  Bump text-faint contrast + tap targets, relax LH threshold
 - 2026-05-10  Drop redundant pnpm version input (pnpm/action-setup@v6)
 - 2026-05-10  Ship Vertex Network spec compliance (P0 + P1 + P2)

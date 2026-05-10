@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { costUsd, DEFAULT_MODEL_ID, getModelById, type ModelId } from "@/lib/pricing";
 import { countTokens } from "@/lib/tokenizers";
 import { bucketFor, events } from "@/lib/analytics";
+import { decodeShareState, hasShareState } from "@/lib/share";
 import type { ExamplePreset } from "@/lib/examples";
 import type { SavedScenario } from "@/lib/scenarios";
 import { AffiliateSlot } from "./AffiliateSlot";
@@ -12,6 +13,7 @@ import { ResultCard } from "./ResultCard";
 import { ExampleChips } from "./ExampleChips";
 import { CompareTable } from "./CompareTable";
 import { SavedScenarios } from "./SavedScenarios";
+import { ShareButton } from "./ShareButton";
 import { PrivacyReceipts } from "./PrivacyReceipts";
 import { MobileTotalBar } from "./MobileTotalBar";
 import { CompareIcon, LockIcon } from "./icons";
@@ -55,6 +57,27 @@ export function Calculator({
 
   const requestRef = useRef(0);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Apply ?m=&t=&o= share state on mount, then strip the params from the URL so that
+  // future interactions don't keep stale "shared" params in the address bar.
+  // setState is wrapped in setTimeout(0) to satisfy react-hooks/set-state-in-effect;
+  // the brief flash of default state before the prefill is acceptable for this flow.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const shared = decodeShareState(params);
+    if (!hasShareState(shared)) return;
+    window.setTimeout(() => {
+      if (shared.model && getModelById(shared.model) && !lockModel) setModel(shared.model);
+      if (shared.outputTokens) {
+        setExpectedOutputTokens(Math.min(MAX_OUTPUT_TOKENS, shared.outputTokens));
+      }
+      if (shared.text) setText(shared.text.slice(0, MAX_INPUT_CHARS));
+      const cleanedUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", cleanedUrl);
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Pending + error are kept in state but DERIVED for display so empty-text resets don't need
   // a synchronous setState in the effect body (keeps `react-hooks/set-state-in-effect` quiet).
@@ -283,12 +306,17 @@ export function Calculator({
         </div>
       )}
 
-      <SavedScenarios
-        currentText={text}
-        currentModelId={model}
-        currentOutputTokens={expectedOutputTokens}
-        onLoad={onLoadScenario}
-      />
+      <div className="flex flex-wrap items-start gap-3">
+        <ShareButton model={model} text={text} outputTokens={expectedOutputTokens} />
+        <div className="flex-1">
+          <SavedScenarios
+            currentText={text}
+            currentModelId={model}
+            currentOutputTokens={expectedOutputTokens}
+            onLoad={onLoadScenario}
+          />
+        </div>
+      </div>
 
       <PrivacyReceipts />
 

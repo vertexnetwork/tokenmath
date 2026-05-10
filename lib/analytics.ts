@@ -41,4 +41,8 @@ export const events = {
   affiliateClick(provider: string, placement: AffiliatePlacement) {
     safeTrack("affiliate_click", { provider, placement });
   },
+  shareScenario(model: ModelId, includesPrompt: boolean) {
+    // Tracks share-button clicks; the prompt content itself is never sent to analytics.
+    safeTrack("share_scenario", { model, includesPrompt });
+  },
 };
