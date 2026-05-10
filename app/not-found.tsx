@@ -12,11 +12,11 @@ export default function NotFound() {
       <h1 className="text-display-lg">This page doesn&apos;t exist.</h1>
       <p className="max-w-prose text-base text-(--text-muted)">
         It may have moved or never existed. Head back to the{" "}
-        <Link href="/" className="text-(--accent) underline-offset-4 hover:underline">
+        <Link href="/" className="text-(--accent) underline underline-offset-4">
           {siteConfig.name} calculator
         </Link>{" "}
         or check the{" "}
-        <Link href="/models" className="text-(--accent) underline-offset-4 hover:underline">
+        <Link href="/models" className="text-(--accent) underline underline-offset-4">
           models index
         </Link>
         .

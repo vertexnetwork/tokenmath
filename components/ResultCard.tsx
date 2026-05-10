@@ -32,7 +32,7 @@ export function ResultCard({ model, inputTokens, outputTokens, approx }: ResultC
         <span className="text-eyebrow text-(--text-faint)">Total estimated cost</span>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span
-            className={`result-hero text-display-xl ${hasInput ? "" : "opacity-30"}`}
+            className={`result-hero text-display-xl ${hasInput ? "" : "opacity-50"}`}
             data-clarity-mask="true"
           >
             {formatUsd(totalUsd)}

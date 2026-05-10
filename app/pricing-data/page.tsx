@@ -151,12 +151,15 @@ export default function PricingDataPage() {
         <h2 className="text-display">Reporting an outdated price</h2>
         <p className="text-sm text-(--text-muted)">
           If you spot a stale rate, email{" "}
-          <a href={`mailto:${siteConfig.supportEmail}`} className="text-(--accent) hover:underline">
+          <a
+            href={`mailto:${siteConfig.supportEmail}`}
+            className="text-(--accent) underline underline-offset-4"
+          >
             {siteConfig.supportEmail}
           </a>{" "}
           with the corrected number and a link to the vendor&apos;s pricing page. We typically ship
           a fix within a day — see the{" "}
-          <a href="/changelog" className="text-(--accent) hover:underline">
+          <a href="/changelog" className="text-(--accent) underline underline-offset-4">
             changelog
           </a>
           .

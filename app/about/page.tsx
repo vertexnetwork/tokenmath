@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
 import { APPROX_RANGE } from "@/lib/pricing";
 
 export const metadata: Metadata = buildMetadata({
@@ -29,7 +30,7 @@ export default function AboutPage() {
         else&apos;s server.
       </p>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <h2>How it works</h2>
 
         <p>
@@ -56,7 +57,11 @@ export default function AboutPage() {
             <strong>Your prompt never leaves your browser.</strong> There is no server endpoint that
             ever receives prompt text. The only serverless function on this site is{" "}
             <code>/api/og</code> — used to render social preview images — and it only accepts two
-            short query strings used in the OG card itself.
+            short query strings used in the OG card itself.{" "}
+            <a href={siteConfig.repoUrl} target="_blank" rel="noopener">
+              Verify on GitHub
+            </a>
+            .
           </li>
           <li>
             <strong>Analytics are aggregate.</strong> We use Vercel Web Analytics for page-level

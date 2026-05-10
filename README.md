@@ -3,7 +3,7 @@
 Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini,
 and OpenAI. Tokenization runs entirely in the browser — your prompts never touch a server.
 
-Part of the [Vertex Network](https://github.com/ThatMovieGuyOriginal/vertex-network-hub).
+Part of the [Vertex Network](https://github.com/vertexnetwork/vertex-network-hub).
 
 ## Stack
 
@@ -18,7 +18,7 @@ Part of the [Vertex Network](https://github.com/ThatMovieGuyOriginal/vertex-netw
 ## The keystone — `lib/site-config.ts`
 
 Every brand string, theme color, nav link, feature flag, and verification token funnels
-through one typed object. Per the [Vertex Network spec §4](https://github.com/ThatMovieGuyOriginal/vertex-network-hub/blob/main/docs/_scaffold-spec.md#4-the-keystone--libsite-configts):
+through one typed object. Per the [Vertex Network spec §4](https://github.com/vertexnetwork/vertex-network-hub/blob/main/docs/_scaffold-spec.md#4-the-keystone--libsite-configts):
 a hardcoded `name`, `domain`, `email`, social handle, disclaimer, or nav link in any other
 file is an audit failure.
 
@@ -262,7 +262,7 @@ weekly cadence.
 ### 6. Hub sync
 
 `.github/workflows/sync-from-hub.yml` listens for `repository_dispatch` events from
-[vertex-network-hub](https://github.com/ThatMovieGuyOriginal/vertex-network-hub). When the
+[vertex-network-hub](https://github.com/vertexnetwork/vertex-network-hub). When the
 hub publishes a change to `network.json`, `ai-bots.json`, `ads.txt`, `app-ads.txt`, or
 `humans.txt`, the workflow opens a PR pulling the new content. Spoke CI gates the merge.
 

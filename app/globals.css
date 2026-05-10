@@ -26,7 +26,9 @@
   --color-success: #34d399;
   --color-danger: #f87171;
   --color-gold: #e5c07b;
-  --color-text-faint: #6b6c74;
+  /* Bumped from #6b6c74 (~3.6:1 on bg, fails WCAG AA) to #8a8b93 (~4.7:1, passes
+   * AA for normal text). Used for eyebrow labels + faint captions. */
+  --color-text-faint: #8a8b93;
 
   /* typography */
   --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -89,6 +91,14 @@ html.dark {
  * `.prose` too. Using `html .prose` lifts our specificity to (0,1,1) so we beat the
  * plugin's (0,1,0) regardless of source order or layer arrangement.
  */
+/* Always underline prose links — WCAG 1.4.1 requires links to be distinguishable from
+ * surrounding text by something other than color alone. Tailwind Typography defaults to
+ * underlined; some pages explicitly removed it via prose-a:no-underline (now reverted). */
+html .prose a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 html .prose {
   --tw-prose-body: var(--text-muted);
   --tw-prose-headings: var(--text);
@@ -139,7 +149,8 @@ html.light {
   --border-strong: #b9b3a1;
   --text: #1a1a1f;
   --text-muted: #5b5d66;
-  --text-faint: #888a90;
+  /* Bumped from #888a90 (~3.2:1 on cream bg, fails AA) to #6e7077 (~4.7:1). */
+  --text-faint: #6e7077;
   --accent: #6e57c7;
   --gold: #8a6f1f;
 }

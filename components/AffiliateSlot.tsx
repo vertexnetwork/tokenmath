@@ -40,7 +40,7 @@ export function AffiliateSlot({ placement, className }: AffiliateSlotProps) {
           target="_blank"
           rel="noopener sponsored"
           onClick={() => events.affiliateClick(provider || "affiliate", placement)}
-          className="text-(--accent) underline-offset-4 hover:underline"
+          className="text-(--accent) underline underline-offset-4"
         >
           {cta}
         </a>

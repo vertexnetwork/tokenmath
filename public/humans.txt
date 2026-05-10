@@ -1,6 +1,6 @@
 /* TEAM */
 Maintainer: ThatMovieGuy
-Network: Vertex Network — https://github.com/ThatMovieGuyOriginal/vertex-network-hub
+Network: Vertex Network — https://github.com/vertexnetwork/vertex-network-hub
 
 /* SITE */
 Site: tokenmath.dev

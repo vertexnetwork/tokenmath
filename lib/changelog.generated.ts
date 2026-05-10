@@ -13,6 +13,14 @@ export interface ChangelogEntry {
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     "date": "2026-05-10",
+    "title": "Bump text-faint contrast + tap targets, relax LH threshold"
+  },
+  {
+    "date": "2026-05-10",
+    "title": "Drop redundant pnpm version input (pnpm/action-setup@v6)"
+  },
+  {
+    "date": "2026-05-10",
     "title": "Ship Vertex Network spec compliance (P0 + P1 + P2)"
   },
   {
@@ -125,4 +133,4 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   }
 ] as const;
 
-export const CHANGELOG_GENERATED_AT = '2026-05-10T08:39:41.902Z';
+export const CHANGELOG_GENERATED_AT = '2026-05-10T18:07:11.946Z';

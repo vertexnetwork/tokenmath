@@ -20,7 +20,7 @@ export default function ContactPage() {
         <h1 className="text-display-lg">Get in touch.</h1>
       </header>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <p>
           The fastest way to reach {siteConfig.name} is by email:{" "}
           <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.

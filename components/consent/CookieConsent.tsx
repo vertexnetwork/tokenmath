@@ -21,7 +21,7 @@ export function CookieConsent() {
         <p className="text-sm text-(--text-muted)">
           We use Vercel Web Analytics for aggregate page metrics and (optionally) Microsoft Clarity
           for masked session replay. Prompt content is never sent.{" "}
-          <Link href="/privacy" className="text-(--accent) underline-offset-4 hover:underline">
+          <Link href="/privacy" className="text-(--accent) underline underline-offset-4">
             Read the privacy policy
           </Link>
           .

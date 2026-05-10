@@ -68,7 +68,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls={dialogId}
             onClick={() => setOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-(--text) hover:bg-(--surface)"
           >
             <HamburgerIcon open={open} />
           </button>
@@ -89,7 +89,7 @@ export function Header() {
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-(--bg)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md hover:bg-(--bg)"
           >
             <HamburgerIcon open={true} />
           </button>
@@ -112,9 +112,11 @@ function NavLink({ item, mobile = false }: { item: NavItem; mobile?: boolean }) 
   const pathname = usePathname();
   const itemPath = item.href.split("#")[0] || "/";
   const isActive = pathname === itemPath;
+  // Desktop: -my-2 + py-2 widens the hit area to ~36px without changing the visual
+  // height of the h-14 header. Mobile drawer items already have generous padding.
   const base = mobile
     ? "block rounded-md px-3 py-3 text-base hover:bg-(--bg)"
-    : "transition-colors";
+    : "inline-flex items-center -my-2 px-1 py-2 transition-colors";
   const stateClass = isActive ? "text-(--text)" : "text-(--text-muted) hover:text-(--text)";
   const className = `${base} ${stateClass}`;
   const ariaCurrent = isActive ? ("page" as const) : undefined;

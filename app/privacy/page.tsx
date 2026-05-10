@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <p className="text-sm text-(--text-faint)">Last updated: {updated}</p>
       </header>
 
-      <article className="prose max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline">
+      <article className="prose max-w-none prose-headings:tracking-tight">
         <h2>What we collect</h2>
 
         <p>
@@ -106,6 +106,14 @@ export default function PrivacyPage() {
           The <Link href="/#calculator">Verify privacy panel</Link> on the calculator shows live
           counters for outgoing requests, cookies, and localStorage keys. Open DevTools → Network
           and type into the calculator: no request body should ever contain your prompt text.
+        </p>
+
+        <p>
+          Or read the source —{" "}
+          <a href={siteConfig.repoUrl} target="_blank" rel="noopener">
+            {siteConfig.repoUrl.replace("https://", "")}
+          </a>{" "}
+          — and audit the privacy contract directly.
         </p>
 
         <h2>Contact</h2>
