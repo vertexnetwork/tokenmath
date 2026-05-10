@@ -1,5 +1,5 @@
 /**
- * MODELS[] is the single source of truth for what tokencount supports.
+ * MODELS[] is the single source of truth for what tokenmath supports.
  *
  * Pricing values reflect published rates as of each entry's `dataAsOf`. Verify against
  * the vendor's official pricing page in /pricing-data when refreshing this list.
@@ -52,8 +52,14 @@ export interface ModelPricing {
   outputUsdPerM: number;
   /** Context window in tokens. */
   contextWindow: number;
-  /** ISO date — when these prices were last verified against the vendor's site. */
+  /** ISO date — when these prices last *changed* (used by users to spot drift). */
   dataAsOf: string;
+  /**
+   * ISO date — when prices were last *checked* against the vendor's site, even if no
+   * change resulted. Bumped on every successful auto-refresh run. When omitted, falls
+   * back to dataAsOf.
+   */
+  lastVerified?: string;
   /**
    * Optional tiered pricing (e.g. Gemini 2.5 Pro charges more above a context threshold).
    * If present, callers should select the right tier based on token count.

@@ -41,7 +41,7 @@ function buildPricingTable(): string {
 }
 
 function buildContent(): string {
-  return `# tokencount.ai — full reference
+  return `# tokenmath.dev — full reference
 
 Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini, and
 OpenAI. Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded
@@ -79,13 +79,13 @@ Notes
 
 ## Calculator URLs
 
-${MODELS.map((m) => `- ${m.label}: https://tokencount.ai/token-calculator/${m.slug}`).join('\n')}
+${MODELS.map((m) => `- ${m.label}: https://tokenmath.dev/token-calculator/${m.slug}`).join('\n')}
 
 ## Reference
 
-- Pricing data sources: https://tokencount.ai/pricing-data
-- Privacy policy: https://tokencount.ai/privacy
-- About: https://tokencount.ai/about
+- Pricing data sources: https://tokenmath.dev/pricing-data
+- Privacy policy: https://tokenmath.dev/privacy
+- About: https://tokenmath.dev/about
 `;
 }
 

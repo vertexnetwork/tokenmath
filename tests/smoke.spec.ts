@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('home page loads, paste produces a token count', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page).toHaveTitle(/tokencount/i);
+  await expect(page).toHaveTitle(/tokenmath/i);
   await expect(page.getByRole('heading', { level: 1 })).toContainText(/Token & Cost Calculator/);
 
   // The "Tokens" stat starts at 0 — establish the baseline.
@@ -26,7 +26,7 @@ test('home page loads, paste produces a token count', async ({ page }) => {
 
 test('privacy: no outgoing request body contains the pasted sentinel', async ({ page }) => {
   // §9 verification: paste a unique sentinel and confirm zero outgoing request bodies contain it.
-  const sentinel = `tokencount-sentinel-${crypto.randomUUID()}`;
+  const sentinel = `tokenmath-sentinel-${crypto.randomUUID()}`;
   const leaked: string[] = [];
 
   page.on('request', (req) => {

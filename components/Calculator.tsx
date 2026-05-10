@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { DEFAULT_MODEL_ID, getModelById, type ModelId } from '@/lib/pricing';
 import { countTokens } from '@/lib/tokenizers';
 import { bucketFor, events } from '@/lib/analytics';
+import { AffiliateSlot } from './AffiliateSlot';
 import { ModelPicker } from './ModelPicker';
 import { ResultCard } from './ResultCard';
 
@@ -229,6 +230,8 @@ export function Calculator({
         outputTokens={expectedOutputTokens}
         approx={approx}
       />
+
+      <AffiliateSlot placement="result-below-total" />
     </section>
   );
 }

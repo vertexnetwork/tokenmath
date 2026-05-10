@@ -63,7 +63,7 @@ export async function GET(request: Request) {
           color: '#9C9CA3',
         }}
       >
-        <span>tokencount.ai</span>
+        <span>tokenmath.dev</span>
         <span style={{ color: '#34D399' }}>● Client-side. Never uploaded.</span>
       </div>
     </div>,

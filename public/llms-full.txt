@@ -1,4 +1,4 @@
-# tokencount.ai — full reference
+# tokenmath.dev — full reference
 
 Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini, and
 OpenAI. Tokenization runs entirely in the browser; nothing about the user's prompt is uploaded
@@ -47,19 +47,19 @@ Notes
 
 ## Calculator URLs
 
-- Claude 4.5 Sonnet: https://tokencount.ai/token-calculator/anthropic-claude-4-5-sonnet
-- Claude 4.5 Haiku: https://tokencount.ai/token-calculator/anthropic-claude-4-5-haiku
-- Claude 4.7 Opus: https://tokencount.ai/token-calculator/anthropic-claude-4-7-opus
-- Gemini 2.5 Pro: https://tokencount.ai/token-calculator/google-gemini-2-5-pro
-- Gemini 2.5 Flash: https://tokencount.ai/token-calculator/google-gemini-2-5-flash
-- GPT-5: https://tokencount.ai/token-calculator/openai-gpt-5
-- GPT-5 Mini: https://tokencount.ai/token-calculator/openai-gpt-5-mini
-- GPT-5 Nano: https://tokencount.ai/token-calculator/openai-gpt-5-nano
-- GPT-4.1: https://tokencount.ai/token-calculator/openai-gpt-4-1
-- GPT-4.1 Mini: https://tokencount.ai/token-calculator/openai-gpt-4-1-mini
+- Claude 4.5 Sonnet: https://tokenmath.dev/token-calculator/anthropic-claude-4-5-sonnet
+- Claude 4.5 Haiku: https://tokenmath.dev/token-calculator/anthropic-claude-4-5-haiku
+- Claude 4.7 Opus: https://tokenmath.dev/token-calculator/anthropic-claude-4-7-opus
+- Gemini 2.5 Pro: https://tokenmath.dev/token-calculator/google-gemini-2-5-pro
+- Gemini 2.5 Flash: https://tokenmath.dev/token-calculator/google-gemini-2-5-flash
+- GPT-5: https://tokenmath.dev/token-calculator/openai-gpt-5
+- GPT-5 Mini: https://tokenmath.dev/token-calculator/openai-gpt-5-mini
+- GPT-5 Nano: https://tokenmath.dev/token-calculator/openai-gpt-5-nano
+- GPT-4.1: https://tokenmath.dev/token-calculator/openai-gpt-4-1
+- GPT-4.1 Mini: https://tokenmath.dev/token-calculator/openai-gpt-4-1-mini
 
 ## Reference
 
-- Pricing data sources: https://tokencount.ai/pricing-data
-- Privacy policy: https://tokencount.ai/privacy
-- About: https://tokencount.ai/about
+- Pricing data sources: https://tokenmath.dev/pricing-data
+- Privacy policy: https://tokenmath.dev/privacy
+- About: https://tokenmath.dev/about

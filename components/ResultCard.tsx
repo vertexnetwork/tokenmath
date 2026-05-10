@@ -127,7 +127,7 @@ function CopyButton({
       `Input:  ${formatNumber(inputTokens)} tokens (${formatUsd(inputUsd)})`,
       `Output: ${formatNumber(outputTokens)} tokens (${formatUsd(outputUsd)}, est.)`,
       `Total:  ${formatUsd(totalUsd)}`,
-      `— tokencount.ai`,
+      `— tokenmath.dev`,
     ].join('\n');
     try {
       await navigator.clipboard.writeText(summary);

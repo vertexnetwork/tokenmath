@@ -38,7 +38,7 @@ export async function generateMetadata(props: {
     path: `/token-calculator/${model.slug}`,
     image: new URL(
       `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent('Token + cost calculator. Privately, in your browser.')}`,
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokencount.ai',
+      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokenmath.dev',
     ).toString(),
   });
 }

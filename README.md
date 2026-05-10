@@ -1,7 +1,7 @@
-# tokencount.ai
+# tokenmath.dev
 
-Client-side LLM token counter and API cost calculator for Anthropic Claude and Google Gemini.
-Tokenization runs entirely in the browser — your prompts never touch a server.
+Client-side LLM token counter and API cost calculator for Anthropic Claude, Google Gemini,
+and OpenAI. Tokenization runs entirely in the browser — your prompts never touch a server.
 
 ## Stack
 
@@ -49,10 +49,11 @@ lib/
   pricing.ts             MODELS[] — single source of truth for prices
   tokenizers/            Lazy-loaded tokenizers + Web Worker
   seo.ts                 Metadata + JSON-LD builders
-  ads/                   Provider-switched ad components
+  ads/                   Provider-switched ad components (none / adsense / mediavine / carbon)
   analytics.ts           Typed event helpers
 public/                  Static assets, llms.txt, ads.txt, icon.svg
-scripts/build-llms-full.ts  Prebuild step — regenerates public/llms-full.txt
+scripts/build-llms-full.ts   Prebuild step — regenerates public/llms-full.txt
+scripts/refresh-pricing.ts   CI-only — auto-refreshes lib/pricing.ts from vendor pages
 ```
 
 ## Deploying to Vercel
@@ -79,18 +80,21 @@ Project settings:
 Set these in **Project Settings → Environment Variables** for both Production + Preview.
 The full list is in [`.env.example`](.env.example); minimum viable set:
 
-| Var                            | Value                   | Notes                                             |
-| ------------------------------ | ----------------------- | ------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`         | `https://tokencount.ai` | Required.                                         |
-| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1`                     | Optional. Default on.                             |
-| `NEXT_PUBLIC_AD_PROVIDER`      | `none`                  | Switch to `adsense` or `mediavine` post-approval. |
+| Var                            | Value                            | Notes                                                      |
+| ------------------------------ | -------------------------------- | ---------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`         | `https://tokenmath.dev`          | Required.                                                  |
+| `NEXT_PUBLIC_VERCEL_ANALYTICS` | `1`                              | Optional. Default on.                                      |
+| `NEXT_PUBLIC_AD_PROVIDER`      | `adsense`                        | Switch to `carbon` or `mediavine` once those approve.      |
+| `NEXT_PUBLIC_RUNPOD_REF_URL`   | `https://runpod.io?ref=…`        | Affiliate link for the contextual cost-cut callout.        |
 
 ### 3. Domains
 
-- Bind `tokencount.ai` (apex) as the **primary** domain.
-- Bind `www.tokencount.ai` as an **alias** that 308-redirects to apex (the redirect rule
+- Bind `tokenmath.dev` (apex) as the **primary** domain.
+- Bind `www.tokenmath.dev` as an **alias** that 308-redirects to apex (the redirect rule
   is encoded in [`next.config.ts`](next.config.ts) so it works regardless of how the alias
   is configured at the DNS level).
+- `.dev` is HSTS-preloaded by Google; HTTPS is mandatory and HSTS is already set in
+  [`next.config.ts`](next.config.ts) `SECURITY_HEADERS`.
 
 ### 4. Branch protection
 
@@ -102,7 +106,14 @@ The full list is in [`.env.example`](.env.example); minimum viable set:
 - Require Vercel Preview build to succeed
 - No force-push
 
-### 5. Going live
+### 5. Pricing auto-refresh
+
+A weekly GitHub Action (`.github/workflows/pricing-refresh.yml`) re-verifies vendor
+pricing against the published source URLs and opens a PR if anything drifted. Requires
+one secret in GitHub Actions: `ANTHROPIC_API_KEY`. Cost is ~$0.05/month at the configured
+weekly cadence.
+
+### 6. Going live
 
 Pre-launch verification: every box in PLAN.md §9.
 

@@ -1,4 +1,4 @@
-# tokencount.ai app-ads.txt
+# tokenmath.dev app-ads.txt
 # Mirrors ads.txt; covers in-app ad scenarios + future mobile wrappers.
 # Update on approval: replace this comment with the publisher line.
 # AdSense format: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

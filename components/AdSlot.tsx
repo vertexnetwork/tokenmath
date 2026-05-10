@@ -1,4 +1,5 @@
 import { AdSenseSlot } from '@/lib/ads/adsense';
+import { CarbonSlot } from '@/lib/ads/carbon';
 import { MediaVineSlot } from '@/lib/ads/mediavine';
 import { adProvider, type AdSlotPlacement } from '@/lib/ads/provider';
 
@@ -12,6 +13,7 @@ interface AdSlotProps {
  * - 'none'      → renders nothing (validation phase, no ads)
  * - 'adsense'   → renders the AdSense <ins> for the configured slot
  * - 'mediavine' → renders a MediaVine slot container; their wrapper script auto-injects
+ * - 'carbon'    → renders a Carbon Ads <script> that fills the slot inline
  */
 export function AdSlot({ placement, className }: AdSlotProps) {
   if (adProvider === 'none') return null;
@@ -28,6 +30,14 @@ export function AdSlot({ placement, className }: AdSlotProps) {
     return (
       <div className={className} data-ad-placement={placement}>
         <MediaVineSlot placement={placement} />
+      </div>
+    );
+  }
+
+  if (adProvider === 'carbon') {
+    return (
+      <div className={className} data-ad-placement={placement}>
+        <CarbonSlot placement={placement} />
       </div>
     );
   }

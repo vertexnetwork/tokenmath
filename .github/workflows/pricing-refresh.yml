@@ -1,0 +1,60 @@
+name: Pricing auto-refresh
+
+on:
+  schedule:
+    # Sundays at 06:00 UTC. Vendor pricing pages change rarely; weekly is plenty.
+    - cron: '0 6 * * 0'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Refresh pricing from vendor pages
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: pnpm tsx scripts/refresh-pricing.ts
+
+      - name: Regenerate llms-full.txt
+        run: pnpm tsx scripts/build-llms-full.ts
+
+      - name: Open PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore(pricing): auto-refresh from vendor pages'
+          title: 'chore(pricing): weekly auto-refresh'
+          body: |
+            Automated weekly refresh of `lib/pricing.ts` against published vendor pricing
+            pages. Each model entry's `lastVerified` was bumped; `dataAsOf` only changed
+            for entries where the script detected a real value drift.
+
+            The script ([`scripts/refresh-pricing.ts`](scripts/refresh-pricing.ts)) uses
+            Claude Haiku 4.5 to extract numbers from the vendor HTML and rejects any
+            change outside 0.1x–10x of the current value as a sanity gate.
+
+            **Review checklist:**
+            - [ ] Diff matches what's actually on the linked vendor pages
+            - [ ] No suspicious large swings
+            - [ ] `pnpm typecheck` and `pnpm test` pass on this branch (CI handles this)
+          branch: chore/pricing-auto-refresh
+          delete-branch: true
+          add-paths: |
+            lib/pricing.ts
+            public/llms-full.txt

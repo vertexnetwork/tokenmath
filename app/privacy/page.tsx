@@ -5,7 +5,7 @@ import { PRIVACY_UPDATED } from '@/lib/pricing';
 export const metadata: Metadata = buildMetadata({
   title: 'Privacy',
   description:
-    'How tokencount handles your data: client-side tokenization, masked analytics, no prompt content ever transmitted off your browser.',
+    'How tokenmath handles your data: client-side tokenization, masked analytics, no prompt content ever transmitted off your browser.',
   path: '/privacy',
 });
 
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
 
         <p>
-          For privacy questions, email <a href="mailto:hello@tokencount.ai">hello@tokencount.ai</a>.
+          For privacy questions, email <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a>.
         </p>
       </article>
     </main>

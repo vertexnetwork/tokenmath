@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { type ModelPricing } from '@/lib/pricing';
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokencount.ai';
-export const SITE_NAME = 'tokencount';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tokenmath.dev';
+export const SITE_NAME = 'tokenmath';
 export const SITE_DESCRIPTION =
   'Accurate token math for Claude, Gemini, and OpenAI. 100% client-side.';
-export const SITE_CONTACT_EMAIL = 'hello@tokencount.ai';
+export const SITE_CONTACT_EMAIL = 'hello@tokenmath.dev';
 
 // Vertex sister sites — rendered in the Organization JSON-LD sameAs list. These are partner
 // sites in the same network, not social profiles.

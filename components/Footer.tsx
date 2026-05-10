@@ -42,7 +42,7 @@ export function Footer() {
     <footer className="mt-auto border-t border-(--border)">
       <div className="mx-auto flex w-full max-w-(--container-app) flex-col gap-4 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-(--text-muted)">
-          tokencount — accurate token math for Claude, Gemini, and OpenAI.
+          tokenmath — accurate token math for Claude, Gemini, and OpenAI.
         </p>
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-(--text-muted)">
           <li>
@@ -61,8 +61,8 @@ export function Footer() {
             </Link>
           </li>
           <li>
-            <a href="mailto:hello@tokencount.ai" className="hover:text-(--text)">
-              hello@tokencount.ai
+            <a href="mailto:hello@tokenmath.dev" className="hover:text-(--text)">
+              hello@tokenmath.dev
             </a>
           </li>
         </ul>

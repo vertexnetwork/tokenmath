@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'tokencount — LLM Token & Cost Calculator',
-    template: '%s | tokencount',
+    default: 'tokenmath — LLM Token & Cost Calculator',
+    template: '%s | tokenmath',
   },
   ...buildMetadata(),
   // Search-engine verification placeholders — fill in after first deploy.

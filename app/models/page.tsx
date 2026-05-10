@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = buildMetadata({
   title: 'All models',
   description:
-    'Every model tokencount supports — Claude, Gemini, and OpenAI — with current pricing and a one-click jump into a per-model calculator.',
+    'Every model tokenmath supports — Claude, Gemini, and OpenAI — with current pricing and a one-click jump into a per-model calculator.',
   path: '/models',
 });
 
@@ -77,7 +77,7 @@ export default function ModelsPage() {
       <header className="flex flex-col gap-3">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">All models</h1>
         <p className="max-w-2xl text-base text-(--text-muted) sm:text-lg">
-          Every model tokencount supports, grouped by vendor. Click any card to jump into a
+          Every model tokenmath supports, grouped by vendor. Click any card to jump into a
           per-model calculator with worked examples and a pricing table.
         </p>
       </header>

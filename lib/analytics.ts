@@ -22,6 +22,8 @@ function safeTrack(event: string, properties: Record<string, string | number | b
   }
 }
 
+export type AffiliatePlacement = 'result-below-total' | 'pricing-data-footer';
+
 /** §6.1 — never includes prompt content; only aggregate event names + bucketed counts. */
 export const events = {
   calcRun(model: ModelId, tokenBucket: TokenBucket) {
@@ -35,5 +37,8 @@ export const events = {
   },
   themeToggled(to: 'light' | 'dark') {
     safeTrack('theme_toggled', { to });
+  },
+  affiliateClick(provider: 'runpod', placement: AffiliatePlacement) {
+    safeTrack('affiliate_click', { provider, placement });
   },
 };

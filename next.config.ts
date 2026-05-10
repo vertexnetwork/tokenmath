@@ -28,6 +28,8 @@ const SCRIPT_SOURCES = [
   'https://*.googleadservices.com',
   'https://*.doubleclick.net',
   'https://scripts.mediavine.com',
+  'https://cdn.carbonads.com',
+  'https://srv.carbonads.net',
   'https://*.clarity.ms',
 ];
 
@@ -39,6 +41,7 @@ const CONNECT_SOURCES = [
   'https://*.google.com',
   'https://*.doubleclick.net',
   'https://*.googlesyndication.com',
+  'https://srv.carbonads.net',
 ];
 
 const IMG_SOURCES = [
@@ -49,6 +52,8 @@ const IMG_SOURCES = [
   'https://*.google.com',
   'https://*.doubleclick.net',
   'https://*.clarity.ms',
+  'https://cdn.carbonads.com',
+  'https://srv.carbonads.net',
 ];
 
 const STYLE_SOURCES = ["'self'", "'unsafe-inline'"];
@@ -102,8 +107,8 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.tokencount.ai' }],
-        destination: 'https://tokencount.ai/:path*',
+        has: [{ type: 'host', value: 'www.tokenmath.dev' }],
+        destination: 'https://tokenmath.dev/:path*',
         permanent: true,
       },
     ];

@@ -51,12 +51,12 @@ export function Header() {
         <Link
           href="/"
           className="flex items-center gap-2 font-semibold tracking-tight"
-          aria-label="tokencount home"
+          aria-label="tokenmath home"
         >
           <span aria-hidden className="text-(--accent)">
             ⟨t⟩
           </span>
-          <span>tokencount</span>
+          <span>tokenmath</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">

@@ -1,10 +1,12 @@
-export type AdProvider = 'none' | 'adsense' | 'mediavine';
+export type AdProvider = 'none' | 'adsense' | 'mediavine' | 'carbon';
 
 export const adProvider: AdProvider =
   (process.env.NEXT_PUBLIC_AD_PROVIDER as AdProvider | undefined) ?? 'none';
 
 export const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? '';
 export const mediavineSiteId = process.env.NEXT_PUBLIC_MEDIAVINE_SITE_ID ?? '';
+export const carbonadsServeId = process.env.NEXT_PUBLIC_CARBONADS_SERVE_ID ?? '';
+export const carbonadsPlacement = process.env.NEXT_PUBLIC_CARBONADS_PLACEMENT ?? '';
 
 export type AdSlotPlacement = 'home-below-result' | 'pseo-sidebar' | 'pseo-after-faq';
 

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import { AffiliateSlot } from '@/components/AffiliateSlot';
 import { buildMetadata } from '@/lib/seo';
 import { MODELS, latestDataAsOf, type Vendor } from '@/lib/pricing';
 
 export const metadata: Metadata = buildMetadata({
   title: 'Pricing data',
   description:
-    'Where tokencount sources its pricing data, with direct links to each vendor’s pricing page and the date each entry was last verified.',
+    'Where tokenmath sources its pricing data, with direct links to each vendor’s pricing page and the date each entry was last verified.',
   path: '/pricing-data',
 });
 
@@ -40,7 +41,7 @@ export default function PricingDataPage() {
         <h1>Pricing data</h1>
 
         <p>
-          Every price in tokencount comes from the vendor&apos;s own public pricing page — links
+          Every price in tokenmath comes from the vendor&apos;s own public pricing page — links
           below. Each entry is stamped with a <code>dataAsOf</code> date showing when we last
           reconciled it against the source. Most recent verification across all entries:{' '}
           <strong>{latestDataAsOf()}</strong>.
@@ -141,10 +142,12 @@ export default function PricingDataPage() {
 
         <p>
           If you spot a stale rate, email{' '}
-          <a href="mailto:hello@tokencount.ai">hello@tokencount.ai</a> with the corrected number and
+          <a href="mailto:hello@tokenmath.dev">hello@tokenmath.dev</a> with the corrected number and
           a link to the vendor&apos;s pricing page. We typically ship a fix within a day.
         </p>
       </article>
+
+      <AffiliateSlot placement="pricing-data-footer" />
     </main>
   );
 }
