@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  HUB_REPO: ThatMovieGuyOriginal/vertex-network-hub
+  HUB_REPO: vertexnetwork/vertex-network-hub
   DOMAIN: tokenmath.dev
 
 jobs:

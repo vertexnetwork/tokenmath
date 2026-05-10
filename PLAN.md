@@ -62,11 +62,11 @@ Explicitly **not pursuing**: OpenRouter / LLM Gateway / Helicone (no cash affili
 
 ### 2.3 GitHub
 
-- **Repo**: [`ThatMovieGuyOriginal/tokenmath`](https://github.com/ThatMovieGuyOriginal/tokenmath) (private until launch, then public)
+- **Repo**: [`vertexnetwork/tokenmath`](https://github.com/vertexnetwork/tokenmath) (private until launch, then public)
 - **Required files**:
   - `.github/workflows/ci.yml` — runs `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` on every PR
   - `.github/workflows/pricing-refresh.yml` — weekly cron; verifies vendor pricing pages and opens an auto-PR if anything drifted (see §10)
-  - `.github/CODEOWNERS` — `* @ThatMovieGuyOriginal`
+  - `.github/CODEOWNERS` — `* @vertexnetwork`
   - `.github/PULL_REQUEST_TEMPLATE.md` — Summary / Test plan / Screenshots
   - `.github/dependabot.yml` — weekly npm + GitHub Actions updates
 - **Branch protection on `main`**: require PR, require CI green, require Vercel preview success, no force-push.

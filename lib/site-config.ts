@@ -89,7 +89,7 @@ export const siteConfig = {
   },
 
   // GitHub — used by various scripts; not surfaced on /changelog (titles-only by design)
-  repoUrl: "https://github.com/ThatMovieGuyOriginal/tokenmath",
+  repoUrl: "https://github.com/vertexnetwork/tokenmath",
 
   // feature flags
   features: {

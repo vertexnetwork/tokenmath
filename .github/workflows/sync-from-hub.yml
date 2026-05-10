@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 env:
-  HUB_RAW: https://raw.githubusercontent.com/ThatMovieGuyOriginal/vertex-network-hub/main
+  HUB_RAW: https://raw.githubusercontent.com/vertexnetwork/vertex-network-hub/main
 
 jobs:
   sync:
