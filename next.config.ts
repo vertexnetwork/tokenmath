@@ -101,18 +101,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    // Apex is canonical; www → apex via 308. Vercel honors this once both domains are bound
-    // to the project. (§2.4 — domain config.)
-    return [
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.tokenmath.dev' }],
-        destination: 'https://tokenmath.dev/:path*',
-        permanent: true,
-      },
-    ];
-  },
+  // www → apex redirect is handled at the Vercel platform level (Project Settings →
+  // Domains → set apex as primary and configure www as a redirect). Doing it in both
+  // places caused ERR_TOO_MANY_REDIRECTS on first deploy.
 };
 
 export default withMDX(nextConfig);
