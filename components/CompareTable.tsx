@@ -67,15 +67,15 @@ export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: 
   const cheapest = rows[0]?.totalUsd ?? 0;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-(--border) bg-(--surface)">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto rounded-xl border border-(--border) bg-(--surface)">
+      <table className="w-full min-w-[20rem] text-sm">
         <thead className="bg-(--bg)/60 text-(--text-faint)">
           <tr>
-            <th className="px-4 py-2.5 text-left text-eyebrow">Model</th>
-            <th className="px-4 py-2.5 text-right text-eyebrow">Tokens</th>
-            <th className="hidden px-4 py-2.5 text-right text-eyebrow sm:table-cell">In</th>
-            <th className="hidden px-4 py-2.5 text-right text-eyebrow sm:table-cell">Out</th>
-            <th className="px-4 py-2.5 text-right text-eyebrow">Total</th>
+            <th className="px-3 py-2.5 text-left text-eyebrow sm:px-4">Model</th>
+            <th className="px-3 py-2.5 text-right text-eyebrow sm:px-4">Tokens</th>
+            <th className="hidden px-3 py-2.5 text-right text-eyebrow sm:px-4 sm:table-cell">In</th>
+            <th className="hidden px-3 py-2.5 text-right text-eyebrow sm:px-4 sm:table-cell">Out</th>
+            <th className="px-3 py-2.5 text-right text-eyebrow sm:px-4">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@ export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: 
                   selected ? "bg-(--accent)/8" : ""
                 }`}
               >
-                <td className="px-4 py-3">
+                <td className="px-3 py-3 sm:px-4">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-(--text)">{r.model.label}</span>
                     {selected && (
@@ -107,7 +107,7 @@ export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: 
                   <div className="mt-0.5 text-xs text-(--text-faint)">{r.model.family}</div>
                 </td>
                 <td
-                  className="px-4 py-3 text-right tabular-nums text-(--text-muted)"
+                  className="px-3 py-3 text-right tabular-nums text-(--text-muted) sm:px-4"
                   data-clarity-mask="true"
                 >
                   {formatNumber(r.inputTokens)}
@@ -124,7 +124,7 @@ export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: 
                 >
                   {formatUsd(r.outputUsd)}
                 </td>
-                <td className="px-4 py-3 text-right" data-clarity-mask="true">
+                <td className="px-3 py-3 text-right sm:px-4" data-clarity-mask="true">
                   <span
                     className={`font-mono tabular-nums ${selected || r.model.id === rows[0].model.id ? "text-(--gold)" : "text-(--text)"}`}
                   >
