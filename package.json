@@ -55,7 +55,7 @@
     "prettier": "^3.6.2",
     "sharp": "^0.34.0",
     "tailwindcss": "^4",
-    "tsx": "^4.21.0",
+    "tsx": "^4.22.3",
     "typescript": "^5",
     "vitest": "^4.0.7"
   }
