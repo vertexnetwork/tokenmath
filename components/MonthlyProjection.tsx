@@ -35,10 +35,10 @@ export function MonthlyProjection({ text, outputTokens, model }: MonthlyProjecti
   const [computed, setComputed] = useState<Computed | null>(null);
 
   useEffect(() => {
-    if (text.length === 0) {
-      setComputed(null);
-      return;
-    }
+    // No synchronous reset here — the render guard below hides the section when text is empty,
+    // so we never need to setState in the effect body (react-hooks/set-state-in-effect). The
+    // only state write happens in the async callback, matching CompareTable.
+    if (text.length === 0) return;
     let cancelled = false;
     countAllModels(text).then((counts) => {
       if (cancelled) return;
