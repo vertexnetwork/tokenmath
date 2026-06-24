@@ -36,8 +36,7 @@ export async function generateMetadata(props: {
   // Number-led title/description: GSC showed these pages drawing impressions at position
   // ~8–9 with a 0% CTR. The headline price is what earns the click in the SERP, so lead
   // with it rather than the generic "token & cost calculator" phrasing.
-  const countNote =
-    model.vendor === "openai" ? "exact token counts" : "token counts (±2–3%)";
+  const countNote = model.vendor === "openai" ? "exact token counts" : "token counts (±2–3%)";
   return buildMetadata({
     title: `${model.label} pricing: $${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens`,
     description: `How much does ${model.label} cost? $${model.inputUsdPerM} per 1M input tokens, $${model.outputUsdPerM} per 1M output. Paste any prompt for ${countNote} and total API cost — free, in your browser, nothing uploaded.`,

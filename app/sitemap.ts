@@ -65,11 +65,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [
-    ...staticRoutes,
-    ...modelRoutes,
-    ...compareRoutes,
-    ...platformIndex,
-    ...platformRoutes,
-  ];
+  return [...staticRoutes, ...modelRoutes, ...compareRoutes, ...platformIndex, ...platformRoutes];
 }

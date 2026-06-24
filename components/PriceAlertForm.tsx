@@ -77,9 +77,7 @@ export function PriceAlertForm({ source, className }: PriceAlertFormProps) {
     >
       <div className="flex items-center gap-2">
         <BellIcon className="text-(--accent)" />
-        <h3 className="text-sm font-medium text-(--text)">
-          Get told when a model’s price drops
-        </h3>
+        <h3 className="text-sm font-medium text-(--text)">Get told when a model’s price drops</h3>
       </div>
       <p className="mt-1 text-xs text-(--text-faint)">
         Email-only alerts when Claude, Gemini, or GPT list pricing changes. No newsletter, no
@@ -118,8 +116,8 @@ export function PriceAlertForm({ source, className }: PriceAlertFormProps) {
         </p>
       )}
       <p className="mt-3 text-xs text-(--text-faint)">
-        Stored in our email provider (Resend), used only for price-change alerts. Unsubscribe in
-        one click.
+        Stored in our email provider (Resend), used only for price-change alerts. Unsubscribe in one
+        click.
       </p>
     </form>
   );

@@ -12,12 +12,7 @@ import {
   formatPerM,
   getPairBySlug,
 } from "@/lib/compare";
-import {
-  breadcrumbListJsonLd,
-  buildMetadata,
-  faqPageJsonLd,
-  renderJsonLd,
-} from "@/lib/seo";
+import { breadcrumbListJsonLd, buildMetadata, faqPageJsonLd, renderJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return allPairSlugs().map((pair) => ({ pair }));
@@ -113,14 +108,12 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
         <p>
           {f.cheaperInput ? (
             <>
-              On input tokens, <strong>{f.cheaperInput.model.label}</strong> is the cheaper of
-              the two — {f.cheaperInput.pct}% less per million ({formatPerM(a.inputUsdPerM)} vs{" "}
+              On input tokens, <strong>{f.cheaperInput.model.label}</strong> is the cheaper of the
+              two — {f.cheaperInput.pct}% less per million ({formatPerM(a.inputUsdPerM)} vs{" "}
               {formatPerM(b.inputUsdPerM)}).{" "}
             </>
           ) : (
-            <>
-              Both models charge {formatPerM(a.inputUsdPerM)} per million input tokens.{" "}
-            </>
+            <>Both models charge {formatPerM(a.inputUsdPerM)} per million input tokens. </>
           )}
           {f.cheaperOutput ? (
             <>
@@ -180,10 +173,9 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
           <strong>{fmtUsd(f.example.bTotal)}</strong>.{" "}
           {f.example.cheaper ? (
             <>
-              Across 100,000 requests that&apos;s a{" "}
-              <strong>{fmtUsd(per100k)}</strong> swing in favour of {f.example.cheaper.label}. To
-              run the numbers on <em>your</em> actual prompt, paste it into the{" "}
-              <Link href="/#calculator">calculator</Link> and toggle{" "}
+              Across 100,000 requests that&apos;s a <strong>{fmtUsd(per100k)}</strong> swing in
+              favour of {f.example.cheaper.label}. To run the numbers on <em>your</em> actual
+              prompt, paste it into the <Link href="/#calculator">calculator</Link> and toggle{" "}
               <strong>Compare across all models</strong>.
             </>
           ) : (
@@ -199,16 +191,22 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
         <p>
           {f.sameVendor ? (
             <>
-              Both are {a.vendor === "openai" ? "OpenAI" : a.vendor === "google" ? "Google" : "Anthropic"}{" "}
-              models, so you can move between them without changing SDKs or re-tokenising —
-              route the routine 80% of traffic to the cheaper one and reserve{" "}
+              Both are{" "}
+              {a.vendor === "openai" ? "OpenAI" : a.vendor === "google" ? "Google" : "Anthropic"}{" "}
+              models, so you can move between them without changing SDKs or re-tokenising — route
+              the routine 80% of traffic to the cheaper one and reserve{" "}
               {a.inputUsdPerM >= b.inputUsdPerM ? a.label : b.label} for the genuinely hard
               requests.
             </>
           ) : (
             <>
               These are different vendors, so a switch means a different API and a slightly
-              different tokenizer — budget a small calibration buffer. {APPROX_DRIFT[a.vendor].label === "exact" ? a.label : APPROX_DRIFT[b.vendor].label === "exact" ? b.label : "OpenAI models"}{" "}
+              different tokenizer — budget a small calibration buffer.{" "}
+              {APPROX_DRIFT[a.vendor].label === "exact"
+                ? a.label
+                : APPROX_DRIFT[b.vendor].label === "exact"
+                  ? b.label
+                  : "OpenAI models"}{" "}
               give exact counts; the others land within a few percent.
             </>
           )}{" "}

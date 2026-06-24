@@ -35,9 +35,9 @@ export default function CompareIndexPage() {
         <p className="text-eyebrow text-(--accent)">Compare</p>
         <h1 className="text-display-lg max-w-3xl">Compare LLM pricing, side by side.</h1>
         <p className="max-w-2xl text-base text-(--text-muted) sm:text-lg">
-          Pick any two models to see input/output cost, context window, accuracy, and what a
-          real request actually costs on each. Every number is computed from our verified
-          pricing table — no estimates.
+          Pick any two models to see input/output cost, context window, accuracy, and what a real
+          request actually costs on each. Every number is computed from our verified pricing table —
+          no estimates.
         </p>
       </header>
 

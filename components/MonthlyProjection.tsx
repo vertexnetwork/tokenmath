@@ -71,8 +71,7 @@ export function MonthlyProjection({ text, outputTokens, model }: MonthlyProjecti
       <div className="flex flex-col gap-1">
         <h2 className="text-eyebrow text-(--text-muted)">Monthly projection</h2>
         <p className="text-sm text-(--text-faint)">
-          What this prompt costs at scale — and the cheapest model that handles the same
-          workload.
+          What this prompt costs at scale — and the cheapest model that handles the same workload.
         </p>
       </div>
 

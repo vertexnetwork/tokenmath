@@ -74,7 +74,9 @@ export function CompareTable({ text, outputTokens, selectedModelId, onSelect }: 
             <th className="px-3 py-2.5 text-left text-eyebrow sm:px-4">Model</th>
             <th className="px-3 py-2.5 text-right text-eyebrow sm:px-4">Tokens</th>
             <th className="hidden px-3 py-2.5 text-right text-eyebrow sm:px-4 sm:table-cell">In</th>
-            <th className="hidden px-3 py-2.5 text-right text-eyebrow sm:px-4 sm:table-cell">Out</th>
+            <th className="hidden px-3 py-2.5 text-right text-eyebrow sm:px-4 sm:table-cell">
+              Out
+            </th>
             <th className="px-3 py-2.5 text-right text-eyebrow sm:px-4">Total</th>
           </tr>
         </thead>

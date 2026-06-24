@@ -4,12 +4,7 @@ import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
 import { getPlatformBySlug, listPlatformSlugs, type Platform } from "@/lib/platforms";
 import { siteConfig } from "@/lib/site-config";
-import {
-  breadcrumbListJsonLd,
-  buildMetadata,
-  faqPageJsonLd,
-  renderJsonLd,
-} from "@/lib/seo";
+import { breadcrumbListJsonLd, buildMetadata, faqPageJsonLd, renderJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return listPlatformSlugs().map((platform) => ({ platform }));
@@ -53,9 +48,7 @@ function fmtPlanPrice(price: number | null): string {
   return `$${price}`;
 }
 
-export default async function PlatformCostPage(props: {
-  params: Promise<{ platform: string }>;
-}) {
+export default async function PlatformCostPage(props: { params: Promise<{ platform: string }> }) {
   const { platform: slug } = await props.params;
   const p = getPlatformBySlug(slug);
   if (!p) notFound();
@@ -138,9 +131,9 @@ export default async function PlatformCostPage(props: {
         <h2>How {meteringNoun(p)} map to real token cost</h2>
         <p>{p.howItMaps}</p>
         <p>
-          {p.name} runs on <strong>{p.underlyingModels.join(", ")}</strong>. To see what your
-          actual prompts cost at the API level — and which model is cheapest for your workload —
-          paste one into the <Link href="/#calculator">calculator</Link>.
+          {p.name} runs on <strong>{p.underlyingModels.join(", ")}</strong>. To see what your actual
+          prompts cost at the API level — and which model is cheapest for your workload — paste one
+          into the <Link href="/#calculator">calculator</Link>.
         </p>
 
         <h2>FAQ</h2>
@@ -158,8 +151,8 @@ export default async function PlatformCostPage(props: {
           <a href={p.source} rel="nofollow noopener" target="_blank">
             {p.name}’s official pricing
           </a>{" "}
-          as of {p.lastVerified ?? p.dataAsOf}. Platform pricing changes often — verify before
-          you commit.
+          as of {p.lastVerified ?? p.dataAsOf}. Platform pricing changes often — verify before you
+          commit.
         </p>
       </article>
 

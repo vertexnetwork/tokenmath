@@ -28,9 +28,9 @@ export default function PlatformCostIndex() {
         <p className="text-eyebrow text-(--accent)">Platform costs</p>
         <h1 className="text-display-lg max-w-3xl">Why your AI tool bill adds up.</h1>
         <p className="max-w-2xl text-base text-(--text-muted) sm:text-lg">
-          The AI coding tools meter cost in credits, “fast requests,” and usage charges that
-          don’t obviously map to dollars. Here’s how each one actually bills — and how to
-          estimate the real token cost underneath.
+          The AI coding tools meter cost in credits, “fast requests,” and usage charges that don’t
+          obviously map to dollars. Here’s how each one actually bills — and how to estimate the
+          real token cost underneath.
         </p>
       </header>
 

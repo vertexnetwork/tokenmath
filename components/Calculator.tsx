@@ -283,11 +283,7 @@ export function Calculator({
         />
       </div>
 
-      <MonthlyProjection
-        text={text}
-        outputTokens={expectedOutputTokens}
-        model={pricing}
-      />
+      <MonthlyProjection text={text} outputTokens={expectedOutputTokens} model={pricing} />
 
       {!lockModel && (
         <div className="flex flex-col gap-3">

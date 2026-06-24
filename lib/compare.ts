@@ -112,11 +112,7 @@ export function computeFacts(a: ModelPricing, b: ModelPricing): PairFacts {
       savingPctPer1kRequests: pct(lo, hi),
     },
     biggerContext:
-      a.contextWindow === b.contextWindow
-        ? null
-        : a.contextWindow > b.contextWindow
-          ? a
-          : b,
+      a.contextWindow === b.contextWindow ? null : a.contextWindow > b.contextWindow ? a : b,
     sameVendor: a.vendor === b.vendor,
   };
 }
