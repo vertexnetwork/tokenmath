@@ -12,6 +12,22 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    "date": "2026-06-24",
+    "title": "Avoid synchronous setState in MonthlyProjection effect"
+  },
+  {
+    "date": "2026-06-24",
+    "title": "Cost-decoder, compare + platform pSEO axes, price alerts"
+  },
+  {
+    "date": "2026-05-15",
+    "title": "Stop CompareTable Total column from being clipped"
+  },
+  {
+    "date": "2026-05-10",
+    "title": "\"Share scenario\" button copies a deep-link URL"
+  },
+  {
     "date": "2026-05-10",
     "title": "Address all flagged audits across 6 LH reports + raise thresholds"
   },
@@ -137,4 +153,4 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   }
 ] as const;
 
-export const CHANGELOG_GENERATED_AT = '2026-05-10T18:23:25.696Z';
+export const CHANGELOG_GENERATED_AT = '2026-06-24T20:36:18.420Z';

@@ -17,7 +17,9 @@ export type ModelId =
   | "gpt-5-mini"
   | "gpt-5-nano"
   | "gpt-4-1"
-  | "gpt-4-1-mini";
+  | "gpt-4-1-mini"
+  | "gpt-4o"
+  | "gpt-4o-mini";
 
 export type Vendor = "anthropic" | "google" | "openai";
 
@@ -31,7 +33,9 @@ export type ModelSlug =
   | "openai-gpt-5-mini"
   | "openai-gpt-5-nano"
   | "openai-gpt-4-1"
-  | "openai-gpt-4-1-mini";
+  | "openai-gpt-4-1-mini"
+  | "openai-gpt-4o"
+  | "openai-gpt-4o-mini";
 
 export interface PricingTier {
   /** Token threshold (inclusive). null means "no upper bound". */
@@ -193,6 +197,35 @@ export const MODELS: readonly ModelPricing[] = [
     outputUsdPerM: 1.6,
     contextWindow: 1_047_576,
     dataAsOf: "2026-05-09",
+    source: "https://openai.com/api/pricing/",
+  },
+  {
+    // Legacy model: superseded by the GPT-4.1 / GPT-5 generations and no longer listed on
+    // OpenAI's primary pricing page, but still callable at grandfathered rates and heavily
+    // pinned in production code. Pricing verified 2026-05-18 against OpenAI's published
+    // GPT-4o rates; revisit if OpenAI retires the endpoint.
+    id: "gpt-4o",
+    slug: "openai-gpt-4o",
+    label: "GPT-4o",
+    vendor: "openai",
+    family: "GPT-4o",
+    inputUsdPerM: 2.5,
+    outputUsdPerM: 10,
+    contextWindow: 128_000,
+    dataAsOf: "2026-05-18",
+    source: "https://openai.com/api/pricing/",
+  },
+  {
+    // Legacy model — see GPT-4o note above. Same o200k_base tokenizer, exact (factor 1.0).
+    id: "gpt-4o-mini",
+    slug: "openai-gpt-4o-mini",
+    label: "GPT-4o mini",
+    vendor: "openai",
+    family: "GPT-4o",
+    inputUsdPerM: 0.15,
+    outputUsdPerM: 0.6,
+    contextWindow: 128_000,
+    dataAsOf: "2026-05-18",
     source: "https://openai.com/api/pricing/",
   },
 ] as const;

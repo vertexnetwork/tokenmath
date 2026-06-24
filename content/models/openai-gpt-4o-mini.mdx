@@ -1,0 +1,62 @@
+---
+title: "GPT-4o mini token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-4o mini. Exact tokenization in your browser."
+modelId: "gpt-4o-mini"
+faqs:
+  - q: "Is GPT-4o mini still worth using in 2026?"
+    a: "It's still callable at its grandfathered rate ($0.15/M input, $0.60/M output), but it's a legacy model. GPT-5 Nano undercuts it on input ($0.05/M) and GPT-4.1 Mini beats it on context window (1M+ vs 128k). GPT-4o mini's case today is almost entirely 'it's already wired into a working high-volume pipeline,' not 'it's the best pick for a new build.'"
+  - q: "How does it compare to GPT-5 Nano?"
+    a: "GPT-5 Nano is roughly 3x cheaper on input ($0.05/M vs $0.15/M) and 33% cheaper on output ($0.40/M vs $0.60/M), and it's a current model rather than a legacy one. For new high-volume classification, extraction, or routing work, Nano is the default. GPT-4o mini only wins when the cost of re-validating prompts outweighs the per-token savings — which, at this volume tier, it sometimes genuinely does."
+  - q: "Is the token count exact?"
+    a: "Yes. GPT-4o mini shares the o200k_base tokenizer with the rest of the modern OpenAI lineup. We count via the canonical gpt-tokenizer package — exact, calibration factor 1.0, no approximation."
+  - q: "Should I use the Batch API for this model?"
+    a: "Yes when latency allows. The Batch API's 50% discount still applies to GPT-4o mini, taking effective input cost to roughly $0.075/M. At that point the model bill on most workloads stops being a budget conversation — the deciding factor becomes accuracy, not price."
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs entirely in JavaScript on the page (Web Worker for inputs over 50,000 characters). There is no server endpoint that ever receives prompt content."
+---
+
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
+
+# GPT-4o mini token & cost calculator
+
+**OpenAI GPT-4o mini** was, for a long stretch, the default cheap workhorse — the model that made high-volume classification, extraction, tagging, and routing economically boring. At $0.15 / $0.60 per million input / output tokens it's still inexpensive, but it is now a **legacy model**: GPT-5 Nano undercuts it and the GPT-4.1 generation beats its 128k context window.
+
+Like full GPT-4o, its relevance in 2026 is mostly _incumbency_. Enormous volumes of batch and pipeline traffic are still pointed at `gpt-4o-mini` because it was the obvious choice when those systems were built and it has kept working. The useful question this calculator answers: at your volume, is the gap to GPT-5 Nano big enough to justify re-validating the pipeline?
+
+<Calculator defaultModelId="gpt-4o-mini" lockModel />
+
+## Pricing
+
+Flat-rated, no context tier. Because this model lives in high-volume workloads, the per-token rate compounds fast — a 3x input-price gap to GPT-5 Nano that looks trivial per call is a real line item across millions of requests. The calculator above is most useful here when you multiply its per-call number by your actual request volume.
+
+<ModelPricingTable modelId="gpt-4o-mini" />
+
+## Worked examples
+
+These per-call costs are small enough to look negligible — which is exactly the trap with a high-throughput model. The number that matters isn't the cost of one call, it's that number times your monthly request count.
+
+<WorkedExamples modelId="gpt-4o-mini" />
+
+A useful pattern for legacy mini-tier models: **decide migrations on aggregate spend, not per-call cost.** If GPT-4o mini is handling a few thousand calls a month, the price gap to GPT-5 Nano is rounding error and not worth the re-eval. If it's handling tens of millions, the same gap funds the migration several times over. Price your real volume before deciding either way.
+
+## How is this counted?
+
+GPT-4o mini uses OpenAI's canonical `o200k_base` tokenizer. We count via `gpt-tokenizer` (MIT) — same exact vocab, calibration factor 1.0. Inputs over 50,000 characters tokenize in a Web Worker so the page stays responsive.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Compare against every other model
+
+To see this exact prompt scored against every supported model, sorted by total cost, paste it into the [home calculator](/#calculator) and toggle **Compare across all models**. For a high-volume legacy model this is the fastest way to see whether GPT-5 Nano's lower rate actually moves your number enough to act on.
+
+## Related models
+
+The comparisons that decide things here: GPT-5 Nano (the cheaper current replacement), GPT-4.1 Mini (when you also need long context), and full GPT-4o (the in-family step up when mini-tier quality isn't holding).
+
+<SiblingLinks modelId="gpt-4o-mini" />

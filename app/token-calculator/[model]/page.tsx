@@ -33,12 +33,16 @@ export async function generateMetadata(props: {
   const { model: slug } = await props.params;
   const model = getModelBySlug(slug);
   if (!model) return buildMetadata();
+  // Number-led title/description: GSC showed these pages drawing impressions at position
+  // ~8–9 with a 0% CTR. The headline price is what earns the click in the SERP, so lead
+  // with it rather than the generic "token & cost calculator" phrasing.
+  const countNote = model.vendor === "openai" ? "exact token counts" : "token counts (±2–3%)";
   return buildMetadata({
-    title: `${model.label} token & cost calculator`,
-    description: `Tokenize prompts and estimate API cost for ${model.label}. Runs entirely in your browser. Pricing as of ${model.dataAsOf}.`,
+    title: `${model.label} pricing: $${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens`,
+    description: `How much does ${model.label} cost? $${model.inputUsdPerM} per 1M input tokens, $${model.outputUsdPerM} per 1M output. Paste any prompt for ${countNote} and total API cost — free, in your browser, nothing uploaded.`,
     path: `/token-calculator/${model.slug}`,
     image: new URL(
-      `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent("Token + cost calculator. Privately, in your browser.")}`,
+      `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent(`$${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens · token + cost calculator`)}`,
       siteConfig.url,
     ).toString(),
   });
@@ -66,6 +70,10 @@ async function loadContent(slug: ModelSlug): Promise<ModelMdxModule> {
       return import("@/content/models/openai-gpt-4-1.mdx");
     case "openai-gpt-4-1-mini":
       return import("@/content/models/openai-gpt-4-1-mini.mdx");
+    case "openai-gpt-4o":
+      return import("@/content/models/openai-gpt-4o.mdx");
+    case "openai-gpt-4o-mini":
+      return import("@/content/models/openai-gpt-4o-mini.mdx");
   }
 }
 

@@ -21,4 +21,7 @@ export const calibrationFactor: Readonly<Record<ModelId, number>> = Object.freez
   "gpt-5-nano": 1.0,
   "gpt-4-1": 1.0,
   "gpt-4-1-mini": 1.0,
+  // GPT-4o family uses the same canonical o200k_base vocab — exact, factor 1.0.
+  "gpt-4o": 1.0,
+  "gpt-4o-mini": 1.0,
 });
