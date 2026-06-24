@@ -28,6 +28,15 @@ export function LockIcon(props: IconProps) {
   );
 }
 
+export function BellIcon(props: IconProps) {
+  return (
+    <svg {...baseProps} {...props}>
+      <path d="M4 7a4 4 0 0 1 8 0c0 2.5.75 3.5 1.25 4.25H2.75C3.25 10.5 4 9.5 4 7Z" />
+      <path d="M6.5 13.25a1.5 1.5 0 0 0 3 0" />
+    </svg>
+  );
+}
+
 export function SunIcon(props: IconProps) {
   return (
     <svg {...baseProps} {...props}>

@@ -6,20 +6,28 @@
  * carries a `v` field; readers ignore entries with an unknown version.
  */
 
-import type { ModelId } from "./pricing";
+import { getModelById, type ModelId } from "./pricing";
 
 const STORAGE_KEY = "tokenmath:scenarios:v1";
 const MAX_SCENARIOS = 10;
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 export interface SavedScenario {
-  v: typeof SCHEMA_VERSION;
+  /** 1 = pre-price-snapshot entries (still readable); 2 = current. */
+  v: 1 | 2;
   id: string;
   name: string;
   modelId: ModelId;
   text: string;
   outputTokens: number;
   savedAt: number;
+  /**
+   * Headline list price (USD per 1M tokens) at the moment of saving. Lets us flag price
+   * drift when the user returns — "this model is N% cheaper than when you saved it" — fully
+   * client-side, no backend. Absent on v1 entries.
+   */
+  inputUsdPerMAtSave?: number;
+  outputUsdPerMAtSave?: number;
 }
 
 export function listScenarios(): SavedScenario[] {
@@ -43,6 +51,7 @@ export function saveScenario(input: {
 }): SavedScenario | null {
   if (typeof window === "undefined") return null;
   if (input.text.length === 0) return null;
+  const model = getModelById(input.modelId);
   const scenario: SavedScenario = {
     v: SCHEMA_VERSION,
     id: cryptoRandomId(),
@@ -51,6 +60,8 @@ export function saveScenario(input: {
     text: input.text,
     outputTokens: input.outputTokens,
     savedAt: Date.now(),
+    inputUsdPerMAtSave: model?.inputUsdPerM,
+    outputUsdPerMAtSave: model?.outputUsdPerM,
   };
   const next = [scenario, ...listScenarios().filter((s) => s.id !== scenario.id)].slice(
     0,
@@ -86,8 +97,9 @@ export function clearAllScenarios(): void {
 function isValid(x: unknown): x is SavedScenario {
   if (!x || typeof x !== "object") return false;
   const s = x as Record<string, unknown>;
+  // Accept v1 (no price snapshot) and v2 so a schema bump never drops a user's saves.
   return (
-    s.v === SCHEMA_VERSION &&
+    (s.v === 1 || s.v === 2) &&
     typeof s.id === "string" &&
     typeof s.name === "string" &&
     typeof s.modelId === "string" &&
@@ -95,6 +107,23 @@ function isValid(x: unknown): x is SavedScenario {
     typeof s.outputTokens === "number" &&
     typeof s.savedAt === "number"
   );
+}
+
+/**
+ * Price drift since a scenario was saved, as a percentage change in the model's blended
+ * headline rate (input + output per 1M). Negative = cheaper now. Returns null when there's
+ * no snapshot (v1 entry), the model is gone, or the change rounds to nothing.
+ */
+export function priceDrift(s: SavedScenario): { pct: number; cheaper: boolean } | null {
+  if (s.inputUsdPerMAtSave == null || s.outputUsdPerMAtSave == null) return null;
+  const model = getModelById(s.modelId);
+  if (!model) return null;
+  const then = s.inputUsdPerMAtSave + s.outputUsdPerMAtSave;
+  const now = model.inputUsdPerM + model.outputUsdPerM;
+  if (then === 0) return null;
+  const pct = Math.round(((now - then) / then) * 100);
+  if (pct === 0) return null;
+  return { pct: Math.abs(pct), cheaper: now < then };
 }
 
 function cryptoRandomId(): string {

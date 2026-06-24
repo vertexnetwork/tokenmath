@@ -10,9 +10,11 @@ import type { SavedScenario } from "@/lib/scenarios";
 import { AffiliateSlot } from "./AffiliateSlot";
 import { ModelPicker } from "./ModelPicker";
 import { ResultCard } from "./ResultCard";
+import { MonthlyProjection } from "./MonthlyProjection";
 import { ExampleChips } from "./ExampleChips";
 import { CompareTable } from "./CompareTable";
 import { SavedScenarios } from "./SavedScenarios";
+import { PriceAlertForm } from "./PriceAlertForm";
 import { ShareButton } from "./ShareButton";
 import { PrivacyReceipts } from "./PrivacyReceipts";
 import { MobileTotalBar } from "./MobileTotalBar";
@@ -281,6 +283,12 @@ export function Calculator({
         />
       </div>
 
+      <MonthlyProjection
+        text={text}
+        outputTokens={expectedOutputTokens}
+        model={pricing}
+      />
+
       {!lockModel && (
         <div className="flex flex-col gap-3">
           <button
@@ -317,6 +325,8 @@ export function Calculator({
           />
         </div>
       </div>
+
+      <PriceAlertForm source="calculator" />
 
       <PrivacyReceipts />
 

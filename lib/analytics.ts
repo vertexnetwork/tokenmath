@@ -45,4 +45,13 @@ export const events = {
     // Tracks share-button clicks; the prompt content itself is never sent to analytics.
     safeTrack("share_scenario", { model, includesPrompt });
   },
+  switchSuggested(from: ModelId, to: ModelId) {
+    // Cost-decoder "Compare them" click — the closest thing to a conversion signal on the
+    // free funnel (a user acting on a cheaper-model recommendation).
+    safeTrack("switch_suggested", { from, to });
+  },
+  subscribe(stage: "submit" | "success", source: string) {
+    // Price-alert opt-in funnel. Never includes the email address itself.
+    safeTrack("subscribe", { stage, source });
+  },
 };

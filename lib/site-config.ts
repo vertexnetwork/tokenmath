@@ -58,6 +58,7 @@ export const siteConfig = {
     primary: [
       { href: "/#calculator", label: "Calculator" },
       { href: "/models", label: "Models" },
+      { href: "/compare", label: "Compare" },
       { href: "/pricing-data", label: "Pricing" },
       { href: "/about", label: "About" },
     ],
@@ -65,6 +66,8 @@ export const siteConfig = {
       product: [
         { href: "/#calculator", label: "Calculator" },
         { href: "/models", label: "Models" },
+        { href: "/compare", label: "Compare models" },
+        { href: "/cost", label: "Platform costs" },
         { href: "/pricing-data", label: "Pricing data" },
       ],
       company: [
@@ -101,7 +104,12 @@ export const siteConfig = {
     embed: { enabled: false, route: "/embed/widget", params: [] as string[] },
     extension: { enabled: false, chromeWebStoreUrl: "" },
     proEnabled: false,
-    email: { enabled: false, leadMagnetName: "" },
+    email: {
+      // Ships dark: the form + /api/subscribe render no-ops until NEXT_PUBLIC_EMAIL_ENABLED=1
+      // (client) and RESEND_API_KEY + RESEND_AUDIENCE_ID (server) are set.
+      enabled: process.env.NEXT_PUBLIC_EMAIL_ENABLED === "1",
+      leadMagnetName: "LLM price-change alerts",
+    },
     ads: {
       provider: (process.env.NEXT_PUBLIC_AD_PROVIDER as AdProvider | undefined) ?? "none",
     },

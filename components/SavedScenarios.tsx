@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { getModelById, type ModelId } from "@/lib/pricing";
-import { deleteScenario, listScenarios, saveScenario, type SavedScenario } from "@/lib/scenarios";
+import {
+  deleteScenario,
+  listScenarios,
+  priceDrift,
+  saveScenario,
+  type SavedScenario,
+} from "@/lib/scenarios";
 import { BookmarkIcon, TrashIcon } from "./icons";
 
 /**
@@ -108,6 +114,7 @@ export function SavedScenarios({
           <ul className="flex flex-col gap-2">
             {scenarios.map((s) => {
               const model = getModelById(s.modelId);
+              const drift = priceDrift(s);
               return (
                 <li
                   key={s.id}
@@ -118,7 +125,22 @@ export function SavedScenarios({
                     onClick={() => onLoad(s)}
                     className="flex flex-1 flex-col items-start text-left"
                   >
-                    <span className="text-sm font-medium text-(--text)">{s.name}</span>
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium text-(--text)">{s.name}</span>
+                      {drift && (
+                        <span
+                          className={`rounded-full border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
+                            drift.cheaper
+                              ? "border-(--gold)/40 bg-(--gold)/10 text-(--gold)"
+                              : "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                          }`}
+                          title="Change in this model's list price since you saved this scenario"
+                        >
+                          {drift.cheaper ? "▼" : "▲"} {drift.pct}%{" "}
+                          {drift.cheaper ? "cheaper" : "pricier"} since saved
+                        </span>
+                      )}
+                    </span>
                     <span className="text-xs text-(--text-faint)">
                       {model?.label ?? s.modelId} · {s.text.length.toLocaleString("en-US")} chars ·{" "}
                       {s.outputTokens.toLocaleString("en-US")} output tokens

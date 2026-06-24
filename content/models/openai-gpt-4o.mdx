@@ -1,0 +1,62 @@
+---
+title: "GPT-4o token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-4o. Exact tokenization in your browser."
+modelId: "gpt-4o"
+faqs:
+  - q: "Is GPT-4o still available in 2026?"
+    a: "Yes, at the time of writing. GPT-4o is a legacy model — superseded by the GPT-4.1 and GPT-5 generations and no longer featured on OpenAI's primary pricing page — but it remains callable at grandfathered rates ($2.50/M input, $10/M output). It is still the model a large share of production code is pinned to. Treat it as stable-but-frozen: fine to keep running, worth a migration plan."
+  - q: "Should I migrate off GPT-4o?"
+    a: "Usually yes, eventually — but measure first. GPT-5 Mini and GPT-4.1 Mini are both cheaper per token than GPT-4o and generally stronger, so the cost argument for staying is weak. The real cost of migrating is re-validating prompts and outputs against a new model, not the token bill. Use the comparison view to see the price delta on your actual prompt, then weigh that against your eval budget."
+  - q: "Is the token count exact?"
+    a: "Yes. GPT-4o uses OpenAI's canonical o200k_base tokenizer — the same vocab as GPT-4.1 and GPT-5. We count via the gpt-tokenizer package (calibration factor 1.0), so the number here matches what OpenAI bills, with no approximation."
+  - q: "What's the context window?"
+    a: "128,000 tokens. Smaller than the GPT-4.1 generation's 1M+ window — if your workload depends on very long single-call context, GPT-4o is a hard architectural ceiling and a reason to migrate rather than a tuning problem."
+  - q: "Does my prompt leave the browser?"
+    a: "No. Tokenization runs entirely in JavaScript on the page (Web Worker for inputs over 50,000 characters). No server endpoint ever receives prompt content."
+---
+
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
+
+# GPT-4o token & cost calculator
+
+**OpenAI GPT-4o** is the model a large fraction of production LLM code is still pinned to — the literal default in countless codebases written between its launch and the GPT-4.1/GPT-5 era. It is now a **legacy model**: no longer headlined on OpenAI's pricing page, superseded on both price and capability, but still callable at its grandfathered rate of $2.50 / $10 per million input / output tokens.
+
+This page exists because "what does GPT-4o actually cost on my prompt" is still a real question for teams running it in anger. The honest framing: GPT-4o isn't the model you'd *choose* today, it's the model you're *already running* — and the useful decision is whether the cost of staying is worth the cost of moving.
+
+<Calculator defaultModelId="gpt-4o" lockModel />
+
+## Pricing
+
+Flat $2.50 / $10 per million tokens, no context tier. The Batch API still applies its 50% discount to GPT-4o, which is the single biggest lever if you're committed to staying on it for asynchronous workloads.
+
+<ModelPricingTable modelId="gpt-4o" />
+
+## Worked examples
+
+Note how unremarkable these numbers are at 2026 rates — that's the point. GPT-4o was priced as a frontier model; today the same scenarios on GPT-5 Mini or GPT-4.1 Mini cost a fraction of this, which is why the migration math usually favors moving.
+
+<WorkedExamples modelId="gpt-4o" />
+
+The decision rule that actually matters: **the token bill is rarely why you'd stay on GPT-4o — output stability is.** If you have a validated pipeline whose prompts were tuned against this exact model and whose outputs feed downstream logic, the re-evaluation cost of switching can dwarf months of the price difference. Use the comparison view to quantify the delta, then put a real number on your eval effort and compare the two.
+
+## How is this counted?
+
+GPT-4o uses OpenAI's canonical `o200k_base` tokenizer — identical vocab to GPT-4.1 and GPT-5. We count via `gpt-tokenizer` (MIT), calibration factor 1.0, so the count is exact. Inputs over 50,000 characters tokenize in a Web Worker so the page stays responsive.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Compare against every other model
+
+To see this exact prompt scored against every supported model, sorted by total cost, paste it into the [home calculator](/#calculator) and toggle **Compare across all models**. For a legacy model like GPT-4o this is the fastest way to see, on your real input, exactly how much you're paying for staying put.
+
+## Related models
+
+The migrations worth pricing first: GPT-5 Mini and GPT-4.1 Mini (both cheaper and stronger, the usual destinations), and GPT-4o mini (the in-family step down if you only need to cut cost without re-validating across generations).
+
+<SiblingLinks modelId="gpt-4o" />
