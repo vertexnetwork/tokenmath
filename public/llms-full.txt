@@ -75,6 +75,148 @@ Notes
 - GPT-4o: https://tokenmath.dev/token-calculator/openai-gpt-4o
 - GPT-4o mini: https://tokenmath.dev/token-calculator/openai-gpt-4o-mini
 
+## Model comparisons
+
+Side-by-side cost comparisons for every pair of supported models, computed from the pricing
+table above (input/output price, context window, tokenizer accuracy, and the cost of a typical
+10,000-input / 2,000-output request on each). Index: https://tokenmath.dev/compare
+
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-anthropic-claude-4-5-sonnet
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-anthropic-claude-4-7-opus
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-google-gemini-2-5-pro
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-google-gemini-2-5-flash
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-5
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-4-1
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/anthropic-claude-4-5-sonnet-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-anthropic-claude-4-7-opus
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-google-gemini-2-5-pro
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-google-gemini-2-5-flash
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-5
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-4-1
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/anthropic-claude-4-5-haiku-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-google-gemini-2-5-pro
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-google-gemini-2-5-flash
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-5
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-4-1
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/anthropic-claude-4-7-opus-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-google-gemini-2-5-pro
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-5
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-4-1
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/google-gemini-2-5-pro-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-5
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-4-1
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/google-gemini-2-5-flash-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/openai-gpt-5-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/openai-gpt-5-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-5
+- https://tokenmath.dev/compare/openai-gpt-4-1-mini-vs-openai-gpt-5
+- https://tokenmath.dev/compare/openai-gpt-4o-vs-openai-gpt-5
+- https://tokenmath.dev/compare/openai-gpt-4o-mini-vs-openai-gpt-5
+- https://tokenmath.dev/compare/openai-gpt-5-mini-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/openai-gpt-4-1-mini-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/openai-gpt-4o-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/openai-gpt-4o-mini-vs-openai-gpt-5-mini
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4-1-mini-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4o-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4o-mini-vs-openai-gpt-5-nano
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-4-1-mini
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/openai-gpt-4-1-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/openai-gpt-4-1-mini-vs-openai-gpt-4o
+- https://tokenmath.dev/compare/openai-gpt-4-1-mini-vs-openai-gpt-4o-mini
+- https://tokenmath.dev/compare/openai-gpt-4o-vs-openai-gpt-4o-mini
+
+## Platform costs
+
+How popular AI coding and app-building tools bill, and how their credits/tokens/quotas map to
+real model token cost. Index: https://tokenmath.dev/cost
+
+### Cursor
+- URL: https://tokenmath.dev/cost/cursor
+- Billing model: usage-based
+- Plans: Hobby free, Pro $20/mo, Pro+ $60/mo, Ultra $200/mo, Teams $40/mo
+- Why bills surprise users: Switching to an expensive frontier model like Claude Opus can drain the $20 included pool in a handful of prompts — and once it’s empty, usage auto-bills at API rates unless you set a spend cap. The June 2025 move to this model drew enough backlash that Cursor issued a public apology and refunds.
+- Underlying models: Claude (Opus & Sonnet), GPT-5, Gemini 2.5
+- Source: https://cursor.com/pricing (verified 2026-06-23)
+
+### GitHub Copilot
+- URL: https://tokenmath.dev/cost/github-copilot
+- Billing model: credits
+- Plans: Free free, Pro $10/mo, Pro+ $39/mo, Max $100/mo, Business $19/mo
+- Why bills surprise users: Picking a frontier model (Claude Opus, GPT-5.5) burns the small $15 Pro credit pool in a few token-heavy agent runs, after which usage continues at full per-token rates against your budget. The launch blog and plans page even disagree on the included-credit amounts, so the numbers are still settling.
+- Underlying models: Claude Sonnet & Opus, GPT-5
+- Source: https://github.com/features/copilot/plans (verified 2026-06-23)
+
+### Claude Code
+- URL: https://tokenmath.dev/cost/claude-code
+- Billing model: subscription-flat
+- Plans: Free free, Pro $20/mo, Max 5× $100/mo, Max 20× $200/mo
+- Why bills surprise users: Running Claude Code on API pay-as-you-go with Opus is the trap: agentic loops re-send the full history plus tool results every turn, so heavy daily use can reach hundreds to thousands per month versus a capped $100–200 Max subscription.
+- Underlying models: Claude Opus, Claude Sonnet, Claude Haiku
+- Source: https://claude.com/pricing (verified 2026-06-23)
+
+### Replit
+- URL: https://tokenmath.dev/cost/replit
+- Billing model: usage-based
+- Plans: Starter free, Core $25/mo, Pro $100/mo
+- Why bills surprise users: The Agent burns credits on failed, looping, or rolled-back work exactly like successful work, and overages bill to your card with no prompt — community reports cite surprise charges in the hundreds after retry loops.
+- Underlying models: Claude, GPT-5
+- Source: https://replit.com/pricing (verified 2026-06-23)
+
+### Bolt.new
+- URL: https://tokenmath.dev/cost/bolt
+- Billing model: usage-based
+- Plans: Free free, Pro $25/mo, Teams $30/mo
+- Why bills surprise users: Token burn scales with project size, not edit size: Bolt re-reads and re-syncs your whole project on every message, so a large codebase or a debugging loop re-sends everything and drains your monthly tokens fast.
+- Underlying models: Claude
+- Source: https://bolt.new/pricing (verified 2026-06-23)
+
+### v0 (Vercel)
+- URL: https://tokenmath.dev/cost/v0
+- Billing model: credits
+- Plans: Free free, Team $30/mo, Business $100/mo
+- Why bills surprise users: There’s a 10× cost spread between v0 Mini and v0 Max Fast; pasting large contexts on a high tier drains credits fast, and the recent shift from a predictable 7-messages/day cap to token metering caught many users off guard.
+- Underlying models: OpenAI & Anthropic models (repackaged as v0 Mini/Pro/Max)
+- Source: https://v0.app/pricing (verified 2026-06-23)
+
+### Lovable
+- URL: https://tokenmath.dev/cost/lovable
+- Billing model: credits
+- Plans: Free free, Pro $25/mo, Business $50/mo
+- Why bills surprise users: Dual-layer billing surprises people: your subscription only covers building, while apps you deploy incur separate usage-based hosting and AI overage. Stopped or failed Build-mode requests are still charged for work completed so far.
+- Underlying models: Claude, GPT-5
+- Source: https://lovable.dev/pricing (verified 2026-06-23)
+
+### Windsurf (now Devin Desktop)
+- URL: https://tokenmath.dev/cost/windsurf
+- Billing model: usage-based
+- Plans: Free free, Pro $20/mo, Max $200/mo, Teams $80/mo
+- Why bills surprise users: Overage is uncapped: the quota limits only your included allowance, not your spend. Once the allowance is exhausted, usage continues at full API list prices.
+- Underlying models: SWE-1.5 (first-party), Claude, GPT-5
+- Source: https://devin.ai/pricing (verified 2026-06-23)
+
 ## Changelog
 
 - 2026-06-24  Avoid synchronous setState in MonthlyProjection effect
@@ -117,6 +259,8 @@ Notes
 
 - Home: https://tokenmath.dev/
 - Models index: https://tokenmath.dev/models
+- Compare models: https://tokenmath.dev/compare
+- Platform costs: https://tokenmath.dev/cost
 - Pricing data sources: https://tokenmath.dev/pricing-data
 - Privacy policy: https://tokenmath.dev/privacy
 - Changelog: https://tokenmath.dev/changelog

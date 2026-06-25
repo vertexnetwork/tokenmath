@@ -21,8 +21,23 @@
 
 - [Home calculator](https://tokenmath.dev/): paste a prompt, see token count + USD cost. Compare mode tokenizes against every supported model in one tap.
 - [Models index](https://tokenmath.dev/models): every supported model with vendor filters, sort controls, and multi-select side-by-side comparison.
+- [Compare models](https://tokenmath.dev/compare): side-by-side cost comparison for any two models — input/output price, context window, accuracy, and what a real request costs on each.
+- [Platform costs](https://tokenmath.dev/cost): how AI coding tools (Cursor, Replit, Copilot, …) bill, and how their credits/tokens map to real model cost.
 - [Pricing data](https://tokenmath.dev/pricing-data): every rate dated and linked to the vendor's public pricing page.
 - [Changelog](https://tokenmath.dev/changelog): what shipped and when.
+
+## Platform costs
+
+How popular AI coding tools bill, and how their credits/tokens map to real model cost.
+
+- [Cursor](https://tokenmath.dev/cost/cursor): An AI-first code editor that meters frontier-model use against a dollar-denominated usage pool.
+- [GitHub Copilot](https://tokenmath.dev/cost/github-copilot): The pair-programmer that moved to usage-based AI Credits (1 credit = $0.01) in June 2026.
+- [Claude Code](https://tokenmath.dev/cost/claude-code): Anthropic’s terminal coding agent — pay a flat Claude subscription or raw API tokens.
+- [Replit](https://tokenmath.dev/cost/replit): Cloud IDE whose Agent bills by “effort” — you pay for the work it performs, success or not.
+- [Bolt.new](https://tokenmath.dev/cost/bolt): Browser-based full-stack app builder that meters standard LLM tokens, not abstract credits.
+- [v0 (Vercel)](https://tokenmath.dev/cost/v0): Vercel’s generative-UI tool, now metered on input/output tokens converted to dollar credits.
+- [Lovable](https://tokenmath.dev/cost/lovable): Prompt-to-app builder metered in credits, with a separate usage bill for the apps you ship.
+- [Windsurf (now Devin Desktop)](https://tokenmath.dev/cost/windsurf): Codeium’s Windsurf editor was acquired by Cognition and rebranded Devin Desktop — its pricing now mirrors Devin’s token-quota model.
 
 ## Reference
 
