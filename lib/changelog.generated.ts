@@ -153,4 +153,4 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   }
 ] as const;
 
-export const CHANGELOG_GENERATED_AT = '2026-06-24T20:36:18.420Z';
+export const CHANGELOG_GENERATED_AT = '2026-06-25T22:50:16.744Z';

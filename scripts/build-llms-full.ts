@@ -8,6 +8,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { MODELS, latestDataAsOf } from "../lib/pricing";
+import { allPairSlugs } from "../lib/compare";
+import { PLATFORMS } from "../lib/platforms";
 import { CHANGELOG } from "../lib/changelog";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -44,6 +46,32 @@ function buildPricingTable(): string {
 function buildChangelog(): string {
   if (CHANGELOG.length === 0) return "_No entries yet._";
   return CHANGELOG.map((entry) => `- ${entry.date}  ${entry.title}`).join("\n");
+}
+
+function buildComparisons(): string {
+  return allPairSlugs()
+    .map((slug) => `- https://tokenmath.dev/compare/${slug}`)
+    .join("\n");
+}
+
+function buildPlatforms(): string {
+  return PLATFORMS.map((p) => {
+    const plans = p.plans
+      .map((pl) => {
+        const price =
+          pl.priceUsd === null ? "custom" : pl.priceUsd === 0 ? "free" : `$${pl.priceUsd}`;
+        const period = pl.priceUsd && pl.period !== "once" ? `/${pl.period}` : "";
+        return `${pl.name} ${price}${period}`;
+      })
+      .join(", ");
+    return `### ${p.name}
+- URL: https://tokenmath.dev/cost/${p.slug}
+- Billing model: ${p.metering}
+- Plans: ${plans}
+- Why bills surprise users: ${p.surpriseBillReason}
+- Underlying models: ${p.underlyingModels.join(", ")}
+- Source: ${p.source} (verified ${p.lastVerified ?? p.dataAsOf})`;
+  }).join("\n\n");
 }
 
 function buildContent(): string {
@@ -100,6 +128,21 @@ Notes
 
 ${MODELS.map((m) => `- ${m.label}: https://tokenmath.dev/token-calculator/${m.slug}`).join("\n")}
 
+## Model comparisons
+
+Side-by-side cost comparisons for every pair of supported models, computed from the pricing
+table above (input/output price, context window, tokenizer accuracy, and the cost of a typical
+10,000-input / 2,000-output request on each). Index: https://tokenmath.dev/compare
+
+${buildComparisons()}
+
+## Platform costs
+
+How popular AI coding and app-building tools bill, and how their credits/tokens/quotas map to
+real model token cost. Index: https://tokenmath.dev/cost
+
+${buildPlatforms()}
+
 ## Changelog
 
 ${buildChangelog()}
@@ -108,6 +151,8 @@ ${buildChangelog()}
 
 - Home: https://tokenmath.dev/
 - Models index: https://tokenmath.dev/models
+- Compare models: https://tokenmath.dev/compare
+- Platform costs: https://tokenmath.dev/cost
 - Pricing data sources: https://tokenmath.dev/pricing-data
 - Privacy policy: https://tokenmath.dev/privacy
 - Changelog: https://tokenmath.dev/changelog
