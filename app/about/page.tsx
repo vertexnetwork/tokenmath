@@ -82,12 +82,16 @@ export default function AboutPage() {
         <p>
           The pricing tables and per-model write-ups are maintained by the{" "}
           <strong>tokenmath Research Desk</strong>. The rule is simple and the only credential we
-          claim: <em>every rate is taken from the vendor&apos;s own published pricing page, dated,
-          and re-checked on each refresh</em> — if a number can&apos;t be linked to a primary
-          source, it doesn&apos;t ship. Each model carries the <code>dataAsOf</code> stamp and
-          source link it was verified against (see <Link href="/pricing-data">pricing data</Link>),
-          and every pricing page shows when it was last verified. We don&apos;t publish invented
-          author bios or credentials — just the methodology and the sources, which you can check.
+          claim:{" "}
+          <em>
+            every rate is taken from the vendor&apos;s own published pricing page, dated, and
+            re-checked on each refresh
+          </em>{" "}
+          — if a number can&apos;t be linked to a primary source, it doesn&apos;t ship. Each model
+          carries the <code>dataAsOf</code> stamp and source link it was verified against (see{" "}
+          <Link href="/pricing-data">pricing data</Link>), and every pricing page shows when it was
+          last verified. We don&apos;t publish invented author bios or credentials — just the
+          methodology and the sources, which you can check.
         </p>
 
         <h2>Built by</h2>
