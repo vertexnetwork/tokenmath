@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
-import { listModelSlugs } from "@/lib/pricing";
-import { allPairSlugs } from "@/lib/compare";
-import { listPlatformSlugs } from "@/lib/platforms";
+import { MODELS, modelVerifiedDate, PRIVACY_UPDATED } from "@/lib/pricing";
+import { allPairs } from "@/lib/compare";
+import { PLATFORMS, platformVerifiedDate } from "@/lib/platforms";
 import { siteConfig } from "@/lib/site-config";
 
-// Use the latest commit author date so unchanged routes don't cache-bust on every build.
+// Generated routes carry their real per-page "verified" date (below); this build-date is the
+// fallback only for genuinely build-frequency static routes (home, hubs, changelog), so the
+// sitemap no longer claims every URL changed on the same day each deploy.
 // Vercel sets VERCEL_GIT_COMMIT_AUTHOR_DATE; locally fall back to "now".
 function lastmod(): Date {
   const commitDate = process.env.VERCEL_GIT_COMMIT_AUTHOR_DATE;
@@ -25,7 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: abs("/compare"), lastModified: today, changeFrequency: "weekly", priority: 0.7 },
     { url: abs("/about"), lastModified: today, changeFrequency: "monthly", priority: 0.5 },
     { url: abs("/contact"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
-    { url: abs("/privacy"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
+    {
+      url: abs("/privacy"),
+      lastModified: new Date(PRIVACY_UPDATED),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
     { url: abs("/terms"), lastModified: today, changeFrequency: "yearly", priority: 0.3 },
     { url: abs("/network"), lastModified: today, changeFrequency: "monthly", priority: 0.5 },
     {
@@ -37,30 +44,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: abs("/changelog"), lastModified: today, changeFrequency: "weekly", priority: 0.5 },
   ];
 
-  const modelRoutes: MetadataRoute.Sitemap = listModelSlugs().map((slug) => ({
-    url: abs(`/token-calculator/${slug}`),
-    lastModified: today,
+  const modelRoutes: MetadataRoute.Sitemap = MODELS.map((m) => ({
+    url: abs(`/token-calculator/${m.slug}`),
+    lastModified: new Date(modelVerifiedDate(m)),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
-  const compareRoutes: MetadataRoute.Sitemap = allPairSlugs().map((pair) => ({
-    url: abs(`/compare/${pair}`),
-    lastModified: today,
+  // Each pair's lastmod is the newer of its two models' verify dates (ISO sorts lexically).
+  const compareRoutes: MetadataRoute.Sitemap = allPairs().map(({ slug, a, b }) => ({
+    url: abs(`/compare/${slug}`),
+    lastModified: new Date([modelVerifiedDate(a), modelVerifiedDate(b)].sort().at(-1)!),
     changeFrequency: "weekly",
     priority: 0.6,
   }));
 
   // Platform cost-panic pages — only enters the sitemap once entries are populated, so the
   // axis ships dark until its pricing data is verified.
-  const platformSlugs = listPlatformSlugs();
   const platformIndex: MetadataRoute.Sitemap =
-    platformSlugs.length > 0
+    PLATFORMS.length > 0
       ? [{ url: abs("/cost"), lastModified: today, changeFrequency: "weekly", priority: 0.7 }]
       : [];
-  const platformRoutes: MetadataRoute.Sitemap = platformSlugs.map((slug) => ({
-    url: abs(`/cost/${slug}`),
-    lastModified: today,
+  const platformRoutes: MetadataRoute.Sitemap = PLATFORMS.map((p) => ({
+    url: abs(`/cost/${p.slug}`),
+    lastModified: new Date(platformVerifiedDate(p)),
     changeFrequency: "weekly",
     priority: 0.6,
   }));

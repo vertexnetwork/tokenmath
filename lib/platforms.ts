@@ -232,6 +232,11 @@ export function listPlatformSlugs(): string[] {
   return PLATFORMS.map((p) => p.slug);
 }
 
+/** Date the platform's pricing was last checked against its source — for lastmod + byline. */
+export function platformVerifiedDate(p: Platform): string {
+  return p.lastVerified ?? p.dataAsOf;
+}
+
 export function getPlatformBySlug(slug: string): Platform | undefined {
   return PLATFORMS.find((p) => p.slug === slug);
 }

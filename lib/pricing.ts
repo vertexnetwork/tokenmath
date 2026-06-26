@@ -290,6 +290,15 @@ export function costUsd(
   return { inputUsd, outputUsd, totalUsd: inputUsd + outputUsd };
 }
 
+/**
+ * The date a model's price was last *checked* against the vendor — `lastVerified` when set,
+ * otherwise the `dataAsOf` it last changed. This is the honest per-page freshness signal
+ * (sitemap lastmod, byline "verified" date), not the build date.
+ */
+export function modelVerifiedDate(model: ModelPricing): string {
+  return model.lastVerified ?? model.dataAsOf;
+}
+
 /** The newest dataAsOf across all models — used by the footer disclaimer. */
 export function latestDataAsOf(): string {
   return (

@@ -2,11 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
-import { getModelBySlug, listModelSlugs, type ModelSlug } from "@/lib/pricing";
+import { Byline } from "@/components/Byline";
+import { getModelBySlug, listModelSlugs, modelVerifiedDate, type ModelSlug } from "@/lib/pricing";
 import { siteConfig } from "@/lib/site-config";
 import {
   breadcrumbListJsonLd,
   buildMetadata,
+  distinctiveFaqs,
   faqPageJsonLd,
   renderJsonLd,
   softwareApplicationJsonLd,
@@ -85,6 +87,10 @@ export default async function ModelPage(props: { params: Promise<{ model: string
   const Mod = await loadContent(model.slug);
   const Body = Mod.default;
   const faqs = Mod.frontmatter?.faqs ?? [];
+  // Emit only the page-unique FAQs as structured data — the recurring privacy/accuracy ones
+  // stay visible in the body but are kept out of the per-URL FAQPage to avoid a "scaled"
+  // fingerprint across the model set.
+  const schemaFaqs = distinctiveFaqs(faqs);
 
   return (
     <main
@@ -112,6 +118,8 @@ export default async function ModelPage(props: { params: Promise<{ model: string
         </ol>
       </nav>
 
+      <Byline verified={modelVerifiedDate(model)} />
+
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h1:font-semibold prose-h2:mt-12 prose-h2:text-2xl prose-h2:font-semibold prose-a:text-(--accent) prose-a:no-underline prose-strong:text-(--text)">
         <Body />
       </article>
@@ -122,10 +130,10 @@ export default async function ModelPage(props: { params: Promise<{ model: string
         type="application/ld+json"
         dangerouslySetInnerHTML={renderJsonLd(softwareApplicationJsonLd(model))}
       />
-      {faqs.length > 0 && (
+      {schemaFaqs.length > 0 && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={renderJsonLd(faqPageJsonLd(faqs))}
+          dangerouslySetInnerHTML={renderJsonLd(faqPageJsonLd(schemaFaqs))}
         />
       )}
       <script

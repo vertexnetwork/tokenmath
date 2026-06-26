@@ -41,6 +41,17 @@ export function allPairSlugs(): string[] {
   return slugs;
 }
 
+/** Every unordered pair with its canonical slug + both model objects (sitemap, cross-linking). */
+export function allPairs(): { slug: string; a: ModelPricing; b: ModelPricing }[] {
+  const out: { slug: string; a: ModelPricing; b: ModelPricing }[] = [];
+  for (let i = 0; i < MODELS.length; i++) {
+    for (let j = i + 1; j < MODELS.length; j++) {
+      out.push({ slug: pairSlug(MODELS[i].slug, MODELS[j].slug), a: MODELS[i], b: MODELS[j] });
+    }
+  }
+  return out;
+}
+
 /**
  * Resolve a route param to a pair. Returns `canonical` so the page can 301 a non-canonical
  * ordering (b-vs-a) to the single indexable URL and avoid duplicate content.
@@ -114,5 +125,81 @@ export function computeFacts(a: ModelPricing, b: ModelPricing): PairFacts {
     biggerContext:
       a.contextWindow === b.contextWindow ? null : a.contextWindow > b.contextWindow ? a : b,
     sameVendor: a.vendor === b.vendor,
+  };
+}
+
+export interface PairAngle {
+  heading: string;
+  body: string;
+}
+
+/**
+ * The per-pair "decision angle" — the section that keeps the 66 comparison pages from reading
+ * like find-and-replace of one template. Each pair lands in one of a few clusters (same-family,
+ * same-vendor, cross-vendor different-tier, cross-vendor near-peer) and gets a distinct heading
+ * + a body keyed to *its* numbers. Still 100% derived from MODELS[] — no hand-written claims.
+ */
+export function pairAngle(a: ModelPricing, b: ModelPricing, f: PairFacts): PairAngle {
+  const lo = Math.min(f.example.aTotal, f.example.bTotal);
+  const hi = Math.max(f.example.aTotal, f.example.bTotal);
+  const ratio = lo > 0 ? hi / lo : Infinity;
+  const cheaper = f.example.cheaper;
+  const dearer = cheaper ? (cheaper.slug === a.slug ? b : a) : null;
+  const exactSide =
+    a.vendor === "openai" || b.vendor === "openai"
+      ? "the OpenAI side counts exactly; the other lands within a few percent"
+      : "both counts are approximate to within a few percent";
+
+  // Same vendor: a switch is cheap (shared SDK + tokenizer), so it's a pure price/quality call.
+  if (f.sameVendor) {
+    if (!cheaper || !dearer) {
+      return {
+        heading: "Same vendor, same price",
+        body: `${a.label} and ${b.label} are from the same vendor and cost the same on this workload, so price isn't the deciding factor — choose on capability, context window, or latency. Switching is a model-string change, with no SDK or tokenizer churn.`,
+      };
+    }
+    const sameFamily = a.family === b.family;
+    return {
+      heading: sameFamily ? "Same family — pick on price" : "Same vendor — an easy switch",
+      body: `Moving between ${a.label} and ${b.label} is ${
+        sameFamily
+          ? "a one-line model-string change — same family, same tokenizer, nothing to re-encode"
+          : "a same-vendor move — one SDK, one tokenizer, so no recalibration"
+      }. That makes this a straight cost/quality call: send the routine bulk of traffic to ${
+        cheaper.label
+      } (${formatPerM(cheaper.inputUsdPerM)}/${formatPerM(
+        cheaper.outputUsdPerM,
+      )} per 1M) and reserve ${
+        dearer.label
+      } for the requests that visibly need its extra headroom. On the worked example above that split is worth about ${f.example.savingPctPer1kRequests}% per request — small per call, real money once you multiply by volume.`,
+    };
+  }
+
+  // Cross-vendor, wide price gap: different tiers that rarely compete for the same job.
+  if (ratio >= 4 && cheaper && dearer) {
+    return {
+      heading: "Different leagues",
+      body: `These two sit in different price tiers — ${dearer.label} runs roughly ${Math.round(
+        ratio,
+      )}× the per-request cost of ${cheaper.label} on the worked example — so they rarely compete for the same job. Reach for ${
+        cheaper.label
+      } on high-volume, latency-sensitive work (classification, extraction, routing) and ${
+        dearer.label
+      } only where the harder reasoning earns its price. They're different vendors, so expect a different API and tokenizer: ${exactSide} — budget a small calibration buffer when you switch.`,
+    };
+  }
+
+  // Cross-vendor, comparable price: the genuinely interesting head-to-head.
+  return {
+    heading: "Close call — decide on output cost",
+    body: `${a.label} and ${b.label} are close enough on price that the tie-breakers matter more than the headline rate. Output tokens are usually the dominant cost driver, so weigh ${formatPerM(
+      a.outputUsdPerM,
+    )} vs ${formatPerM(b.outputUsdPerM)} per 1M output first${
+      f.biggerContext
+        ? `, then context window — ${f.biggerContext.label} carries the larger one at ${f.biggerContext.contextWindow.toLocaleString(
+            "en-US",
+          )} tokens`
+        : ", where both offer the same context window"
+    }. They're different vendors, so factor in a small tokenizer calibration buffer on whichever side isn't exact.`,
   };
 }
