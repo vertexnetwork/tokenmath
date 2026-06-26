@@ -2,7 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
-import { getPlatformBySlug, listPlatformSlugs, type Platform } from "@/lib/platforms";
+import { Byline } from "@/components/Byline";
+import {
+  getPlatformBySlug,
+  listPlatformSlugs,
+  platformVerifiedDate,
+  type Platform,
+} from "@/lib/platforms";
 import { siteConfig } from "@/lib/site-config";
 import { breadcrumbListJsonLd, buildMetadata, faqPageJsonLd, renderJsonLd } from "@/lib/seo";
 
@@ -93,6 +99,8 @@ export default async function PlatformCostPage(props: { params: Promise<{ platfo
           </li>
         </ol>
       </nav>
+
+      <Byline verified={platformVerifiedDate(p)} />
 
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h1:font-semibold prose-h2:mt-12 prose-h2:text-2xl prose-h2:font-semibold prose-a:text-(--accent) prose-a:no-underline prose-strong:text-(--text)">
         <h1>{p.name} pricing explained</h1>

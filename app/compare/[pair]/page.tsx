@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
+import { Byline } from "@/components/Byline";
 import { siteConfig } from "@/lib/site-config";
-import { APPROX_DRIFT } from "@/lib/pricing";
+import { APPROX_DRIFT, modelVerifiedDate } from "@/lib/pricing";
 import {
   allPairSlugs,
   computeFacts,
@@ -11,6 +12,7 @@ import {
   EXAMPLE_OUTPUT_TOKENS,
   formatPerM,
   getPairBySlug,
+  pairAngle,
 } from "@/lib/compare";
 import { breadcrumbListJsonLd, buildMetadata, faqPageJsonLd, renderJsonLd } from "@/lib/seo";
 
@@ -52,6 +54,9 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
 
   const { a, b } = resolved;
   const f = computeFacts(a, b);
+  const angle = pairAngle(a, b, f);
+  // Newer of the two verify dates — the honest "as of" for the pair (ISO sorts lexically).
+  const verified = [modelVerifiedDate(a), modelVerifiedDate(b)].sort().at(-1)!;
   const exampleLabel = `${EXAMPLE_INPUT_TOKENS.toLocaleString("en-US")} input + ${EXAMPLE_OUTPUT_TOKENS.toLocaleString("en-US")} output tokens`;
   // Scale the per-request delta to something tangible.
   const per100k = Math.abs(f.example.aTotal - f.example.bTotal) * 100_000;
@@ -100,6 +105,8 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
           </li>
         </ol>
       </nav>
+
+      <Byline verified={verified} />
 
       <article className="prose prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h1:font-semibold prose-h2:mt-12 prose-h2:text-2xl prose-h2:font-semibold prose-a:text-(--accent) prose-a:no-underline prose-strong:text-(--text)">
         <h1>
@@ -187,29 +194,9 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
           )}
         </p>
 
-        <h2>Which should you pick?</h2>
+        <h2>{angle.heading}</h2>
+        <p>{angle.body}</p>
         <p>
-          {f.sameVendor ? (
-            <>
-              Both are{" "}
-              {a.vendor === "openai" ? "OpenAI" : a.vendor === "google" ? "Google" : "Anthropic"}{" "}
-              models, so you can move between them without changing SDKs or re-tokenising — route
-              the routine 80% of traffic to the cheaper one and reserve{" "}
-              {a.inputUsdPerM >= b.inputUsdPerM ? a.label : b.label} for the genuinely hard
-              requests.
-            </>
-          ) : (
-            <>
-              These are different vendors, so a switch means a different API and a slightly
-              different tokenizer — budget a small calibration buffer.{" "}
-              {APPROX_DRIFT[a.vendor].label === "exact"
-                ? a.label
-                : APPROX_DRIFT[b.vendor].label === "exact"
-                  ? b.label
-                  : "OpenAI models"}{" "}
-              give exact counts; the others land within a few percent.
-            </>
-          )}{" "}
           See the full breakdown on the dedicated pages for{" "}
           <Link href={`/token-calculator/${a.slug}`}>{a.label}</Link> and{" "}
           <Link href={`/token-calculator/${b.slug}`}>{b.label}</Link>.
@@ -224,6 +211,26 @@ export default async function ComparePage(props: { params: Promise<{ pair: strin
             </div>
           ))}
         </dl>
+
+        <p className="text-xs text-(--text-faint)">
+          Both prices are computed from tokenmath&apos;s verified pricing table. Rates sourced from{" "}
+          {a.source === b.source ? (
+            <a href={a.source} rel="nofollow noopener" target="_blank">
+              {new URL(a.source).host}
+            </a>
+          ) : (
+            <>
+              <a href={a.source} rel="nofollow noopener" target="_blank">
+                {new URL(a.source).host}
+              </a>{" "}
+              and{" "}
+              <a href={b.source} rel="nofollow noopener" target="_blank">
+                {new URL(b.source).host}
+              </a>
+            </>
+          )}
+          , verified {verified}. Vendor pricing changes often — confirm before you commit.
+        </p>
       </article>
 
       <AdSlot placement="pseo-after-faq" />

@@ -32,6 +32,17 @@ export const siteConfig = {
   // contact / legal
   supportEmail: process.env.NEXT_PUBLIC_SITE_CONTACT_EMAIL ?? "hello@tokenmath.dev",
 
+  // editorial identity — the named desk behind the pricing research. Deliberately an
+  // org/team entity, NOT a fabricated person: Google accepts an editorial author, and we
+  // only assert what's verifiable (the sourcing + re-verification discipline). No invented
+  // degrees, employers, or press — see the pSEO audit playbook, Part 6 ("anonymity yes,
+  // fabrication no"). Drives the visible byline + the JSON-LD author/publisher.
+  author: {
+    name: "tokenmath Research Desk",
+    /** Byline target — the "how we verify" methodology section on /about. */
+    methodologyPath: "/about#methodology",
+  },
+
   // theme tokens (the JS surface; CSS source-of-truth still lives in app/globals.css)
   theme: {
     colors: {

@@ -77,6 +77,19 @@ export function webApplicationJsonLd() {
   } as const;
 }
 
+/**
+ * The editorial author entity — an Organization-typed desk, not a fabricated person. Google
+ * accepts a team/brand as an author; embedding it on the money/pricing pages earns the
+ * E-E-A-T "Who" signal without inventing a checkable credential. See the audit playbook §6.
+ */
+export function editorialAuthorJsonLd() {
+  return {
+    "@type": "Organization",
+    name: siteConfig.author.name,
+    url: new URL(siteConfig.author.methodologyPath, siteConfig.url).toString(),
+  } as const;
+}
+
 export function softwareApplicationJsonLd(model: ModelPricing) {
   const url = new URL(`/token-calculator/${model.slug}`, siteConfig.url).toString();
   return {
@@ -88,7 +101,28 @@ export function softwareApplicationJsonLd(model: ModelPricing) {
     operatingSystem: siteConfig.jsonLd.operatingSystem,
     description: `Tokenize prompts and estimate API cost for ${model.label}. Runs entirely in your browser.`,
     offers: { "@type": "Offer", price: siteConfig.jsonLd.price, priceCurrency: "USD" },
+    author: editorialAuthorJsonLd(),
+    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   } as const;
+}
+
+/**
+ * Questions that recur (with near-identical phrasing) across most model pages — privacy,
+ * tokenizer accuracy, context window. They stay VISIBLE on every page (real user value), but
+ * we drop them from the per-URL FAQPage JSON-LD so the structured-data body varies page to
+ * page instead of carrying a repeated "scaled" fingerprint across the set. FAQ rich results
+ * carry no upside for a non-gov/health site post-2023, so nothing is lost by trimming schema.
+ */
+const GENERIC_FAQ_QUESTIONS: ReadonlySet<string> = new Set([
+  "Does my prompt leave the browser?",
+  "Is the token count exact?",
+  "What is the context window?",
+  "How accurate is the token count?",
+]);
+
+/** The page-unique subset of FAQs to emit as FAQPage structured data (see above). */
+export function distinctiveFaqs<T extends { q: string }>(faqs: ReadonlyArray<T>): T[] {
+  return faqs.filter((f) => !GENERIC_FAQ_QUESTIONS.has(f.q.trim()));
 }
 
 export function faqPageJsonLd(faqs: ReadonlyArray<{ q: string; a: string }>) {
