@@ -104,11 +104,16 @@ export const MODELS: readonly ModelPricing[] = [
     label: "Claude 4.7 Opus",
     vendor: "anthropic",
     family: "Claude 4.7",
-    inputUsdPerM: 15,
-    outputUsdPerM: 75,
-    contextWindow: 200_000,
-    dataAsOf: "2026-05-09",
-    source: "https://www.anthropic.com/pricing",
+    // Corrected 2026-07-05 against Anthropic's official pricing: Opus 4.7 is $5/$25 with a full
+    // 1M context window. The prior $15/$75 / 200K values were the retired Opus 4.1 figures,
+    // carried over by mistake when the model was bumped to 4.7. Opus 4.7 also uses Anthropic's
+    // newer tokenizer (~30% more tokens) — see the 1.3× factor in lib/tokenizers/calibration.ts.
+    inputUsdPerM: 5,
+    outputUsdPerM: 25,
+    contextWindow: 1_000_000,
+    dataAsOf: "2026-07-05",
+    lastVerified: "2026-07-05",
+    source: "https://platform.claude.com/docs/en/about-claude/pricing",
   },
   {
     id: "gemini-2-5-pro",
