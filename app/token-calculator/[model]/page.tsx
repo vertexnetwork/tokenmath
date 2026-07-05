@@ -35,13 +35,16 @@ export async function generateMetadata(props: {
   const { model: slug } = await props.params;
   const model = getModelBySlug(slug);
   if (!model) return buildMetadata();
-  // Number-led title/description: GSC showed these pages drawing impressions at position
-  // ~8–9 with a 0% CTR. The headline price is what earns the click in the SERP, so lead
-  // with it rather than the generic "token & cost calculator" phrasing.
+  // Intent-matched title/description. Live SERP recon (Jul 2026) on the "gpt 4.1 token cost
+  // calculator" cluster showed every Page-1 incumbent leads with the tool noun
+  // ("Calculator"/"Counter"); our prior price-led title dropped it, so calculator-seekers had
+  // no lexical match to lock onto. Lead with the tool noun, keep the price hook, and surface the
+  // true context window — several incumbents publish a stale/wrong value, so the correct number
+  // is a factual trust signal that costs us nothing.
   const countNote = model.vendor === "openai" ? "exact token counts" : "token counts (±2–3%)";
   return buildMetadata({
-    title: `${model.label} pricing: $${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens`,
-    description: `How much does ${model.label} cost? $${model.inputUsdPerM} per 1M input tokens, $${model.outputUsdPerM} per 1M output. Paste any prompt for ${countNote} and total API cost — free, in your browser, nothing uploaded.`,
+    title: `${model.label} Token Cost Calculator — $${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M`,
+    description: `${model.label} token calculator: paste any prompt for ${countNote} and API cost. $${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens, ${model.contextWindow.toLocaleString("en-US")}-token context. Free, client-side, nothing uploaded.`,
     path: `/token-calculator/${model.slug}`,
     image: new URL(
       `/api/og?title=${encodeURIComponent(model.label)}&subtitle=${encodeURIComponent(`$${model.inputUsdPerM}/$${model.outputUsdPerM} per 1M tokens · token + cost calculator`)}`,
