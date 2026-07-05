@@ -58,6 +58,15 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: SECURITY_HEADERS,
       },
+      // Non-content generated routes (OG/social image endpoint, PWA/app icons). Google was
+      // crawling these and filing them under "Crawled — currently not indexed", which is noise:
+      // they're images, not pages, and were never meant to rank. X-Robots-Tag: noindex tells
+      // Google to drop them explicitly. Social/OG scrapers ignore this tag when rendering a
+      // card, so link previews are unaffected.
+      ...["/api/og", "/icon", "/apple-icon", "/opengraph-image", "/twitter-image"].map((source) => ({
+        source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      })),
     ];
   },
   // www → apex redirect is handled at the Vercel platform level (Project Settings →
