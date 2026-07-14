@@ -1,0 +1,90 @@
+---
+title: "Gemini 3.1 Pro token & cost calculator"
+description: "Estimate token counts and API cost for Google Gemini 3.1 Pro — the current flagship, with its 200K tier surcharge. Runs in your browser."
+modelId: "gemini-3-1-pro"
+faqs:
+  - q: "Why does the price jump on large prompts?"
+    a: "Gemini 3.1 Pro is tier-priced on input size. At or below 200,000 input tokens it's $2 input / $12 output per million; above 200,000 tokens the whole request is billed at $4 input / $18 output — roughly double the input rate. The calculator applies the right tier automatically based on what you paste, so a 150K prompt and a 250K prompt are priced on different rates."
+  - q: "How is Gemini 3.1 Pro different from Gemini 2.5 Pro?"
+    a: "3.1 Pro is the current flagship; 2.5 Pro is the previous generation (still available). Both carry a 1,000,000-token window and both tier at 200K, but 3.1 Pro costs more — $2/$12 (rising to $4/$18 above 200K) versus 2.5 Pro's $1.25/$10 (rising to $2.50/$15). Pay the step up when you need the newer model's capability; 2.5 Pro remains the cheaper option for the same context length."
+  - q: "How accurate is the token count?"
+    a: "Approximate. Google doesn't publish a client-side Gemini tokenizer, so we estimate with o200k_base, which tracks Gemini within a few percent on English prose and code. For exact billing counts, Google's countTokens API endpoint returns the precise figure before you send. Treat this calculator as a budgeting tool — typical drift is ~3%."
+  - q: "What is the context window?"
+    a: "1,000,000 tokens of input. The tier surcharge kicks in at 200,000 input tokens, well below the ceiling, so most large-context requests are billed at the higher tier — worth modeling before you commit to a long-context design."
+  - q: "Does the tier surcharge apply to output too?"
+    a: "Yes. Above 200,000 input tokens the whole request moves to the upper tier: input goes from $2 to $4 and output from $12 to $18 per million. The threshold is measured on input size, but it re-rates both sides of the bill."
+---
+
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
+
+# Gemini 3.1 Pro token & cost calculator
+
+**Gemini 3.1 Pro** is Google's current flagship Gemini model — the high-capability Pro tier, carrying a **1,000,000-token context window** and Google's signature **two-tier pricing**: **$2 input / $12 output** per million at or below 200,000 input tokens, stepping up to **$4 / $18** for any request that crosses that threshold. It supersedes Gemini 2.5 Pro, which stays available at a lower rate.
+
+The tier boundary is the thing to plan around. At 200K tokens — one-fifth of the way into the context window — the whole request re-rates to roughly double the input price. So Gemini 3.1 Pro rewards keeping prompts lean and punishes sprawling context in a way flat-priced models like GPT-4.1 don't. If your workload lives above 200K, model the upper tier as your real rate.
+
+<Calculator defaultModelId="gemini-3-1-pro" lockModel />
+
+## Pricing
+
+Gemini 3.1 Pro is tier-priced on input size. The calculator picks the right tier automatically; the breakdown is below.
+
+<ModelPricingTable modelId="gemini-3-1-pro" />
+
+## Worked examples
+
+Watch the tier boundary: the 150K example is billed at $2/$12, but the 300K and 900K examples cross 200K and re-rate to $4/$18. Paste your own prompt above to price it exactly.
+
+<WorkedExamples
+  modelId="gemini-3-1-pro"
+  scenarios={[
+    {
+      label: "Short chat turn",
+      inputTokens: 800,
+      outputTokens: 400,
+      description: "A typical Q&A turn — well within the low tier.",
+    },
+    {
+      label: "150K input (low tier)",
+      inputTokens: 150000,
+      outputTokens: 2000,
+      description: "A large prompt still under the 200K threshold: $2/$12.",
+    },
+    {
+      label: "300K input (high tier)",
+      inputTokens: 300000,
+      outputTokens: 3000,
+      description: "Crosses 200K — the whole request re-rates to $4/$18.",
+    },
+    {
+      label: "Near-full context",
+      inputTokens: 900000,
+      outputTokens: 4000,
+      description: "Deep in the upper tier, close to the 1M ceiling.",
+    },
+  ]}
+/>
+
+The jump between the 150K and 300K rows is the tier surcharge made visible — the extra 150K of input more than doubles the input bill because the rate itself changes, not just the token count. For sustained large-context work, Gemini 3.1 Pro's upper tier is often where a flat-priced million-token model like GPT-4.1 wins on cost.
+
+## How is this counted?
+
+Google doesn't publish a client-side Gemini tokenizer, so we approximate with `o200k_base` (via `js-tiktoken`), which empirically tracks Gemini within a few percent on English prose and source code. For exact, billable counts, Google's `countTokens` API endpoint returns the precise figure before you send a request. Inputs over 50,000 characters run in a Web Worker. Treat this as a budgeting estimate — typical drift is ~3%.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Compare against every other model
+
+To see this exact prompt scored against every supported model, sorted by total cost, paste it into the [home calculator](/#calculator) and toggle **Compare across all models**. The comparison is most revealing on prompts above 200K tokens, where Gemini's tier surcharge separates it from flat-priced long-context models.
+
+## Related models
+
+The natural comparison set: Gemini 2.5 Pro (the previous-generation Pro, cheaper at the same context length), Gemini 2.5 Flash (the budget Gemini tier), and GPT-4.1 (the flat-priced million-token alternative with no tier surcharge).
+
+<SiblingLinks modelId="gemini-3-1-pro" />

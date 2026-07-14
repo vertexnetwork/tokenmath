@@ -1,0 +1,90 @@
+---
+title: "GPT-5.5 token & cost calculator"
+description: "Estimate token counts and API cost for OpenAI GPT-5.5 — the current flagship, with exact tokenization and its 272K long-context surcharge."
+modelId: "gpt-5-5"
+faqs:
+  - q: "Is the token count exact?"
+    a: "Yes. GPT-5.5 uses OpenAI's canonical o200k_base tokenizer, which gpt-tokenizer ships verbatim, so the count of your text is exact — no approximation or calibration factor. One caveat: the Chat/Responses API adds a few fixed formatting tokens per message on top of your content, so your invoiced input runs a handful of tokens higher per message than the raw text count."
+  - q: "Why does the price change on very large prompts?"
+    a: "GPT-5.5 has a long-context surcharge. At or below 272,000 input tokens it's $5 input / $30 output per million; above 272,000 the whole request switches to $10 input / $45 output — 2× input and 1.5× output. The calculator applies the right tier automatically based on your input size."
+  - q: "How does GPT-5.5 compare to GPT-4.1 on cost?"
+    a: "GPT-4.1 is much cheaper ($2/$8, flat) and also carries a million-token window, so for pure long-context throughput where you don't need GPT-5.5's reasoning, GPT-4.1 usually wins on price. GPT-5.5's premium buys frontier reasoning quality; reach for it when that's the binding constraint, not when you just need to fit a big input."
+  - q: "What is the context window?"
+    a: "Roughly 1,050,000 tokens of input, with a maximum output of 128,000 tokens. The long-context surcharge starts at 272,000 input tokens — about a quarter of the window — so most large requests are billed at the upper tier."
+  - q: "Should I use GPT-5.5 or GPT-5.4?"
+    a: "GPT-5.4 is the mid tier at $2.50/$15 — half the price of GPT-5.5's $5/$30 — and shares the same tokenizer. Use GPT-5.4 for most production work and step up to GPT-5.5 only for the hardest requests where the extra reasoning earns its cost. The plain GPT-5 (original) still runs at $1.25/$10 but is deprecated, with shutdown scheduled for December 2026."
+---
+
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
+
+# GPT-5.5 token & cost calculator
+
+**GPT-5.5** is OpenAI's current flagship — the top of the GPT-5 line and the priciest of OpenAI's general models at **$5 input / $30 output per million tokens**. It pairs frontier reasoning with a roughly **1,050,000-token context window**, but with a twist most OpenAI models don't have: a **long-context surcharge** that doubles the input rate (to $10/$45) once a request crosses **272,000 input tokens**.
+
+That surcharge changes the calculus for big-context work. GPT-5.5 is priced for hard reasoning, not for cheap long-context throughput — for the latter, GPT-4.1's flat $2/$8 across the same million-token window is usually the better buy. Reach for GPT-5.5 when reasoning quality is the binding constraint and reserve the huge-context requests for when you actually need both.
+
+<Calculator defaultModelId="gpt-5-5" lockModel />
+
+## Pricing
+
+GPT-5.5 is tier-priced on input size: $5/$30 at or below 272K input tokens, $10/$45 above it. The calculator applies the correct tier automatically.
+
+<ModelPricingTable modelId="gpt-5-5" />
+
+## Worked examples
+
+The 200K example bills at the standard $5/$30; the 400K and near-full examples cross 272K and re-rate to $10/$45. Paste your own prompt above to price it exactly.
+
+<WorkedExamples
+  modelId="gpt-5-5"
+  scenarios={[
+    {
+      label: "Short chat turn",
+      inputTokens: 800,
+      outputTokens: 400,
+      description: "A typical reasoning turn with a small system prompt.",
+    },
+    {
+      label: "200K input (standard tier)",
+      inputTokens: 200000,
+      outputTokens: 4000,
+      description: "A large prompt still under the 272K surcharge threshold.",
+    },
+    {
+      label: "400K input (surcharge tier)",
+      inputTokens: 400000,
+      outputTokens: 6000,
+      description: "Crosses 272K — the whole request re-rates to $10/$45.",
+    },
+    {
+      label: "Near-full context",
+      inputTokens: 900000,
+      outputTokens: 8000,
+      description: "Deep in the surcharge tier, close to the ~1.05M ceiling.",
+    },
+  ]}
+/>
+
+The step between the 200K and 400K rows is steep because two things move at once: more tokens _and_ a higher per-token rate. For sustained work above 272K, model the surcharge tier as your real rate — and price the same prompt on GPT-4.1 before committing, since its flat rate often wins at that scale.
+
+## How is this counted?
+
+GPT-5.5 uses the `o200k_base` tokenizer, shared with GPT-5.4, GPT-4.1, and GPT-4o. We count via `gpt-tokenizer` (MIT) — the canonical OpenAI vocab, exact match, calibration factor 1.0. The count of your pasted text is exact; note that the live API adds a few fixed formatting tokens per message, so invoiced input runs slightly higher than raw content. Inputs over 50,000 characters tokenize in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Compare against every other model
+
+To see this exact prompt scored against every supported model, sorted by total cost, paste it into the [home calculator](/#calculator) and toggle **Compare across all models**. The comparison is most revealing on prompts above 272K tokens, where GPT-5.5's surcharge separates it from flat-priced long-context models.
+
+## Related models
+
+The natural comparison set: GPT-5.4 (the mid tier at half the price), GPT-4.1 (the flat-priced million-token option that undercuts GPT-5.5 on pure long-context cost), and Claude 4.8 Opus (the cross-vendor frontier-reasoning comparison).
+
+<SiblingLinks modelId="gpt-5-5" />
