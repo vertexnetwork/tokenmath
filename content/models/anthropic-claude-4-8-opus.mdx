@@ -1,0 +1,90 @@
+---
+title: "Claude 4.8 Opus token & cost calculator"
+description: "Estimate token counts and API cost for Anthropic Claude 4.8 Opus — the current flagship. Runs entirely in your browser."
+modelId: "claude-4-8-opus"
+faqs:
+  - q: "Should I use Opus 4.8 or Opus 4.7?"
+    a: "Default to 4.8 — it's the current flagship, same $5/$25 per million and the same 1,000,000-token context window as 4.7, with the latest reasoning improvements. Reach back for 4.7 only if you've pinned it in production and want byte-for-byte reproducibility, or you're mid-eval and don't want the model changing underneath you. There's no price reason to prefer one over the other."
+  - q: "What does Fast mode cost?"
+    a: "Fast mode is an optional premium that trades money for latency: it runs Opus 4.8 at $10 input / $50 output per million — double the standard rate — across the full context window. It's a research-preview speed tier, not the default. This calculator prices standard Opus 4.8 ($5/$25); if you enable Fast mode, double the numbers."
+  - q: "How accurate is the Opus token count?"
+    a: "Rougher than for older Claude models. Opus 4.8 uses Anthropic's newer tokenizer, which produces about 30% more tokens than the previous encoding on the same text. We approximate it by applying a ~1.3× calibration to the cl100k_base count — a solid planning estimate, but the true multiplier shifts with content, so treat Opus counts as roughly ±10% rather than the ±2% we quote for older Claude models. Reconcile against the API response headers for billing."
+  - q: "What is the context window?"
+    a: "1,000,000 tokens — 5× the 200,000 that Sonnet 4.5 and Haiku 4.5 offer, and the same million-token window as Opus 4.7 and Sonnet 5. The calculator warns you when input alone would exceed it."
+  - q: "Is Opus 4.8 worth it over Sonnet?"
+    a: "At $5/$25 Opus 4.8 is about 1.7× Sonnet 4.5's rate — the smallest Opus premium in a while, but still the priciest model here. Use it when a lift in correctness on genuinely hard work pays for itself: deep agentic coding, multi-document synthesis, ambiguous reasoning. If Sonnet clears the task with a tighter prompt, that's still the cheaper answer."
+---
+
+import { Calculator } from "@/components/Calculator";
+import { ModelPricingTable } from "@/components/ModelPricingTable";
+import { WorkedExamples } from "@/components/WorkedExamples";
+import { SiblingLinks } from "@/components/SiblingLinks";
+import { FaqList } from "@/components/FaqList";
+
+# Claude 4.8 Opus token & cost calculator
+
+**Claude 4.8 Opus** is Anthropic's current flagship — the most capable model in the Claude line and the default choice when the task is genuinely hard and correctness is the product. It prices at **$5 input / $25 output per million tokens**, carries the full **1,000,000-token context window**, and supersedes Opus 4.7 at the same rate. Unless you've deliberately pinned an older snapshot, 4.8 is the Opus you want.
+
+The economics changed with this generation: Opus used to command a 5× premium over Sonnet, but at $5/$25 it's only about **1.7× Claude 4.5 Sonnet**. That makes reaching for Opus far less punishing than it once was — though Sonnet is still cheaper per token, so the discipline is unchanged: route the easy majority to Sonnet or Haiku and spend Opus on the requests that actually need its reasoning.
+
+<Calculator defaultModelId="claude-4-8-opus" lockModel />
+
+## Pricing
+
+Opus 4.8 is flat-priced at $5/$25 across its full million-token context — no tier surcharge on large inputs. Output is 5× input, the same input-to-output ratio as the rest of the Claude line. An optional **Fast mode** research preview runs at double the rate ($10/$50) for lower latency; this calculator prices the standard tier.
+
+<ModelPricingTable modelId="claude-4-8-opus" />
+
+## Worked examples
+
+Concrete costs at Opus 4.8's $5/$25 rate — from a short turn up to the large single-call inputs its million-token window allows. Paste your own prompt above to price it exactly.
+
+<WorkedExamples
+  modelId="claude-4-8-opus"
+  scenarios={[
+    {
+      label: "Short chat turn",
+      inputTokens: 800,
+      outputTokens: 400,
+      description: "A one-off question with a small system prompt.",
+    },
+    {
+      label: "Agentic coding step",
+      inputTokens: 40000,
+      outputTokens: 6000,
+      description: "Repo context plus tool results and a substantial edit.",
+    },
+    {
+      label: "400K-token input",
+      inputTokens: 400000,
+      outputTokens: 6000,
+      description: "A large codebase or document set in a single call.",
+    },
+    {
+      label: "Near-full context",
+      inputTokens: 900000,
+      outputTokens: 8000,
+      description: "Close to the million-token ceiling in one request.",
+    },
+  ]}
+/>
+
+The agentic case is the one to watch: coding agents re-send the full working context plus tool output every turn, so a long Opus session compounds fast. Cache the stable prefix (system prompt, repo map, docs) aggressively — cached reads run at roughly a tenth of the input rate — and the bill flattens dramatically.
+
+## How is this counted?
+
+Opus 4.8 uses Anthropic's newer tokenizer, which produces roughly **30% more tokens** than the previous Claude encoding on the same text. Anthropic doesn't publish a client-side tokenizer, so we approximate: count with `cl100k_base` (`gpt-tokenizer`, MIT), then apply a **~1.3× calibration** to track the newer tokenizer's higher count. That makes Opus estimates rougher than for older Claude models — budget **±10%**, not ±2% — so treat the number as a planning figure and reconcile against the API response headers. Inputs over 50,000 characters run in a Web Worker.
+
+## FAQ
+
+<FaqList faqs={frontmatter.faqs} />
+
+## Compare against every other model
+
+To see this exact prompt scored against every supported model, sorted by total cost, paste it into the [home calculator](/#calculator) and toggle **Compare across all models**. Numbers are exact for OpenAI and approximate for Claude and Gemini — within ±2–3% for most, wider for the newer-tokenizer Claude models (Opus 4.7/4.8, Sonnet 5).
+
+## Related models
+
+The natural comparison set: Opus 4.7 (the prior flagship, identical price), Claude 4.5 Sonnet (the workhorse most requests should default to), and Claude 5 Sonnet (the current-generation Sonnet with the same million-token window at a lower rate).
+
+<SiblingLinks modelId="claude-4-8-opus" />

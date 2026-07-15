@@ -11,11 +11,15 @@ export type ModelId =
   | "claude-4-5-sonnet"
   | "claude-4-5-haiku"
   | "claude-4-7-opus"
+  | "claude-4-8-opus"
+  | "claude-5-sonnet"
   | "gemini-2-5-pro"
   | "gemini-2-5-flash"
+  | "gemini-3-1-pro"
   | "gpt-5"
   | "gpt-5-mini"
   | "gpt-5-nano"
+  | "gpt-5-5"
   | "gpt-4-1"
   | "gpt-4-1-mini"
   | "gpt-4o"
@@ -27,11 +31,15 @@ export type ModelSlug =
   | "anthropic-claude-4-5-sonnet"
   | "anthropic-claude-4-5-haiku"
   | "anthropic-claude-4-7-opus"
+  | "anthropic-claude-4-8-opus"
+  | "anthropic-claude-5-sonnet"
   | "google-gemini-2-5-pro"
   | "google-gemini-2-5-flash"
+  | "google-gemini-3-1-pro"
   | "openai-gpt-5"
   | "openai-gpt-5-mini"
   | "openai-gpt-5-nano"
+  | "openai-gpt-5-5"
   | "openai-gpt-4-1"
   | "openai-gpt-4-1-mini"
   | "openai-gpt-4o"
@@ -104,11 +112,48 @@ export const MODELS: readonly ModelPricing[] = [
     label: "Claude 4.7 Opus",
     vendor: "anthropic",
     family: "Claude 4.7",
-    inputUsdPerM: 15,
-    outputUsdPerM: 75,
-    contextWindow: 200_000,
-    dataAsOf: "2026-05-09",
-    source: "https://www.anthropic.com/pricing",
+    // Corrected 2026-07-05 against Anthropic's official pricing: Opus 4.7 is $5/$25 with a full
+    // 1M context window. The prior $15/$75 / 200K values were the retired Opus 4.1 figures,
+    // carried over by mistake when the model was bumped to 4.7. Opus 4.7 also uses Anthropic's
+    // newer tokenizer (~30% more tokens) — see the 1.3× factor in lib/tokenizers/calibration.ts.
+    inputUsdPerM: 5,
+    outputUsdPerM: 25,
+    contextWindow: 1_000_000,
+    dataAsOf: "2026-07-05",
+    lastVerified: "2026-07-05",
+    source: "https://platform.claude.com/docs/en/about-claude/pricing",
+  },
+  {
+    id: "claude-4-8-opus",
+    slug: "anthropic-claude-4-8-opus",
+    label: "Claude 4.8 Opus",
+    vendor: "anthropic",
+    family: "Claude 4.8",
+    // Current flagship Opus (supersedes 4.7 at the same $5/$25, 1M context). Newer Anthropic
+    // tokenizer — see the 1.3× factor in lib/tokenizers/calibration.ts. Verified against
+    // Anthropic's official pricing page.
+    inputUsdPerM: 5,
+    outputUsdPerM: 25,
+    contextWindow: 1_000_000,
+    dataAsOf: "2026-07-06",
+    lastVerified: "2026-07-06",
+    source: "https://platform.claude.com/docs/en/about-claude/pricing",
+  },
+  {
+    id: "claude-5-sonnet",
+    slug: "anthropic-claude-5-sonnet",
+    label: "Claude 5 Sonnet",
+    vendor: "anthropic",
+    family: "Claude 5",
+    // Introductory pricing $2/$10 through 2026-08-31; standard pricing rises to $3/$15 on
+    // 2026-09-01 (bump then). 1M context, newer tokenizer (1.3× in calibration.ts). Verified
+    // against Anthropic's official pricing page.
+    inputUsdPerM: 2,
+    outputUsdPerM: 10,
+    contextWindow: 1_000_000,
+    dataAsOf: "2026-07-06",
+    lastVerified: "2026-07-06",
+    source: "https://platform.claude.com/docs/en/about-claude/pricing",
   },
   {
     id: "gemini-2-5-pro",
@@ -138,6 +183,25 @@ export const MODELS: readonly ModelPricing[] = [
     contextWindow: 1_000_000,
     dataAsOf: "2026-05-09",
     source: "https://ai.google.dev/pricing",
+  },
+  {
+    id: "gemini-3-1-pro",
+    slug: "google-gemini-3-1-pro",
+    label: "Gemini 3.1 Pro",
+    vendor: "google",
+    family: "Gemini 3",
+    // Current flagship Gemini Pro. Tier surcharge above 200k input (both prices step up) — see
+    // `tiers`. Verified against Google's official Gemini API pricing page.
+    inputUsdPerM: 2,
+    outputUsdPerM: 12,
+    contextWindow: 1_000_000,
+    dataAsOf: "2026-07-06",
+    lastVerified: "2026-07-06",
+    source: "https://ai.google.dev/gemini-api/docs/pricing",
+    tiers: [
+      { upTo: 200_000, inputUsdPerM: 2, outputUsdPerM: 12 },
+      { upTo: null, inputUsdPerM: 4, outputUsdPerM: 18 },
+    ],
   },
   {
     id: "gpt-5",
@@ -174,6 +238,26 @@ export const MODELS: readonly ModelPricing[] = [
     contextWindow: 400_000,
     dataAsOf: "2026-05-09",
     source: "https://openai.com/api/pricing/",
+  },
+  {
+    id: "gpt-5-5",
+    slug: "openai-gpt-5-5",
+    label: "GPT-5.5",
+    vendor: "openai",
+    family: "GPT-5.5",
+    // Current flagship. Long-context surcharge above 272k input tokens: 2× input / 1.5× output
+    // for the whole request — see `tiers`. o200k_base (exact, factor 1.0). Verified against
+    // OpenAI's official pricing + model docs.
+    inputUsdPerM: 5,
+    outputUsdPerM: 30,
+    contextWindow: 1_050_000,
+    dataAsOf: "2026-07-06",
+    lastVerified: "2026-07-06",
+    source: "https://developers.openai.com/api/docs/pricing",
+    tiers: [
+      { upTo: 272_000, inputUsdPerM: 5, outputUsdPerM: 30 },
+      { upTo: null, inputUsdPerM: 10, outputUsdPerM: 45 },
+    ],
   },
   {
     id: "gpt-4-1",
