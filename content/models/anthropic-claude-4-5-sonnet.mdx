@@ -37,9 +37,39 @@ Sonnet is flat-priced — no tiered surcharge above a context threshold. The `da
 
 ## Worked examples
 
-Below are three concrete scenarios at Sonnet's current per-million rates. The calculator above uses the same underlying math; these are starting points for budget conversations.
+Concrete scenarios at Sonnet's current per-million rates, from a short turn up to a near-context request. The calculator above uses the same math — paste your own prompt to price it exactly.
 
-<WorkedExamples modelId="claude-4-5-sonnet" />
+<WorkedExamples
+  modelId="claude-4-5-sonnet"
+  scenarios={[
+    {
+      label: "Short chat turn",
+      inputTokens: 800,
+      outputTokens: 400,
+      description: "A typical Q&A turn with a small system prompt.",
+    },
+    {
+      label: "RAG answer",
+      inputTokens: 12000,
+      outputTokens: 800,
+      description: "Retrieved context plus a grounded, structured response.",
+    },
+    {
+      label: "Long-document Q&A",
+      inputTokens: 150000,
+      outputTokens: 2000,
+      description: "A large single input — transcript or report — with a short answer.",
+    },
+    {
+      label: "Near-context request",
+      inputTokens: 195000,
+      outputTokens: 3000,
+      description: "Close to Sonnet's 200K ceiling in one call.",
+    },
+  ]}
+/>
+
+**Converting a token total to dollars?** Searches like "300,000 tokens" or "1M tokens on Sonnet" almost always mean _cumulative_ usage — a single request can't exceed Sonnet's 200,000-token context window. Cost is linear, so the price of N tokens is the same whether it lands in one request or a thousand: paste the amount into the calculator above, or multiply by the per-million rate in the table.
 
 A few patterns worth internalizing. First, the input/output ratio matters more than people expect: at $3 input vs. $15 output per million, a chat product whose typical turn is 800 input + 400 output spends about ⅓ of its money on tokens it didn't even generate. Second, system prompts are paid for on every request — a 5,000-token system prompt at 100,000 requests per day is $1,500/day in input cost alone. Cache or prompt-compress aggressively. Third, long-document Q&A is cheap on the input side but the output is the lever — clamping `max_tokens` is a surprisingly effective cost control.
 

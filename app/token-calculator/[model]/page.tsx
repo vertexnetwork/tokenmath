@@ -79,6 +79,14 @@ async function loadContent(slug: ModelSlug): Promise<ModelMdxModule> {
       return import("@/content/models/openai-gpt-4o.mdx");
     case "openai-gpt-4o-mini":
       return import("@/content/models/openai-gpt-4o-mini.mdx");
+    case "anthropic-claude-4-8-opus":
+      return import("@/content/models/anthropic-claude-4-8-opus.mdx");
+    case "anthropic-claude-5-sonnet":
+      return import("@/content/models/anthropic-claude-5-sonnet.mdx");
+    case "google-gemini-3-1-pro":
+      return import("@/content/models/google-gemini-3-1-pro.mdx");
+    case "openai-gpt-5-5":
+      return import("@/content/models/openai-gpt-5-5.mdx");
   }
 }
 
