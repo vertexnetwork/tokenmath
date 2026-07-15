@@ -31,15 +31,43 @@ The right way to position GPT-4.1 in your stack: **route by input size, not by o
 
 ## Pricing
 
-GPT-4.1 is flat-priced. The calculator above will warn you if your input would exceed the 1.047M-token context window, but at typical usage there's plenty of headroom.
+GPT-4.1 is flat-priced: **$2 per 1M input tokens, $8 per 1M output**, with no tier surcharge no matter how much context you push through. Its context window is **1,047,576 tokens** — not the 128K figure some calculators still cite from the model's launch. The calculator above will warn you if your input would exceed that window, but at typical usage there's plenty of headroom.
 
 <ModelPricingTable modelId="gpt-4-1" />
 
 ## Worked examples
 
-These three scenarios stay well under the context window. To stress-test long-context economics, paste a real long input above and watch the cost scale linearly — there's no tier surcharge here, unlike Gemini 2.5 Pro.
+Real numbers at the scale people actually search for — from a short turn up to a near-full-context call. Paste your own prompt above to price an exact input; there's no tier surcharge, so cost scales linearly (unlike Gemini 2.5 Pro).
 
-<WorkedExamples modelId="gpt-4-1" />
+<WorkedExamples
+  modelId="gpt-4-1"
+  scenarios={[
+    {
+      label: "Short chat turn",
+      inputTokens: 800,
+      outputTokens: 400,
+      description: "A typical Q&A turn with a small system prompt.",
+    },
+    {
+      label: "100K-token input",
+      inputTokens: 100000,
+      outputTokens: 2000,
+      description: "A large document or codebase slice with a structured response.",
+    },
+    {
+      label: "400K-token input",
+      inputTokens: 400000,
+      outputTokens: 4000,
+      description: "A multi-file repo or long transcript scored in a single call.",
+    },
+    {
+      label: "1M-token input",
+      inputTokens: 1000000,
+      outputTokens: 8000,
+      description: "Near-full-context — a whole codebase or document collection.",
+    },
+  ]}
+/>
 
 The pattern that pays off on GPT-4.1: **prompt caching, aggressively.** When a workload involves the same large document being referenced across many requests (agent loop, multi-turn conversation, batch rewrites), caching turns the input bill from a real number into a rounding error. The first request pays full freight; the next thousand pay roughly half. For long-context applications this is the difference between a feature that ships and a feature that gets cut for cost.
 

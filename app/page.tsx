@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Calculator } from "@/components/Calculator";
 import { AdSlot } from "@/components/AdSlot";
-import { APPROX_RANGE, latestDataAsOf } from "@/lib/pricing";
+import { APPROX_RANGE, latestDataAsOf, MODELS } from "@/lib/pricing";
 import { renderJsonLd, webApplicationJsonLd } from "@/lib/seo";
 
 export default function HomePage() {
@@ -32,6 +33,25 @@ export default function HomePage() {
         publishes a current client tokenizer. Pricing reflects published rates as of{" "}
         {latestDataAsOf()}.
       </p>
+
+      <nav
+        aria-label="Per-model calculators"
+        className="flex flex-col gap-3 border-t border-(--border) pt-8"
+      >
+        <h2 className="text-eyebrow text-(--text-muted)">Per-model token &amp; cost calculators</h2>
+        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          {MODELS.map((m) => (
+            <li key={m.slug}>
+              <Link
+                href={`/token-calculator/${m.slug}`}
+                className="text-(--text-muted) hover:text-(--accent)"
+              >
+                {m.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <script
         type="application/ld+json"
